@@ -145,7 +145,46 @@ saber:
   por caminho absoluto (`href="/css/style.css"`), que dentro da subpasta do Pages
   dá 404 — no ar o app aparece sem estilo. As telas também saem do local.
 
-### 5. Componentes do Aceternity UI
+### 5. Certificados — como subir as imagens
+
+`components/Certificates.tsx` · `lib/certificados.ts` · imagens em
+`public/certificados/`
+
+**Não precisa mexer em código.** Salve o arquivo do certificado em
+`public/certificados/` com o nome do `slug` e rode o build: a imagem aparece no
+cartão e abre em tela cheia ao clicar. Sem arquivo, o cartão sai só com o texto —
+nada de imagem quebrada.
+
+Extensões aceitas: `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`, `.gif`.
+
+| Certificado | Nome do arquivo |
+| --- | --- |
+| Panorama da LGPD em Cada Estado do Brasil | `lgpd-panorama-estados.jpg` |
+| Cenário de Multas e Condutas para um DPO | `dpo-multas-e-condutas.jpg` |
+| Orientação de Carreira para Profissionais de T.I | `orientacao-carreira-ti.jpg` |
+| Inteligências Artificiais para DPOs | `ia-para-dpos.jpg` |
+| User Experience — UX Design | `ux-design.jpg` |
+| Banco de Dados Relacional | `banco-de-dados-relacional.jpg` |
+| Wizard — Teens Course | `wizard-teens-course.jpg` |
+| JavaScript — 40 horas | `javascript-curso-em-video.jpg` |
+| HTML5 e CSS3 — módulo 4 | `html5-css3-modulo-4.jpg` |
+| HTML5 e CSS3 — módulo 3 | `html5-css3-modulo-3.jpg` |
+| HTML5 e CSS3 — módulo 2 | `html5-css3-modulo-2.jpg` |
+| HTML5 e CSS3 — módulo 1 | `html5-css3-modulo-1.jpg` |
+| Aluno Destaque | `aluno-destaque.jpg` |
+
+Os certificados em PDF precisam virar imagem antes (um print da primeira página
+resolve) — o cartão exibe imagem, não documento.
+
+A lista `certificates.items` em `lib/content.ts` é ordenada por data pelo próprio
+componente, então dá para inserir um certificado novo em qualquer posição.
+
+**Por que a varredura é no build:** sondar no navegador significaria pedir cada
+imagem em cada extensão possível e esconder no erro — 13 certificados × 4
+extensões = até 52 requisições 404 só para descobrir o que existe. Lendo a pasta
+no build (`node:fs`, Server Component), o HTML já nasce sabendo.
+
+### 6. Componentes do Aceternity UI
 
 `components/ui/globe.tsx`, `timeline.tsx` e `floating-dock.tsx` vieram via
 `npx shadcn@latest add @aceternity/<nome>`. São **código do projeto**, não dependências —

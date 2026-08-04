@@ -20,6 +20,7 @@ export const nav = [
   { label: "Projetos", href: "#projetos" },
   { label: "Linguagens", href: "#linguagens" },
   { label: "Carreira", href: "#carreira" },
+  { label: "Certificados", href: "#certificados" },
   { label: "Stack", href: "#stack" },
   { label: "Contato", href: "#contato" },
 ];
@@ -46,18 +47,20 @@ export const manifesto = {
     "e que conhecimento deveria ser acessível a todo mundo. Comecei no suporte " +
     "técnico construindo pequenas ferramentas com IA para resolver problemas reais " +
     "do meu time, e foi isso que virou o meu trabalho.",
-  /* O que ele faz hoje, direto do README do perfil. */
+  /* O que ele faz hoje. Os números saem do que está em produção, não de
+     estimativa — ver os `stats` logo abaixo. */
   doing: [
-    "Chatbots de suporte com RAG (Supabase + embeddings vetoriais) alimentados por uma base unificada de centenas de pares de Q&A",
-    "Automação de atendimento no WhatsApp e classificação de mensagens com nós lógicos do Callbell",
-    "Integrações via webhook entre WhatsApp, n8n e outras plataformas para roteamento inteligente de suporte",
-    "Tutoriais técnicos e fluxogramas narrados por IA (ElevenLabs), hoje o padrão do time de suporte",
-    "Manuais técnicos, canal de tutoriais no YouTube e localização de software (PT-BR)",
-    "Engenharia reversa e ferramentas sob medida — instaladores, plugins, sistemas de localização — quando as oficiais não dão conta",
+    "Chatbot de suporte com RAG em produção no WhatsApp: n8n orquestrando, Supabase guardando os embeddings e a Callbell como canal",
+    "Base de conhecimento de 209 pares de pergunta e resposta, sincronizada entre o texto puro e o Notion do time",
+    "Fluxograma que mapeou o suporte técnico inteiro — 584 elementos, do primeiro contato ao encerramento do chamado",
+    "Tutoriais técnicos narrados por IA: quando a narração deixou de ser minha voz, o time passou a usar. Hoje é o padrão",
+    "Manuais técnicos, protótipos das telas dos equipamentos e um canal de tutoriais no YouTube",
+    "Engenharia reversa quando não tem jeito oficial — foi assim que o CameraCut ganhou português, mexendo nas DLLs de idioma",
+    "Ferramentas sob medida: um instalador em PowerShell que virou um clique o que antes eram 11 etapas manuais",
   ],
   stats: [
-    { value: "4", label: "Anos de idade no primeiro contato com um computador" },
-    { value: "14", label: "Projetos públicos no GitHub" },
+    { value: "209", label: "Pares de pergunta e resposta na base que alimenta a IA de suporte" },
+    { value: "584", label: "Elementos no fluxograma que mapeou o suporte técnico" },
     { value: "130+", label: "Produtos catalogados no e-commerce da Nexus" },
   ],
 };
@@ -578,27 +581,23 @@ export const background = {
   items: [
     {
       title: "Análise e Desenvolvimento de Sistemas",
-      meta: "Unip",
+      meta: "Universidade Paulista · bolsa integral pelo Enem",
     },
     {
-      title: "Certificado de inglês — 4 anos",
-      meta: "Wizard",
+      title: "Inglês — 4 anos de curso",
+      meta: "Wizard by Pearson · concluído",
     },
     {
-      title: "Criador de Conteúdo Técnico",
-      meta: "Bannerjet Group · atual",
+      title: "13 certificados",
+      meta: "Curso em Vídeo, Cidade de São Paulo, APDADOS",
     },
   ],
 };
 
 /* ---------- Carreira ----------
-   ⚠️ O LinkedIn bloqueia leitura automatizada (HTTP 999), então NÃO deu
-   para puxar daqui. O que está abaixo vem do README do seu GitHub e das
-   datas dos repositórios — é verdadeiro, mas incompleto.
-
-   CONFIRME / COMPLETE: os períodos exatos de cada cargo, o nome da
-   empresa onde você fez suporte técnico (se não foi a própria Bannerjet)
-   e qualquer função anterior que faltou. Basta editar os `period`. */
+   Períodos e cargos conferidos com o LinkedIn (agosto de 2026). O que
+   cada função fez de fato vem do relato do Erick e do registro interno
+   dos projetos. */
 export const career = {
   label: "Carreira",
   title: "Do suporte à infraestrutura de IA",
@@ -621,27 +620,209 @@ export const career = {
       tags: ["HTML", "CSS", "JavaScript"],
     },
     {
-      period: "[CONFIRMAR período]",
-      role: "Suporte técnico",
-      org: "Bannerjet Group",
-      body: "Atendimento a plotters, laminadoras, impressoras UV e laser. Foi aqui que ficou claro quanto tempo se perde procurando um manual, um parâmetro de corte ou um firmware antigo.",
-      tags: ["Suporte", "Equipamentos"],
+      period: "jul — out de 2024",
+      role: "Designer, depois Tráfego Pago",
+      org: "Achei Montador",
+      body: "Entrei como designer: edição de fotos, retoque e manipulação no Photoshop, e as peças visuais da empresa. Em setembro assumi também as campanhas de tráfego pago no Google Ads e no Meta Business, cuidando da gestão e da otimização.",
+      tags: ["Photoshop", "Google Ads", "Meta Business", "Google Analytics"],
     },
     {
-      period: "[CONFIRMAR período]",
-      role: "As ferramentas paralelas",
+      period: "mai de 2024 — jul de 2025",
+      role: "Assistente do Comitê StarTech",
+      org: "APDADOS · freelance, remoto",
+      body: "Suporte administrativo e logístico ao comitê: documentação técnica, organização dos processos e o trabalho de bastidor que faz um comitê voluntário entregar o que promete.",
+      tags: ["Documentação técnica", "Processos", "Trabalho em equipe"],
+    },
+    {
+      period: "abr de 2025 — agora",
+      role: "Técnico IGP",
       org: "Bannerjet Group",
-      body: "Comecei a construir pequenas ferramentas com IA para resolver os problemas do meu próprio time. Não era o meu cargo — virou o meu cargo.",
-      tags: ["Python", "Automação", "IA"],
+      body: "Suporte técnico especializado, quase todo remoto: plotters de recorte, máquinas de fibra laser e sistemas CellCut. Redes, manutenção e configuração de hardware de um lado; CorelDRAW, Photoshop, SignMaster e CameraCut do outro — os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa.",
+      tags: ["Suporte remoto", "Redes", "CorelDRAW", "SignMaster", "CameraCut"],
+    },
+    {
+      period: "jun de 2025 — agora",
+      role: "Coordenador do Comitê StarTech",
+      org: "APDADOS · freelance, remoto",
+      body: "Coordeno e oriento o comitê, com foco na formação de alunos e profissionais entrando no mercado. É onde a parte analítica e de infraestrutura de TI encontra gente — montar trilha, revisar material, destravar carreira.",
+      tags: ["Coordenação", "Cursos de treinamento", "Mentoria"],
     },
     {
       period: "Hoje",
-      role: "Criador de Conteúdo Técnico",
+      role: "Conteúdo técnico e infraestrutura de IA",
       org: "Bannerjet Group",
-      body: "Projeto e construo a infraestrutura de IA por trás do suporte técnico, da documentação e do treinamento: chatbots com RAG, automação de WhatsApp, tutoriais narrados por IA, manuais e localização de software.",
-      tags: ["RAG", "Supabase", "n8n", "ElevenLabs", "Callbell"],
+      body: "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema. Mapeei o suporte inteiro num fluxograma, produzi os vídeos — e só quando troquei a minha narração por IA o time passou a usar. Daí vieram os manuais, os protótipos das telas dos equipamentos, a base no Notion e o chatbot com RAG que hoje atende no WhatsApp.",
+      tags: ["RAG", "Supabase", "n8n", "ElevenLabs", "Callbell", "Notion"],
     },
   ],
+};
+
+/* ---------- Certificados ----------
+
+   A IMAGEM DE CADA CERTIFICADO É OPCIONAL E NÃO PRECISA DE CÓDIGO.
+   Basta salvar o arquivo em `public/certificados/` com o nome do `slug`
+   abaixo — `wizard-teens-course.jpg`, por exemplo. O componente tenta
+   .jpg, .jpeg, .png e .webp nessa ordem e, se não achar nenhum, mostra
+   o cartão só com o texto (sem imagem quebrada). Adicionou o arquivo,
+   apareceu.
+
+   Ordem: o componente ordena por `date` (mais recente primeiro), então
+   dá para inserir um certificado novo em qualquer posição da lista. */
+
+export type Certificate = {
+  /* Também é o nome do arquivo da imagem em public/certificados/. */
+  slug: string;
+  title: string;
+  issuer: string;
+  /* AAAA-MM — usado só para ordenar. */
+  date: string;
+  /* Como a data aparece na tela. */
+  dateLabel: string;
+  expiresLabel?: string;
+  credentialId?: string;
+  /* Link "exibir credencial", quando existir. */
+  href?: string;
+  skills?: string[];
+  description?: string;
+};
+
+/* Anotado como Certificate[] (e não `satisfies`) de propósito: com
+   `satisfies` o TS guarda o tipo literal de cada item, e os campos
+   opcionais que ninguém preencheu ainda — `href`, por exemplo — deixam
+   de existir para quem consome a lista. */
+const certificateItems: Certificate[] = [
+    {
+      slug: "lgpd-panorama-estados",
+      title: "Panorama da LGPD em Cada Estado do Brasil",
+      issuer: "APDADOS",
+      date: "2024-08",
+      dateLabel: "ago de 2024",
+      expiresLabel: "válido até ago de 2034",
+      description:
+        "Live sobre as particularidades da implementação e da conformidade com a LGPD em cada região do país — como os estados brasileiros vêm lidando com a regulamentação, considerando especificidades locais e desafios regionais.",
+    },
+    {
+      slug: "dpo-multas-e-condutas",
+      title: "Cenário de Multas e Condutas para o Desenvolvimento de um DPO",
+      issuer: "APDADOS",
+      date: "2024-05",
+      dateLabel: "mai de 2024",
+      expiresLabel: "válido até mai de 2034",
+      description:
+        "Análise das penalidades previstas na LGPD e das condutas esperadas de um Data Protection Officer: responsabilidades, estratégias de mitigação de risco e o papel do DPO na conformidade da organização.",
+    },
+    {
+      slug: "orientacao-carreira-ti",
+      title: "Orientação de Carreira para Profissionais de T.I",
+      issuer: "APDADOS",
+      date: "2024-05",
+      dateLabel: "mai de 2024",
+      expiresLabel: "válido até mai de 2034",
+      description:
+        "Estratégias práticas de desenvolvimento de carreira em tecnologia: desafios e oportunidades do mercado, e como alinhar habilidade técnica com o que a indústria está pedindo.",
+    },
+    {
+      slug: "ia-para-dpos",
+      title: "Inteligências Artificiais para DPOs",
+      issuer: "APDADOS",
+      date: "2024-03",
+      dateLabel: "mar de 2024",
+      expiresLabel: "válido até jan de 2034",
+      skills: [
+        "Implicações éticas da IA",
+        "Legislação de proteção de dados",
+      ],
+      description:
+        "Uso de IA no contexto da proteção de dados — como um DPO pode aplicar essas tecnologias para melhorar conformidade e segurança dentro da organização.",
+    },
+    {
+      slug: "ux-design",
+      title: "User Experience — UX Design",
+      issuer: "Cidade de São Paulo",
+      date: "2024-02",
+      dateLabel: "fev de 2024",
+      skills: ["Prototipagem", "Web design responsivo"],
+    },
+    {
+      slug: "banco-de-dados-relacional",
+      title: "Banco de Dados Relacional",
+      issuer: "Cidade de São Paulo",
+      date: "2024-02",
+      dateLabel: "fev de 2024",
+      skills: ["SQL", "Armazenamento de dados"],
+    },
+    {
+      slug: "wizard-teens-course",
+      title: "Teens Course",
+      issuer: "Wizard by Pearson",
+      date: "2023-12",
+      dateLabel: "dez de 2023",
+      expiresLabel: "válido até dez de 2034",
+      skills: ["Inglês como língua estrangeira", "Gramática"],
+      description:
+        "Quatro anos de estudo intensivo: conversação, escrita, leitura e compreensão auditiva, em contexto acadêmico e profissional. É o que sustenta a conversa técnica em inglês.",
+    },
+    {
+      slug: "javascript-curso-em-video",
+      title: "JavaScript — 40 horas",
+      issuer: "Curso em Vídeo",
+      date: "2023-01",
+      dateLabel: "jan de 2023",
+      credentialId: "842AD-6C61-A",
+      skills: ["JavaScript", "Aplicações web interativas"],
+    },
+    {
+      slug: "html5-css3-modulo-4",
+      title: "HTML5 e CSS3 — módulo 4 · 40 horas",
+      issuer: "Curso em Vídeo",
+      date: "2022-12",
+      dateLabel: "dez de 2022",
+      credentialId: "842AD-26CB1-9",
+      skills: ["Scripts HTML", "Programação lógica"],
+    },
+    {
+      slug: "html5-css3-modulo-3",
+      title: "HTML5 e CSS3 — módulo 3 · 40 horas",
+      issuer: "Curso em Vídeo",
+      date: "2022-09",
+      dateLabel: "set de 2022",
+      credentialId: "842AD-15678-1",
+    },
+    {
+      slug: "html5-css3-modulo-2",
+      title: "HTML5 e CSS3 — módulo 2 · 40 horas",
+      issuer: "Curso em Vídeo",
+      date: "2022-09",
+      dateLabel: "set de 2022",
+      credentialId: "842AD-E776-6",
+      skills: ["CSS"],
+    },
+    {
+      slug: "html5-css3-modulo-1",
+      title: "HTML5 e CSS3 — módulo 1 · 40 horas",
+      issuer: "Curso em Vídeo",
+      date: "2022-07",
+      dateLabel: "jul de 2022",
+      credentialId: "842AD-C9E9-4",
+    },
+  {
+    slug: "aluno-destaque",
+    title: "Aluno Destaque",
+    issuer: "Colégio Monte Sinai",
+    date: "2019-12",
+    dateLabel: "dez de 2019",
+  },
+];
+
+export const certificates = {
+  label: "Certificados",
+  title: "O que está no papel",
+  intro:
+    "Cursos, eventos e credenciais — dos primeiros módulos de HTML aos " +
+    "encontros sobre LGPD e IA aplicada à privacidade de dados.",
+  /* Aparece sobre a imagem no hover. */
+  imageHint: "Clique para ver o certificado",
+  items: certificateItems,
 };
 
 /* ---------- Globo ----------
