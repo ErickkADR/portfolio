@@ -1,0 +1,23 @@
+node_modules/
+.next/
+out/
+build/
+
+.env
+.env*.local
+
+next-env.d.ts
+*.tsbuildinfo
+
+.DS_Store
+Thumbs.db
+.vercel
+
+# Skills de terceiros clonadas para o ambiente local do Claude Code.
+# São repositórios de outros autores, com licenças próprias — não fazem
+# parte do portfólio e não devem ir junto no repositório público.
+.claude/
+
+# Cópia original do vídeo. O arquivo usado pelo site é
+# public/video/hero.mp4; manter as duas dobraria 7 MB no repositório.
+PERFEITA.mp4
