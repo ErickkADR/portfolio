@@ -130,6 +130,29 @@ editorial) — todas via `next/font`, sem requisição externa em runtime.
 
 ## Deploy
 
-Projeto Next.js estático — `npm run build` e suba na Vercel (ou qualquer host Node).
-O `hero.mp4` tem 7 MB; se reencodar com `-g 1` ele cresce, então vale considerar servir
-o vídeo por um CDN caso o limite do plano aperte.
+No ar em **https://erickkadr.github.io/portfolio/**
+
+```bash
+npm run deploy    # build + publica na branch gh-pages
+```
+
+O site é exportado estaticamente (`output: "export"`) e servido pelo GitHub Pages a
+partir da branch `gh-pages`. A `main` guarda o código; a `gh-pages` guarda só o build.
+
+Três detalhes que fazem esse deploy funcionar, e que quebram o site se forem removidos:
+
+- **`.nojekyll`** na raiz do build. Sem ele o Pages trata a pasta `_next` como interna
+  do Jekyll (nomes com underscore) e a ignora — o site sobe sem CSS nem JavaScript.
+- **`basePath` + `assetPrefix`**, porque o site vive numa subpasta (`/portfolio`). Sem
+  eles o HTML pede `/_next/...` na raiz do domínio, onde não há nada, e a página abre
+  em branco. Vêm de `NEXT_PUBLIC_BASE_PATH` no `.env.production`, que o Next carrega
+  sozinho no `next build` e ignora no `next dev`.
+- **O `src` do vídeo monta o prefixo à mão.** O `basePath` do Next só alcança o que
+  passa por ele (rotas, `next/link`, `next/image`, chunks) — um `src="/video/hero.mp4"`
+  cru apontaria para a raiz do domínio.
+
+> Se um dia o repositório virar `ErickkADR.github.io` ou o site ganhar domínio próprio,
+> basta esvaziar `NEXT_PUBLIC_BASE_PATH` no `.env.production`.
+
+O `hero.mp4` tem 7 MB, bem dentro dos limites do Pages (1 GB por site, 100 MB por
+arquivo). Se um dia o vídeo crescer muito, vale servi-lo por um CDN.
