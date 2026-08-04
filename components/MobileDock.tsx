@@ -22,7 +22,6 @@ const icons: Record<string, React.ReactNode> = {
   "#hero": <IconHome className="h-full w-full" />,
   "#manifesto": <IconUser className="h-full w-full" />,
   "#projetos": <IconBriefcase className="h-full w-full" />,
-  "#linguagens": <IconCode className="h-full w-full" />,
   "#carreira": <IconTimeline className="h-full w-full" />,
   "#certificados": <IconCertificate className="h-full w-full" />,
   "#stack": <IconStack2 className="h-full w-full" />,

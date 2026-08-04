@@ -109,11 +109,17 @@ Animações por seção:
 | Marquee | Faixa infinita que acelera e inclina conforme a velocidade do scroll |
 | Robô | Cena entrando com escala, halo pulsando, cabeça seguindo o cursor |
 | Projetos | Scroll horizontal com a seção presa (desktop), snap nativo no mobile |
-| Linguagens | Barra empilhada que se desenha + cartões em cascata |
 | Carreira | Timeline com a trilha preenchendo conforme o scroll |
-| Stack | Cascata por coluna |
-| Contato | Título em cascata, botão magnético |
+| Certificados | Cartões em cascata; a imagem abre em tela cheia |
+| Stack | Barra empilhada que se desenha + cascata por grupo |
+| Contato | Título em cascata, cartão de e-mail magnético |
 | Global | Cursor discreto, grão animado, revelação de texto por linha, dock no mobile |
+
+> **Linguagens e Stack são uma seção só** (`components/Stack.tsx`, `#stack`).
+> Eram duas, e as listas se repetiam — JavaScript, HTML, CSS e TypeScript
+> apareciam nas duas, e quem lia tinha que juntar sozinho. Hoje a barra medida
+> do GitHub abre a seção e os grupos vêm abaixo, com "Linguagens" ocupando a
+> linha inteira por ser o único grupo com nota por item.
 
 ### 4. Projetos: card com capa e página própria
 

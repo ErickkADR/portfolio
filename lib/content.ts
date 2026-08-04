@@ -18,7 +18,6 @@ export const nav = [
   { label: "Início", href: "#hero" },
   { label: "Sobre", href: "#manifesto" },
   { label: "Projetos", href: "#projetos" },
-  { label: "Linguagens", href: "#linguagens" },
   { label: "Carreira", href: "#carreira" },
   { label: "Certificados", href: "#certificados" },
   { label: "Stack", href: "#stack" },
@@ -503,16 +502,136 @@ export const marquee = [
   "Conteúdo técnico",
 ];
 
-/* ---------- Linguagens ----------
+/* ---------- Stack ----------
+   Linguagens e ferramentas vivem na MESMA seção. Estavam separadas antes
+   e as duas listas se repetiam: JavaScript, HTML, CSS e TypeScript
+   apareciam nos dois lugares, e quem lia tinha que juntar sozinho. Aqui
+   a barra medida abre a seção e os grupos vêm logo abaixo, sem repetir
+   nenhuma linguagem em "Front-end".
+
    Os percentuais são os bytes reais que a API do GitHub reporta somando
    todos os repositórios públicos (não-forks) — não é estimativa.
    Para atualizar:
      GET https://api.github.com/repos/ErickkADR/<repo>/languages
    Python e VBA não têm percentual porque o trabalho neles é interno
    (automações e ferramentas da Bannerjet), fora dos repos públicos. */
-export const languages = {
-  label: "Linguagens",
-  title: "O que eu escrevo",
+
+export type StackItem = {
+  name: string;
+  /* Só as linguagens têm nota e cor — elas abrem a seção e sustentam a
+     barra medida. Os outros grupos são lista pura. */
+  note?: string;
+  color?: string;
+  /* Percentual medido no GitHub, quando existe. */
+  pct?: number;
+};
+
+export type StackGroup = {
+  group: string;
+  /* Ocupa a linha inteira da grade, em vez de meia. */
+  wide?: boolean;
+  items: StackItem[];
+};
+
+/* Anotado (e não `satisfies`): com `satisfies` o TS guarda o tipo
+   literal de cada item, e os campos que só as linguagens preenchem —
+   `note`, `color`, `pct` — deixam de existir para quem percorre a lista
+   inteira. */
+const stackGroups: StackGroup[] = [
+  {
+    group: "Linguagens",
+    /* Este grupo ocupa a linha inteira: é o único com nota por item, e
+       espremido numa coluna as notas quebravam em quatro linhas. */
+    wide: true,
+    items: [
+      {
+        name: "HTML",
+        color: "#a855f7",
+        pct: 57.7,
+        note: "Estrutura de todos os portais e landing pages",
+      },
+      {
+        name: "JavaScript",
+        color: "#d16bff",
+        pct: 23.0,
+        note: "Carrinho, catálogos e a lógica dos portais técnicos",
+      },
+      {
+        name: "CSS",
+        color: "#6d5cff",
+        pct: 18.5,
+        note: "Layout responsivo, temas escuros e animações sem JS",
+      },
+      {
+        name: "TypeScript",
+        color: "#c026d3",
+        pct: 0.8,
+        note: "O Campro A3 Pro com React 18 — e este portfólio inteiro",
+      },
+      {
+        name: "Python",
+        color: "#8b5cf6",
+        note: "Pipelines de RAG, embeddings e automações internas",
+      },
+      {
+        name: "VBA",
+        color: "#7c3aed",
+        note: "Ferramentas sob medida dentro do fluxo da equipe",
+      },
+    ],
+  },
+  {
+    group: "IA & Automação",
+    items: [
+      { name: "RAG" },
+      { name: "Supabase" },
+      { name: "n8n" },
+      { name: "Gemini API" },
+      { name: "ElevenLabs" },
+      { name: "Callbell" },
+      { name: "Claude Code" },
+    ],
+  },
+  {
+    group: "Front-end",
+    items: [
+      { name: "React" },
+      { name: "Next.js" },
+      { name: "Tailwind CSS" },
+      { name: "GSAP" },
+      { name: "Spline" },
+    ],
+  },
+  {
+    group: "Base & ferramentas",
+    items: [
+      { name: "Git" },
+      { name: "PowerShell" },
+      { name: "Notion" },
+      { name: "Miro" },
+      { name: "Windows" },
+    ],
+  },
+  {
+    group: "Design & equipamentos",
+    items: [
+        { name: "CorelDraw" },
+        { name: "Photoshop" },
+        { name: "SignMaster" },
+      { name: "CameraCut" },
+      { name: "LightBurn" },
+      { name: "EzCad" },
+    ],
+  },
+];
+
+export const stack = {
+  label: "Stack",
+  title: "Ferramentas do ofício",
+  intro:
+    "O que eu escrevo e com o que eu construo — da linguagem ao software " +
+    "que roda na máquina do cliente.",
+  barLabel: "Nos repositórios públicos",
   note: "Distribuição real dos meus repositórios públicos no GitHub",
   /* Cores da paleta do site, não as cores de marca de cada linguagem:
      o amarelo do JS e o laranja do HTML brigariam com o roxo. */
@@ -522,59 +641,8 @@ export const languages = {
     { name: "CSS", pct: 18.5, color: "#6d5cff" },
     { name: "TypeScript", pct: 0.8, color: "#c026d3" },
   ],
-  /* A lista completa, com onde cada uma é usada de fato. */
-  all: [
-    {
-      name: "JavaScript",
-      color: "#d16bff",
-      note: "Carrinho, catálogos e a lógica dos portais técnicos",
-    },
-    {
-      name: "TypeScript",
-      color: "#c026d3",
-      note: "Roteamento por licença do Campro A3 Pro, com React 18",
-    },
-    {
-      name: "HTML",
-      color: "#a855f7",
-      note: "Estrutura de todos os portais e landing pages",
-    },
-    {
-      name: "CSS",
-      color: "#6d5cff",
-      note: "Layout responsivo, temas escuros e animações sem JS",
-    },
-    {
-      name: "Python",
-      color: "#8b5cf6",
-      note: "Pipelines de RAG, embeddings e automações internas",
-    },
-    {
-      name: "VBA",
-      color: "#7c3aed",
-      note: "Ferramentas sob medida dentro do fluxo de trabalho da equipe",
-    },
-  ],
+  groups: stackGroups,
 };
-
-export const stack = [
-  {
-    group: "Front-end",
-    items: ["JavaScript", "HTML", "CSS", "React", "TypeScript"],
-  },
-  {
-    group: "IA & Automação",
-    items: ["RAG", "Supabase", "Gemini API", "n8n", "ElevenLabs", "Callbell"],
-  },
-  {
-    group: "Linguagens & Base",
-    items: ["Python", "VBA", "Git", "Windows"],
-  },
-  {
-    group: "Design & Equipamentos",
-    items: ["CorelDraw", "Photoshop", "SignMaster", "LightBurn", "EzCad"],
-  },
-];
 
 export const background = {
   label: "Formação",
@@ -858,11 +926,35 @@ export const contact = {
     "Ainda quero trabalhar fora do Brasil e conhecer novas culturas — enquanto sigo " +
     "construindo ferramentas que facilitam o trabalho dos outros.",
   quote: "Me entregue o Claude Code e com minha criatividade moverei o mundo...",
-  cta: "Enviar e-mail",
+  /* O e-mail aparece por extenso, como o próprio link. Um botão escrito
+     "enviar e-mail" esconde a informação que a pessoa veio buscar — e
+     quem quer copiar o endereço em vez de abrir o cliente de e-mail
+     ficava sem saída. */
+  emailHint: "Me escreve",
+  /* Linha de disponibilidade: responde a pergunta que vem antes do
+     "como falo com ele" — se vale a pena falar. */
+  availability: [
+    { label: "Onde", value: "São Paulo, Brasil" },
+    { label: "Formato", value: "Remoto, híbrido ou exterior" },
+    { label: "Resposta", value: "Em até 1 dia útil" },
+  ],
+  socialsLabel: "Nas redes",
   socials: [
-    { label: "GitHub", href: "https://github.com/ErickkADR" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/erickkadr/" },
-    { label: "Instagram", href: "https://www.instagram.com/erickk.adr/" },
-    { label: "YouTube", href: "https://www.youtube.com/@erickk1392" },
+    { label: "GitHub", handle: "@ErickkADR", href: "https://github.com/ErickkADR" },
+    {
+      label: "LinkedIn",
+      handle: "/in/erickkadr",
+      href: "https://www.linkedin.com/in/erickkadr/",
+    },
+    {
+      label: "Instagram",
+      handle: "@erickk.adr",
+      href: "https://www.instagram.com/erickk.adr/",
+    },
+    {
+      label: "YouTube",
+      handle: "@erickk1392",
+      href: "https://www.youtube.com/@erickk1392",
+    },
   ],
 };

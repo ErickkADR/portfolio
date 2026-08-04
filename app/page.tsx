@@ -4,7 +4,6 @@ import Manifesto from "@/components/Manifesto";
 import Marquee from "@/components/Marquee";
 import RobotSection from "@/components/RobotSection";
 import Projects from "@/components/Projects";
-import Languages from "@/components/Languages";
 import Career from "@/components/Career";
 import Certificates from "@/components/Certificates";
 import Stack from "@/components/Stack";
@@ -27,7 +26,6 @@ export default function Home() {
         <Marquee />
         <RobotSection />
         <Projects />
-        <Languages />
         <Career />
         <Certificates images={certImages} />
         <Stack />

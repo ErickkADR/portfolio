@@ -5,6 +5,15 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { stack, background } from "@/lib/content";
 import RevealText from "./RevealText";
 
+/* Linguagens e ferramentas na mesma seção.
+
+   Antes eram duas: uma com a barra medida do GitHub e outra com os
+   grupos do stack. As duas listas se repetiam — JavaScript, HTML, CSS e
+   TypeScript apareciam nos dois lugares — e quem lia tinha que juntar
+   sozinho. Agora a barra abre a seção (é o dado medido, então merece o
+   topo) e os grupos vêm logo abaixo, com as linguagens ocupando a linha
+   inteira porque são as únicas que carregam nota por item. */
+
 export default function Stack() {
   const ref = useRef<HTMLElement>(null);
 
@@ -13,24 +22,37 @@ export default function Stack() {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Cada coluna revela seus itens em cascata quando entra na tela.
-        // O batch agrupa colunas que entram juntas num único stagger, em
-        // vez de disparar quatro sequências desencontradas.
-        const tweens = gsap.utils
+        // Os segmentos crescem a partir da esquerda, em cascata: a barra
+        // se "desenha" da maior para a menor fatia.
+        const bars = gsap.from(".lang-seg", {
+          scaleX: 0,
+          transformOrigin: "left center",
+          duration: 1.1,
+          ease: "expo.out",
+          stagger: 0.08,
+          scrollTrigger: { trigger: ".lang-bar", start: "top 85%", once: true },
+        });
+
+        // Um tween por grupo, disparado pelo próprio grupo: com um único
+        // stagger geral, os grupos do fim da seção já teriam terminado a
+        // animação antes de chegarem na tela.
+        const cols = gsap.utils
           .toArray<HTMLElement>(".stack-col")
-          .map((col, i) =>
+          .map((col) =>
             gsap.from(col.querySelectorAll("li"), {
-              y: 26,
+              y: 24,
               opacity: 0,
-              duration: 0.85,
+              duration: 0.8,
               ease: "power3.out",
-              stagger: 0.06,
-              delay: i * 0.08,
-              scrollTrigger: { trigger: col, start: "top 88%", once: true },
+              stagger: 0.05,
+              scrollTrigger: { trigger: col, start: "top 90%", once: true },
             })
           );
 
-        return () => tweens.forEach((t) => t.kill());
+        return () => {
+          bars.kill();
+          cols.forEach((t) => t.kill());
+        };
       });
 
       return () => mm.revert();
@@ -39,44 +61,122 @@ export default function Stack() {
   );
 
   return (
-    <section ref={ref} id="stack" className="py-32 sm:py-44">
+    <section
+      ref={ref}
+      id="stack"
+      className="border-t border-bone/10 py-32 sm:py-44"
+    >
       <div className="shell shell-narrow">
         <div className="section-head">
-          <span className="mono-label">Stack</span>
+          <span className="mono-label">{stack.label}</span>
 
           <RevealText
             as="h2"
             className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
           >
-            Ferramentas do ofício
+            {stack.title}
           </RevealText>
+
+          <p className="mx-auto mt-6 max-w-xl leading-relaxed text-bone-dim">
+            {stack.intro}
+          </p>
         </div>
 
-        {/* Duas colunas em vez de quatro: em quatro os grupos ficavam
-            lado a lado numa faixa rasa, cada lista com meia dúzia de
-            itens curtos. Em duas, a seção respira e ganha altura. */}
-        <div className="hairline mt-20 grid gap-x-12 gap-y-16 pt-14 sm:grid-cols-2">
-          {stack.map((group) => (
-            <div key={group.group} className="stack-col">
+        {/* ---------- barra medida ---------- */}
+        <div className="mt-20">
+          <p className="mono-label text-center">{stack.barLabel}</p>
+
+          <div className="lang-bar mt-5 flex h-3 w-full gap-1 overflow-hidden rounded-full">
+            {stack.measured.map((l) => (
+              <div
+                key={l.name}
+                className="lang-seg h-full rounded-full"
+                style={{
+                  // O mínimo de 1.5% mantém a fatia do TypeScript (0,8%)
+                  // visível; sem isso ela vira um fio de um pixel.
+                  width: `${Math.max(l.pct, 1.5)}%`,
+                  background: l.color,
+                }}
+                title={`${l.name} — ${l.pct}%`}
+              />
+            ))}
+          </div>
+
+          <ul className="mt-5 flex flex-wrap justify-center gap-x-7 gap-y-2">
+            {stack.measured.map((l) => (
+              <li key={l.name} className="flex items-center gap-2 text-sm">
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ background: l.color }}
+                />
+                <span>{l.name}</span>
+                <span className="text-bone-dim">{l.pct}%</span>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mono-label mt-5 text-center">{stack.note}</p>
+        </div>
+
+        {/* ---------- grupos ---------- */}
+        <ul className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2">
+          {stack.groups.map((group) => (
+            <li
+              key={group.group}
+              className={`stack-col bg-ink p-8 sm:p-10 ${
+                group.wide ? "sm:col-span-2" : ""
+              }`}
+            >
               <h3 className="mono-label text-plasma">{group.group}</h3>
-              <ul className="mt-5 space-y-2.5">
+
+              <ul
+                className={
+                  group.wide
+                    ? "mt-7 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
+                    : "mt-6 space-y-3"
+                }
+              >
                 {group.items.map((item) => (
-                  <li
-                    key={item}
-                    className="group flex items-center gap-3 text-lg text-bone-dim transition-colors duration-300 hover:text-bone"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="h-px w-4 bg-bone/25 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-8 group-hover:bg-plasma"
-                    />
-                    {item}
+                  <li key={item.name} className="group/item">
+                    <div className="flex items-baseline gap-3">
+                      {item.color ? (
+                        <span
+                          aria-hidden="true"
+                          className="h-2.5 w-2.5 shrink-0 translate-y-[-0.1em] rounded-sm transition-transform duration-500 group-hover/item:scale-125"
+                          style={{ background: item.color }}
+                        />
+                      ) : (
+                        <span
+                          aria-hidden="true"
+                          className="h-px w-4 shrink-0 translate-y-[-0.3em] bg-bone/25 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:w-7 group-hover/item:bg-plasma"
+                        />
+                      )}
+
+                      <span className="text-lg leading-snug text-bone-dim transition-colors duration-300 group-hover/item:text-bone">
+                        {item.name}
+                      </span>
+
+                      {item.pct !== undefined && (
+                        <span className="mono-label ml-auto shrink-0">
+                          {item.pct}%
+                        </span>
+                      )}
+                    </div>
+
+                    {item.note && (
+                      <p className="mt-1.5 pl-[1.4rem] text-sm leading-relaxed text-bone-dim">
+                        {item.note}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
+        {/* ---------- formação ---------- */}
         <div className="hairline mt-24 pt-14">
           <h3 className="mono-label text-center text-plasma">
             {background.label}
