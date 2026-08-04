@@ -44,10 +44,15 @@ export default function Nav() {
       className="fixed inset-x-0 top-0 z-50 hidden md:block"
       aria-label="Navegação principal"
     >
-      <div className="shell flex items-center justify-between py-5">
+      {/* Grade de três colunas com a terceira vazia, em vez de
+          `justify-between`: o e-mail que ocupava esse canto saiu, e sem
+          o contrapeso o menu escorregaria para a borda direita. Assim a
+          pílula continua no centro da tela, não no centro do espaço que
+          sobrou ao lado da logo. */}
+      <div className="shell grid grid-cols-[1fr_auto_1fr] items-center py-5">
         <a
           href="#hero"
-          className="display text-lg tracking-tight transition-colors hover:text-plasma"
+          className="display justify-self-start text-lg tracking-tight transition-colors hover:text-plasma"
         >
           {site.name.split(" ")[0]}
           <span className="text-plasma">*</span>
@@ -65,13 +70,6 @@ export default function Nav() {
             </li>
           ))}
         </ul>
-
-        <a
-          href={`mailto:${site.email}`}
-          className="text-[0.8rem] text-bone-dim transition-colors hover:text-plasma"
-        >
-          {site.email}
-        </a>
       </div>
     </nav>
   );
