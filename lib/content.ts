@@ -72,21 +72,51 @@ export const robot = {
   sceneUrl: "https://prod.spline.design/KsIHnT1RVW8Wrgal/scene.splinecode",
 };
 
+export type ProjectImage = {
+  /* Caminho dentro de public/. O prefixo do GitHub Pages é montado em
+     runtime por `asset()` (lib/asset.ts) — não escreva o /portfolio aqui. */
+  src: string;
+  alt: string;
+};
+
 export type Project = {
+  /* Vira a rota /projetos/<slug>/ e o nome da pasta das imagens em
+     public/projetos/<slug>/. Mudar o slug muda a URL da página. */
+  slug: string;
   index: string;
   title: string;
   category: string;
   year: string;
+  /* Resumo curto — é o que aparece no card da home. */
   description: string;
   href: string;
   repo?: string;
   tags: string[];
   /* Cor usada no hover do item e no fundo da moldura. */
   tint: string;
+
+  /* ---- página própria do projeto ---- */
+  /* Capa do card: uma TELA REAL do projeto, capturada do site publicado
+     (ou, quando ele é fechado, do projeto rodando localmente). */
+  cover: ProjectImage;
+  /* Parágrafos da descrição completa. */
+  overview: string[];
+  /* Os pontos que valem destacar — viram cartões na página. */
+  highlights: { title: string; body: string }[];
+  /* Ficha técnica: rótulo → valor. */
+  facts: { label: string; value: string }[];
+  /* Quatro telas reais. Quatro é o número: preenche a grade 2×2 sem
+     sobrar buraco. */
+  gallery: ProjectImage[];
 };
+
+/* ⚠️ As imagens em public/projetos/ são capturas reais, feitas em
+   1440×900 @2x. Para regravá-las depois de mexer em algum projeto,
+   veja o roteiro no README (seção "Capas dos projetos"). */
 
 export const projects: Project[] = [
   {
+    slug: "central-tecnica",
     index: "01",
     title: "Central Técnica",
     category: "Portal interno · Bannerjet Group",
@@ -97,20 +127,116 @@ export const projects: Project[] = [
     repo: "https://github.com/ErickkADR/Central-Tecnica-Bannerjet",
     tags: ["HTML", "Chatbot IA", "Área restrita"],
     tint: "#a855f7",
+    cover: {
+      src: "/projetos/central-tecnica/cover.webp",
+      alt: "Página inicial da Central Técnica, com os atalhos para equipamentos, manuais e parâmetros",
+    },
+    overview: [
+      "A Central Técnica nasceu de uma conta simples: o tempo que o time de suporte gastava procurando um manual antigo, um parâmetro de corte ou a versão certa de um firmware era maior que o tempo de resolver o problema em si. O material existia — espalhado por pastas, e-mails e conversas de WhatsApp.",
+      "O portal reúne tudo num lugar só: catálogo de equipamentos com página própria por máquina, manuais, peças, firmwares, perfis de cor e parâmetros. Cada equipamento tem a sua ficha, e o que antes era \"pergunta pro fulano\" virou link.",
+      "Por cima disso roda um chatbot de IA que responde dúvidas técnicas usando a mesma base do portal — quem não sabe onde procurar pergunta em português e recebe a resposta com a fonte.",
+    ],
+    highlights: [
+      {
+        title: "Uma página por equipamento",
+        body: "Plotters, laminadoras, impressoras UV, laser e guilhotinas: cada máquina tem ficha, parâmetros e os arquivos que pertencem a ela.",
+      },
+      {
+        title: "Chatbot sobre a base do portal",
+        body: "As respostas saem do mesmo material publicado no site, então documentação e chatbot nunca divergem.",
+      },
+      {
+        title: "Área restrita",
+        body: "O conteúdo é interno da Bannerjet: o acesso passa por login, e o portal público mostra apenas a tela de entrada.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Projeto, conteúdo e implementação" },
+      { label: "Contexto", value: "Ferramenta interna, em uso no dia a dia" },
+      { label: "Stack", value: "HTML · CSS · JavaScript" },
+      { label: "Estado", value: "No ar, em evolução" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/central-tecnica/shot-1.webp",
+        alt: "Seção de categorias da Central Técnica, com os grupos de equipamentos",
+      },
+      {
+        src: "/projetos/central-tecnica/shot-2.webp",
+        alt: "Página de manuais técnicos, com os documentos organizados por equipamento",
+      },
+      {
+        src: "/projetos/central-tecnica/shot-3.webp",
+        alt: "Ficha de um equipamento, com especificações e arquivos correspondentes",
+      },
+      {
+        src: "/projetos/central-tecnica/shot-4.webp",
+        alt: "Página de parâmetros, com os valores de corte e impressão por material",
+      },
+    ],
   },
   {
+    slug: "atomai",
     index: "02",
     title: "Atomai",
     category: "SaaS · Chatbots com IA",
     year: "2026",
     description:
       "Plataforma SaaS de chatbots com IA especializada: integração com a Gemini API, painel administrativo e uma interface dark pensada para uso prolongado.",
-    href: "https://erickkadr.github.io/Atomai-Saas/",
+    href: "https://erickkadr.github.io/Atomai-Saas/html/index.html",
     repo: "https://github.com/ErickkADR/Atomai-Saas",
     tags: ["Gemini API", "SaaS", "Painel admin"],
     tint: "#6d5cff",
+    cover: {
+      src: "/projetos/atomai/cover.webp",
+      alt: "Tela de chat do AtomAI, com a pergunta \"Como posso te ajudar?\" e os atalhos por tipo de problema",
+    },
+    overview: [
+      "O AtomAI é uma plataforma de atendimento em que cada bot é especialista em um nicho, em vez de um assistente genérico tentando responder tudo. Quem chega escolhe o tipo de problema — hardware, software, periférico — e cai no agente treinado para ele.",
+      "Além da conversa, o produto tem o lado de dentro: painel com o volume de tickets em tempo real, desempenho por agente, gestão da equipe de bots, planos e checkout. É o recorte completo de um SaaS, do login à cobrança.",
+      "A interface é escura por decisão de uso: é uma ferramenta de trabalho, aberta o dia inteiro, e o contraste alto cansa em jornada longa.",
+    ],
+    highlights: [
+      {
+        title: "Agentes por especialidade",
+        body: "Cada bot cobre um domínio e tem status próprio. A triagem acontece antes da conversa, não no meio dela.",
+      },
+      {
+        title: "Painel com os números do atendimento",
+        body: "Tickets totais, agentes ativos, tempo médio de resposta e resolvidos no dia, com a curva dos últimos sete dias.",
+      },
+      {
+        title: "Gemini API por trás",
+        body: "As respostas vêm da Gemini, com a especialização definida por agente.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, interface e integração" },
+      { label: "Contexto", value: "Projeto de TCC" },
+      { label: "Stack", value: "HTML · CSS · JavaScript · Gemini API" },
+      { label: "Estado", value: "Em desenvolvimento" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/atomai/shot-1.webp",
+        alt: "Dashboard do AtomAI com os indicadores de tickets, agentes ativos e tempo médio",
+      },
+      {
+        src: "/projetos/atomai/shot-2.webp",
+        alt: "Tela de triagem do AtomAI: hardware, software ou periférico",
+      },
+      {
+        src: "/projetos/atomai/shot-3.webp",
+        alt: "Tela de gerenciamento de agentes, com especialidade, status e tickets resolvidos",
+      },
+      {
+        src: "/projetos/atomai/shot-4.webp",
+        alt: "Tela de planos do AtomAI, com os níveis de assinatura",
+      },
+    ],
   },
   {
+    slug: "nexus-print",
     index: "03",
     title: "Nexus Print",
     category: "E-commerce · Comunicação visual",
@@ -121,8 +247,56 @@ export const projects: Project[] = [
     repo: "https://github.com/ErickkADR/NexusPrint",
     tags: ["JavaScript", "Carrinho", "Modo escuro"],
     tint: "#d16bff",
+    cover: {
+      src: "/projetos/nexus-print/cover.webp",
+      alt: "Topo da loja Nexus Print, com o mascote e a chamada \"Sua loja de Comunicação Visual\"",
+    },
+    overview: [
+      "A Nexus Print é uma loja de comunicação visual personalizada: adesivos, action figures, Funko Pop, topos de bolo e caixas milk. São mais de 130 produtos catalogados em seis categorias.",
+      "O nó do projeto foi a precificação. Produto personalizado não tem preço único — depende de tamanho, quantidade e acabamento. Cada item carrega quatro modelos de preço, e o carrinho calcula em cima da combinação escolhida.",
+      "O pedido não termina num gateway: fecha no WhatsApp, com o resumo montado. É como a venda realmente acontece nesse mercado, e tentar empurrar checkout tradicional só adicionaria um passo que ninguém completa.",
+    ],
+    highlights: [
+      {
+        title: "Quatro modelos de preço por produto",
+        body: "A mesma peça muda de valor conforme tamanho, quantidade e acabamento — o carrinho resolve a conta.",
+      },
+      {
+        title: "Fechamento no WhatsApp",
+        body: "O pedido sai pronto para a conversa, do jeito que o cliente desse mercado já compra.",
+      },
+      {
+        title: "Claro e escuro",
+        body: "O tema acompanha a preferência de quem navega, sem recarregar a página.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Front-end, catálogo e lógica de preço" },
+      { label: "Catálogo", value: "130+ produtos em 6 categorias" },
+      { label: "Stack", value: "HTML · CSS · JavaScript" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/nexus-print/shot-1.webp",
+        alt: "Vitrine de categorias da Nexus Print",
+      },
+      {
+        src: "/projetos/nexus-print/shot-2.webp",
+        alt: "Listagem de produtos com os cartões e as opções de personalização",
+      },
+      {
+        src: "/projetos/nexus-print/shot-3.webp",
+        alt: "Detalhe de produto com os modelos de precificação",
+      },
+      {
+        src: "/projetos/nexus-print/shot-4.webp",
+        alt: "Trecho final da loja, com contato e rodapé",
+      },
+    ],
   },
   {
+    slug: "campro-a3-pro",
     index: "04",
     title: "Campro A3 Pro",
     category: "Portal de licença · Pós-venda",
@@ -133,8 +307,56 @@ export const projects: Project[] = [
     repo: "https://github.com/ErickkADR/campro-a3-pro",
     tags: ["React 18", "TypeScript", "Roteamento por licença"],
     tint: "#8b5cf6",
+    cover: {
+      src: "/projetos/campro-a3-pro/cover.webp",
+      alt: "Portal da Campro A3 Pro Híbrida mostrando a licença 1981 e os acessos a software e manuais",
+    },
+    overview: [
+      "Toda venda de equipamento terminava do mesmo jeito: alguém do suporte juntava instalador, manuais e vídeo e mandava por e-mail ou WhatsApp. Um por um, sempre igual, e sempre sujeito a mandar a versão errada.",
+      "O portal troca esse ritual por um link permanente. A licença do equipamento vira a rota: quem abre o link cai direto na página da própria máquina, com o software, a documentação e o vídeo correspondentes.",
+      "Como o endereço é fixo, ele continua valendo depois da venda — quando o cliente formatar o computador daqui a um ano, o material ainda está lá, atualizado.",
+    ],
+    highlights: [
+      {
+        title: "A licença é a rota",
+        body: "Cada equipamento tem seu endereço, e o conteúdo vem da licença que abriu a página.",
+      },
+      {
+        title: "Um link no lugar do envio manual",
+        body: "Instalador, manuais e vídeo no mesmo lugar, sempre na versão corrente.",
+      },
+      {
+        title: "Vale depois da venda",
+        body: "O link é permanente: serve para a instalação e para toda reinstalação que vier depois.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Projeto e implementação" },
+      { label: "Contexto", value: "Pós-venda da Bannerjet" },
+      { label: "Stack", value: "React 18 · TypeScript" },
+      { label: "Estado", value: "Concluído, no ar" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/campro-a3-pro/shot-1.webp",
+        alt: "Cartões de download do software, manuais e vídeo do equipamento",
+      },
+      {
+        src: "/projetos/campro-a3-pro/shot-2.webp",
+        alt: "Seção de documentação da Campro A3 Pro",
+      },
+      {
+        src: "/projetos/campro-a3-pro/shot-3.webp",
+        alt: "Instruções de instalação no portal da licença",
+      },
+      {
+        src: "/projetos/campro-a3-pro/shot-4.webp",
+        alt: "Rodapé do portal, com o contato do suporte técnico",
+      },
+    ],
   },
   {
+    slug: "mugiwaras",
     index: "05",
     title: "Bando dos Mugiwaras",
     category: "Landing page · Fã-projeto",
@@ -145,8 +367,56 @@ export const projects: Project[] = [
     repo: "https://github.com/ErickkADR/Mugiwaras-Project",
     tags: ["HTML", "CSS", "Sem JavaScript"],
     tint: "#c026d3",
+    cover: {
+      src: "/projetos/mugiwaras/cover.webp",
+      alt: "Abertura da landing page do Bando dos Mugiwaras, com a floresta ao fundo e o título sobreposto",
+    },
+    overview: [
+      "Um fã-projeto para exercitar o que HTML e CSS dão conta sozinhos: dez integrantes do Bando do Chapéu de Palha, cada um com apresentação, biografia e barras de atributos.",
+      "Não há uma linha de JavaScript. Tudo que se move — as transições, os estados de hover, o ritmo da página conforme se desce — sai de CSS.",
+      "É uma página longa de propósito: a leitura acompanha a tripulação inteira, um personagem por vez, como um álbum.",
+    ],
+    highlights: [
+      {
+        title: "Zero JavaScript",
+        body: "Layout, movimento e interação resolvidos só com CSS.",
+      },
+      {
+        title: "Dez perfis completos",
+        body: "Cada integrante com apresentação, história e atributos em barras.",
+      },
+      {
+        title: "Leitura em rolagem longa",
+        body: "A página é construída para ser percorrida do começo ao fim, sem menu de atalho.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Design e implementação" },
+      { label: "Contexto", value: "Fã-projeto, estudo de CSS" },
+      { label: "Stack", value: "HTML · CSS" },
+      { label: "Estado", value: "Concluído" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/mugiwaras/shot-1.webp",
+        alt: "Perfil de um integrante do bando, com retrato e biografia",
+      },
+      {
+        src: "/projetos/mugiwaras/shot-2.webp",
+        alt: "Barras de atributos de um dos personagens",
+      },
+      {
+        src: "/projetos/mugiwaras/shot-3.webp",
+        alt: "Outro perfil da tripulação, com o mesmo tratamento visual",
+      },
+      {
+        src: "/projetos/mugiwaras/shot-4.webp",
+        alt: "Trecho final da página, encerrando a apresentação do bando",
+      },
+    ],
   },
   {
+    slug: "apenas-um-escritor",
     index: "06",
     title: "Apenas Um Escritor",
     category: "Experimento · Parallax",
@@ -157,8 +427,67 @@ export const projects: Project[] = [
     repo: "https://github.com/ErickkADR/Apenas-Um-Escritor",
     tags: ["Parallax", "HTML", "CSS"],
     tint: "#7c3aed",
+    cover: {
+      src: "/projetos/apenas-um-escritor/cover.webp",
+      alt: "Abertura de Apenas Um Escritor, com o título sobre fundo preto e o texto começando abaixo",
+    },
+    overview: [
+      "Um texto e um efeito. O parallax deixa camadas correrem em velocidades diferentes e o olho lê isso como profundidade — a página tem duas dimensões, mas não parece ter.",
+      "Foi o experimento onde ficou claro que interface podia ser mais que layout. Tudo que veio depois — as revelações no scroll, o vídeo do hero, a cena 3D deste portfólio — começou aqui.",
+      "O projeto é de 2025 e continua no ar do jeito que foi feito. Ele não envelheceu bem por acaso: é o registro de onde a coisa começou.",
+    ],
+    highlights: [
+      {
+        title: "Profundidade sem 3D",
+        body: "Camadas em velocidades diferentes bastam para o olho ler distância.",
+      },
+      {
+        title: "O texto conduz",
+        body: "O efeito serve à leitura, marcando o ritmo de cada trecho.",
+      },
+      {
+        title: "O ponto de partida",
+        body: "O primeiro projeto em que movimento virou parte do conteúdo, e não enfeite.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Design e implementação" },
+      { label: "Contexto", value: "Estudo pessoal" },
+      { label: "Stack", value: "HTML · CSS" },
+      { label: "Estado", value: "Concluído, no ar" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/apenas-um-escritor/shot-1.webp",
+        alt: "Primeira camada do parallax, com a imagem de fundo e o texto por cima",
+      },
+      {
+        src: "/projetos/apenas-um-escritor/shot-2.webp",
+        alt: "Transição entre blocos de texto durante a rolagem",
+      },
+      {
+        src: "/projetos/apenas-um-escritor/shot-3.webp",
+        alt: "Camada intermediária do efeito, com a imagem correndo mais devagar que o texto",
+      },
+      {
+        src: "/projetos/apenas-um-escritor/shot-4.webp",
+        alt: "Encerramento do texto, na última camada da página",
+      },
+    ],
   },
 ];
+
+/* Página de projeto: rótulos e textos fixos. */
+export const projectPage = {
+  back: "Todos os projetos",
+  liveLabel: "Ver ao vivo",
+  repoLabel: "Ver o código",
+  overviewLabel: "O projeto",
+  highlightsLabel: "O que ele resolve",
+  galleryLabel: "Telas",
+  factsLabel: "Ficha",
+  nextLabel: "Próximo projeto",
+};
 
 export const marquee = [
   "RAG",

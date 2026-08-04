@@ -39,18 +39,23 @@ export default function Stack() {
   );
 
   return (
-    <section ref={ref} id="stack" className="py-28 sm:py-36">
-      <div className="shell">
-        <span className="mono-label">Stack</span>
+    <section ref={ref} id="stack" className="py-32 sm:py-44">
+      <div className="shell shell-narrow">
+        <div className="section-head">
+          <span className="mono-label">Stack</span>
 
-        <RevealText
-          as="h2"
-          className="display mt-4 max-w-3xl text-[clamp(2.4rem,6vw,4.5rem)]"
-        >
-          Ferramentas do ofício
-        </RevealText>
+          <RevealText
+            as="h2"
+            className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
+          >
+            Ferramentas do ofício
+          </RevealText>
+        </div>
 
-        <div className="hairline mt-16 grid gap-x-8 gap-y-14 pt-12 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Duas colunas em vez de quatro: em quatro os grupos ficavam
+            lado a lado numa faixa rasa, cada lista com meia dúzia de
+            itens curtos. Em duas, a seção respira e ganha altura. */}
+        <div className="hairline mt-20 grid gap-x-12 gap-y-16 pt-14 sm:grid-cols-2">
           {stack.map((group) => (
             <div key={group.group} className="stack-col">
               <h3 className="mono-label text-plasma">{group.group}</h3>
@@ -72,11 +77,13 @@ export default function Stack() {
           ))}
         </div>
 
-        <div className="hairline mt-20 grid gap-10 pt-12 lg:grid-cols-[0.4fr_1fr]">
-          <h3 className="mono-label text-plasma">{background.label}</h3>
-          <ul className="stack-col grid gap-x-8 gap-y-6 sm:grid-cols-3">
+        <div className="hairline mt-24 pt-14">
+          <h3 className="mono-label text-center text-plasma">
+            {background.label}
+          </h3>
+          <ul className="stack-col mx-auto mt-10 grid max-w-3xl gap-x-10 gap-y-10 sm:grid-cols-3">
             {background.items.map((item) => (
-              <li key={item.title}>
+              <li key={item.title} className="text-center">
                 <p className="text-lg leading-snug">{item.title}</p>
                 <p className="mono-label mt-2">{item.meta}</p>
               </li>

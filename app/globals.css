@@ -171,12 +171,35 @@ html.lenis body {
 
 .shell {
   padding-inline: var(--gutter);
-  max-width: 110rem;
+  max-width: var(--shell-max, 110rem);
   margin-inline: auto;
   /* Necessário quando .shell é filho de um container flex-column: ali
      `margin-inline: auto` encolheria o bloco para fit-content em vez de
      centralizar a largura cheia. */
   width: 100%;
+}
+
+/* Coluna de leitura — usada por tudo que vem depois do hero.
+   Com os 110rem cheios o conteúdo se esparramava até as bordas em telas
+   grandes: cada seção virava uma faixa larga e baixa, e a página inteira
+   encurtava na vertical. Estreitar a coluna empilha o mesmo conteúdo em
+   mais linhas, devolvendo altura (e tempo de navegação) sem inventar
+   texto novo. O hero e o nav continuam com a largura cheia. */
+.shell-narrow {
+  --shell-max: 68rem;
+}
+
+/* Cabeçalho de seção centralizado. Vive junto do .shell-narrow: a coluna
+   estreita já concentra o conteúdo no meio da tela, e o eixo central dá
+   o ponto de leitura. Blocos longos (listas, parágrafos corridos) seguem
+   alinhados à esquerda — texto corrido centralizado cansa. */
+.section-head {
+  text-align: center;
+  margin-inline: auto;
+  max-width: 46rem;
+}
+.section-head p {
+  margin-inline: auto;
 }
 
 .hairline {

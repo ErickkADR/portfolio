@@ -35,23 +35,25 @@ export default function Career() {
   return (
     <section
       id="carreira"
-      className="border-t border-bone/10 py-28 sm:py-36"
+      className="border-t border-bone/10 py-32 sm:py-44"
     >
-      <div className="shell">
-        <span className="mono-label">{career.label}</span>
+      <div className="shell shell-narrow">
+        <div className="section-head">
+          <span className="mono-label">{career.label}</span>
 
-        <RevealText
-          as="h2"
-          className="display mt-4 max-w-4xl text-[clamp(2.4rem,6vw,4.5rem)]"
-        >
-          {career.title}
-        </RevealText>
+          <RevealText
+            as="h2"
+            className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
+          >
+            {career.title}
+          </RevealText>
 
-        <p className="editorial mt-6 max-w-xl text-lg text-bone-dim">
-          {career.intro}
-        </p>
+          <p className="editorial mt-6 max-w-xl text-lg text-bone-dim">
+            {career.intro}
+          </p>
+        </div>
 
-        <div className="mt-16">
+        <div className="mt-20">
           <Timeline data={data} />
         </div>
       </div>

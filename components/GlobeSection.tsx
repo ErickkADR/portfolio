@@ -75,8 +75,11 @@ export default function GlobeSection() {
   }, []);
 
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-      <div>
+    /* Empilhado em vez de lado a lado: em duas colunas o texto ficava
+       espremido numa borda e o globo na outra. Um sobre o outro, ambos
+       centralizados, o bloco ganha altura e o globo aparece inteiro. */
+    <div className="flex flex-col items-center gap-14">
+      <div className="section-head">
         <span className="mono-label">{globe.label}</span>
 
         <RevealText
@@ -86,11 +89,11 @@ export default function GlobeSection() {
           {globe.title}
         </RevealText>
 
-        <p className="mt-5 max-w-md leading-relaxed text-bone-dim">
+        <p className="mx-auto mt-6 max-w-xl leading-relaxed text-bone-dim">
           {globe.body}
         </p>
 
-        <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2">
+        <ul className="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2">
           {globe.destinations.map((d) => (
             <li key={d.label} className="mono-label">
               {d.label}
@@ -101,7 +104,7 @@ export default function GlobeSection() {
 
       <div
         ref={ref}
-        className="relative aspect-square w-full max-w-[36rem] justify-self-center"
+        className="relative aspect-square w-full max-w-[38rem]"
       >
         {/* O globo é escuro e some contra o fundo; um halo atrás dá
             volume e separa a esfera da página. */}

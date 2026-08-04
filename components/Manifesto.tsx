@@ -90,21 +90,26 @@ export default function Manifesto() {
     <section
       ref={sectionRef}
       id="manifesto"
-      className="relative py-28 sm:py-40"
+      className="relative py-32 sm:py-48"
     >
-      <div className="shell">
-        <span className="mono-label">{manifesto.label}</span>
+      <div className="shell shell-narrow">
+        <div className="section-head">
+          <span className="mono-label">{manifesto.label}</span>
+        </div>
 
         <p
           ref={copyRef}
-          className="mt-8 max-w-5xl text-[clamp(1.5rem,4vw,3.1rem)] leading-[1.22] tracking-[-0.02em]"
+          className="mx-auto mt-10 max-w-[54rem] text-center text-[clamp(1.5rem,3.4vw,2.75rem)] leading-[1.24] tracking-[-0.02em]"
         >
           {manifesto.body}
         </p>
 
-        <div className="hairline mt-20 grid gap-10 pt-12 lg:grid-cols-[0.4fr_1fr]">
-          <h3 className="mono-label text-plasma">O que eu faço</h3>
-          <ul className="space-y-4">
+        {/* Empilhado, não em duas colunas: lado a lado a lista virava uma
+            faixa larga de seis linhas curtas. Numa coluna só ela ocupa a
+            altura que o conteúdo realmente pede. */}
+        <div className="hairline mt-24 pt-14">
+          <h3 className="mono-label text-center text-plasma">O que eu faço</h3>
+          <ul className="mx-auto mt-10 max-w-3xl space-y-6">
             {manifesto.doing.map((item) => (
               <li
                 key={item}
@@ -120,13 +125,13 @@ export default function Manifesto() {
           </ul>
         </div>
 
-        <div className="hairline mt-24 pt-16">
+        <div className="hairline mt-28 pt-20">
           <GlobeSection />
         </div>
 
-        <dl className="hairline mt-20 grid gap-10 pt-12 sm:grid-cols-3">
+        <dl className="hairline mt-28 grid gap-12 pt-14 sm:grid-cols-3">
           {manifesto.stats.map((stat) => (
-            <div key={stat.label}>
+            <div key={stat.label} className="text-center">
               <dt className="sr-only">{stat.label}</dt>
               <dd>
                 <span
@@ -135,7 +140,7 @@ export default function Manifesto() {
                 >
                   {stat.value}
                 </span>
-                <span className="mt-2 block max-w-[16rem] text-sm text-bone-dim">
+                <span className="mx-auto mt-3 block max-w-[16rem] text-sm text-bone-dim">
                   {stat.label}
                 </span>
               </dd>

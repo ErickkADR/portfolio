@@ -53,20 +53,22 @@ export default function Languages() {
     <section
       ref={ref}
       id="linguagens"
-      className="border-t border-bone/10 py-28 sm:py-36"
+      className="border-t border-bone/10 py-32 sm:py-44"
     >
-      <div className="shell">
-        <span className="mono-label">{languages.label}</span>
+      <div className="shell shell-narrow">
+        <div className="section-head">
+          <span className="mono-label">{languages.label}</span>
 
-        <RevealText
-          as="h2"
-          className="display mt-4 max-w-3xl text-[clamp(2.4rem,6vw,4.5rem)]"
-        >
-          {languages.title}
-        </RevealText>
+          <RevealText
+            as="h2"
+            className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
+          >
+            {languages.title}
+          </RevealText>
+        </div>
 
         {/* ---------- barra empilhada ---------- */}
-        <div className="mt-14">
+        <div className="mt-16">
           <div className="lang-bar flex h-3 w-full gap-1 overflow-hidden rounded-full">
             {languages.measured.map((l) => (
               <div
@@ -83,7 +85,7 @@ export default function Languages() {
             ))}
           </div>
 
-          <ul className="mt-5 flex flex-wrap gap-x-7 gap-y-2">
+          <ul className="mt-5 flex flex-wrap justify-center gap-x-7 gap-y-2">
             {languages.measured.map((l) => (
               <li key={l.name} className="flex items-center gap-2 text-sm">
                 <span
@@ -97,20 +99,22 @@ export default function Languages() {
             ))}
           </ul>
 
-          <p className="mono-label mt-5">{languages.note}</p>
+          <p className="mono-label mt-5 text-center">{languages.note}</p>
         </div>
 
-        {/* ---------- cartões ---------- */}
-        <ul className="lang-grid mt-16 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2 lg:grid-cols-3">
+        {/* ---------- cartões ----------
+            Duas colunas, não três: com três, os seis cartões viravam duas
+            fileiras achatadas e a seção quase não ocupava tela. */}
+        <ul className="lang-grid mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2">
           {languages.all.map((l) => (
             <li
               key={l.name}
-              className="lang-card group relative bg-ink p-7 transition-colors duration-500 hover:bg-ink-2"
+              className="lang-card group relative bg-ink p-8 transition-colors duration-500 hover:bg-ink-2 sm:p-10"
             >
               {/* Fio na cor da linguagem que se estende no hover. */}
               <span
                 aria-hidden="true"
-                className="absolute inset-x-7 top-0 h-px origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
+                className="absolute inset-x-8 top-0 h-px origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 sm:inset-x-10"
                 style={{ background: l.color }}
               />
               <div className="flex items-center gap-3">
