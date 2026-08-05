@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -10,6 +11,9 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
    trigger dispara no momento errado. */
 
 export default function SmoothScroll() {
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
+
   useEffect(() => {
     // Quem pediu menos movimento não recebe scroll com inércia.
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -21,6 +25,7 @@ export default function SmoothScroll() {
       smoothWheel: true,
       touchMultiplier: 1.6,
     });
+    lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -49,8 +54,30 @@ export default function SmoothScroll() {
       document.removeEventListener("click", onAnchorClick);
       gsap.ticker.remove(raf);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+
+  /* ---------- topo a cada troca de rota ----------
+     O App Router navega sem recarregar a página, e o Lenis mantém a
+     própria posição de scroll num transform. O resultado era abrir o
+     "próximo projeto" no meio da página, na altura em que o link tinha
+     sido clicado. `immediate` porque animar até o topo de uma página que
+     acabou de trocar mostra o conteúdo errado durante a viagem.
+
+     A âncora na URL é a exceção: chegar em /#carreira tem que ir para a
+     carreira, não para o topo. */
+  useEffect(() => {
+    if (window.location.hash) return;
+
+    const lenis = lenisRef.current;
+    if (lenis) lenis.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
+
+    // A página nova tem outra altura; sem remedir, os triggers ficam
+    // presos nas posições da página anterior.
+    ScrollTrigger.refresh();
+  }, [pathname]);
 
   return null;
 }

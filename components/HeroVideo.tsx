@@ -16,7 +16,6 @@ import { hero, site } from "@/lib/content";
 export default function HeroVideo() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const barRef = useRef<HTMLDivElement>(null);
 
   const [ready, setReady] = useState(false);
   const [captionIndex, setCaptionIndex] = useState(0);
@@ -40,7 +39,11 @@ export default function HeroVideo() {
     { scope: sectionRef }
   );
 
-  /* ---------- reprodução em loop + barra de progresso ---------- */
+  /* ---------- reprodução em loop ----------
+     Com a barra de progresso removida junto do "role para revelar", o
+     `requestVideoFrameCallback` que a alimentava saiu também: era um
+     callback por quadro apresentado, rodando o tempo todo, para mover um
+     elemento que não existe mais. */
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -54,34 +57,7 @@ export default function HeroVideo() {
        promise rejeitada solta e o pôster estático segue valendo. */
     video.play().catch(() => {});
 
-    let handle = 0;
-    const hasFrameCallback = "requestVideoFrameCallback" in video;
-
-    const paint = () => {
-      if (barRef.current && video.duration) {
-        gsap.set(barRef.current, { scaleX: video.currentTime / video.duration });
-      }
-    };
-
-    if (hasFrameCallback) {
-      const step = () => {
-        paint();
-        handle = video.requestVideoFrameCallback(step);
-      };
-      handle = video.requestVideoFrameCallback(step);
-    } else {
-      const step = () => {
-        paint();
-        handle = requestAnimationFrame(step);
-      };
-      handle = requestAnimationFrame(step);
-    }
-
-    return () => {
-      video.removeEventListener("loadeddata", onReady);
-      if (hasFrameCallback) video.cancelVideoFrameCallback?.(handle);
-      else cancelAnimationFrame(handle);
-    };
+    return () => video.removeEventListener("loadeddata", onReady);
   }, []);
 
   /* ---------- rodízio das legendas ---------- */
@@ -172,7 +148,11 @@ export default function HeroVideo() {
           ))}
         </h1>
 
-        <div className="flex items-end justify-between gap-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        {/* O canto direito tinha o "role para revelar" com a barra de
+            progresso do vídeo ao lado. Saiu: instrução de scroll é
+            enfeite — quem chega numa página já sabe rolar — e a barra
+            servia a ela. Sobrou a legenda, que é conteúdo. */}
+        <div className="flex items-end pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="hero-fade max-w-xs">
             {/* A que sai e a que entra ocupam a mesma célula do grid
                 para o bloco não mudar de altura no meio da transição. */}
@@ -191,13 +171,6 @@ export default function HeroVideo() {
                   {c.text}
                 </p>
               ))}
-            </div>
-          </div>
-
-          <div className="hero-fade flex flex-col items-end gap-3">
-            <span className="mono-label">{hero.scrollHint}</span>
-            <div className="h-px w-32 bg-bone/20 sm:w-48">
-              <div ref={barRef} className="h-full origin-left scale-x-0 bg-plasma" />
             </div>
           </div>
         </div>

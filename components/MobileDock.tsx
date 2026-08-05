@@ -10,6 +10,8 @@ import {
   IconStack2,
   IconTimeline,
   IconCertificate,
+  IconTargetArrow,
+  IconTrophy,
   IconMail,
   IconBrandGithub,
 } from "@tabler/icons-react";
@@ -20,11 +22,13 @@ import {
 
 const icons: Record<string, React.ReactNode> = {
   "#hero": <IconHome className="h-full w-full" />,
-  "#manifesto": <IconUser className="h-full w-full" />,
-  "#projetos": <IconBriefcase className="h-full w-full" />,
+  "#sobre": <IconUser className="h-full w-full" />,
+  "#cargo-atual": <IconTrophy className="h-full w-full" />,
   "#carreira": <IconTimeline className="h-full w-full" />,
-  "#certificados": <IconCertificate className="h-full w-full" />,
+  "#projetos": <IconBriefcase className="h-full w-full" />,
   "#stack": <IconStack2 className="h-full w-full" />,
+  "#certificados": <IconCertificate className="h-full w-full" />,
+  "#metas": <IconTargetArrow className="h-full w-full" />,
   "#contato": <IconMail className="h-full w-full" />,
 };
 

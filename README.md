@@ -1,7 +1,6 @@
 # Portfólio — Erick Dantas
 
-Site de portfólio com vídeo controlado pelo scroll, cena 3D interativa e animações
-orquestradas com GSAP.
+Site de portfólio com vídeo no hero, globo 3D e animações orquestradas com GSAP.
 
 ```bash
 npm install
@@ -11,7 +10,32 @@ npm run build    # build de produção
 
 ---
 
-## Onde mexer
+## Anexar material sem tocar em código
+
+Três partes do site aceitam arquivo: **basta salvar na pasta e rodar o build.**
+Nada de cadastrar caminho, editar componente ou mexer no `content.ts`.
+
+| O que | Onde salvar | Formatos |
+| --- | --- | --- |
+| Foto da seção Sobre | `public/sobre/erick.jpg` | imagem |
+| Comprovação de um feito | `public/feitos/<slug>/` | imagem, vídeo, PDF |
+| Material de uma etapa da carreira | `public/carreira/<slug>/` | imagem, vídeo, PDF |
+| Imagem de um certificado | `public/certificados/<slug>.jpg` | imagem |
+
+Os `slug` estão em [`lib/content.ts`](lib/content.ts), ao lado de cada item.
+Dentro de uma pasta, os arquivos aparecem em ordem alfabética — prefixos como
+`01-`, `02-` controlam a sequência. Item sem pasta continua no site, só sem a
+galeria: nada quebra e nada some.
+
+**Por que a varredura é no build** ([`lib/media.ts`](lib/media.ts)): sondar no
+navegador significaria pedir cada arquivo em cada extensão possível e esconder no
+erro — dezenas de 404 só para descobrir o que existe. Lendo a pasta com `node:fs`
+num Server Component, o HTML já nasce sabendo. PDF é servido como link, não em
+iframe: vários navegadores de celular baixam em vez de renderizar.
+
+---
+
+## Onde mexer no texto
 
 **Todo o texto do site está em [`lib/content.ts`](lib/content.ts).** Nenhum componente
 tem conteúdo escrito direto no JSX — para trocar projetos, stack, links ou qualquer
@@ -21,79 +45,62 @@ frase, edite só esse arquivo.
 | --- | --- |
 | Nome, cargo, e-mail, redes | `site` e `contact.socials` |
 | Título do hero e legendas do vídeo | `hero` |
-| Texto "Sobre" e os contadores | `manifesto` |
-| Projetos (título, descrição, links, tags, cor) | `projects` |
-| Página de cada projeto (texto longo, ficha, telas) | `projects[].overview`, `.facts`, `.gallery` |
-| Stack e formação | `stack`, `background` |
-| URL da cena 3D | `robot.sceneUrl` |
+| Seção Sobre (foto, parágrafos, ficha) | `sobre` |
+| Feitos na Bannerjet | `feitos.groups` |
+| Números de resultado | `metricas.items` |
+| Carreira e a página de cada etapa | `career.entries` |
+| Projetos e a página de cada um | `projects` |
+| Stack, logos e formação | `stack`, `background` |
+| Certificados | `certificates.items` |
+| Meta profissional e destinos do globo | `globe` |
+
+### A ordem das seções
+
+`nav`, em `content.ts`, é a mesma lista que ordena o menu e o dock do celular:
+
+> Início · Sobre · Cargo atual · Carreira · Projetos · Stack · Certificados ·
+> Metas · Contato
+
+A leitura é intencional: quem sou → o que faço hoje → o que isso rendeu em número
+→ como cheguei aqui → o que já construí → com o que construo → o que está no papel
+→ onde estudei → para onde vou → como falar comigo. A ordem de renderização mora
+em [`app/page.tsx`](app/page.tsx).
 
 ### Largura das seções
 
 Depois do hero, tudo vive numa coluna estreita: `class="shell shell-narrow"`
 (68rem) em vez do `shell` cheio (110rem). Foi uma decisão de leitura — com a
 largura cheia cada seção virava uma faixa larga e baixa, e a página inteira
-encurtava na vertical. As grades acompanham: stack e linguagens em 2 colunas,
-não 4; globo, robô e "o que eu faço" empilhados, não lado a lado.
+encurtava na vertical.
 
 O hero e o nav continuam com a largura cheia.
 
 ---
 
-## As três peças principais
+## As peças principais
 
 ### 1. Vídeo do hero em loop
 
 `components/HeroVideo.tsx` · o arquivo fica em `public/video/hero.mp4`
 
-O vídeo toca sozinho, em loop, mudo (autoplay só é concedido a vídeo mudo). A barra de
-progresso é alimentada pelo `requestVideoFrameCallback`, que dispara uma vez por quadro
-efetivamente apresentado — um timer paralelo dessincronizaria a cada engasgo de
-decodificação. As legendas se alternam a cada ~4s.
+O vídeo toca sozinho, em loop, mudo (autoplay só é concedido a vídeo mudo). As
+legendas se alternam a cada ~4s.
 
 O título é limitado a ~58% da largura em telas grandes: a personagem do vídeo ocupa a
 metade direita do quadro, e sem esse limite as letras caem em cima do rosto.
 
-### 2. Robô 3D que segue o mouse
+> A barra de progresso do vídeo e o "role para revelar" saíram. Instrução de
+> scroll é enfeite — quem chega numa página já sabe rolar — e a barra existia para
+> acompanhá-la. Junto foi o `requestVideoFrameCallback`, que disparava um callback
+> por quadro apresentado o tempo inteiro para mover um elemento que não existe
+> mais.
 
-`components/SplineScene.tsx` · cena em `robot.sceneUrl`
+> **O robô 3D foi removido** a pedido, junto com a dependência
+> `@splinetool/runtime`. O componente e o que foi aprendido sobre o runtime (o
+> `setZoom` inerte, a escala CSS como única alavanca real) estão no histórico do
+> git, em `components/SplineScene.tsx`, se um dia voltar.
 
-A cabeça seguir o cursor é comportamento nativo da cena (Follow Event do Spline) — o
-runtime escuta o mouse sobre o `<canvas>` e a cena reage. Não há código nosso ditando
-a rotação.
-
-Decisões de implementação:
-
-- **Usamos `@splinetool/runtime` direto, sem o wrapper `@splinetool/react-spline`.**
-  O wrapper v4 só declara a condição `import` no seu export map, então o build de
-  servidor do Next não consegue resolvê-lo; e a variante `/next` é um Server Component
-  assíncrono, inutilizável dentro de um componente cliente.
-- **A cena só baixa quando chega perto da viewport** (IntersectionObserver com
-  `rootMargin: 900px`). O runtime passa de 1 MB — carregar no mount competiria com o
-  vídeo do hero pela banda.
-- **O chão da cena é escondido** (`findObjectByName("Plane").visible = false`), deixando
-  só o robô sobre o cubo. Junto com ele foi embora a poça de luz que o iluminava, daí o
-  `filter: brightness()` no canvas — o runtime não expõe as luzes da cena.
-- **O tamanho vem de escala CSS no canvas — `setZoom()` não funciona.** Medindo o
-  robô na tela, ele fica em ~138px de largura com `setZoom` em 2.4, 4.8, 10 ou 20:
-  o runtime reenquadra a cena no resize e descarta o valor. A alavanca real é
-  `scale()` no canvas. Isso é seguro para o follow porque o Spline normaliza o
-  cursor com `(clientX - rect.left) / rect.width`, tudo do mesmo
-  `getBoundingClientRect` — que reflete o transform. Como `left` e `width` escalam
-  juntos, uma escala **uniforme** preserva o mapeamento (o mesmo não vale para
-  escala não-uniforme).
-- **A escala CSS não custa GPU.** O buffer de render sai do tamanho de *layout* do
-  canvas, que o transform não muda. O preço é a imagem ser ampliada, um pouco mais
-  macia nas bordas.
-- **O `translate` vem depois da escala.** As propriedades individuais compõem como
-  `translate rotate scale`, com o translate por fora e em porcentagem da caixa sem
-  escala. Por isso os valores de translate tiveram que crescer junto com a escala
-  para o robô continuar centralizado.
-
-Para trocar a cena: no editor do Spline, **Export → Public URL**, copie a URL
-`https://prod.spline.design/<id>/scene.splinecode` e cole em `robot.sceneUrl`.
-Links `app.spline.design/file/...` são do editor e são privados — não funcionam aqui.
-
-### 3. Scroll suave + animações
+### 2. Scroll suave + animações
 
 `components/SmoothScroll.tsx` amarra o **Lenis** ao **ScrollTrigger**. Os dois precisam
 compartilhar o mesmo loop de rAF: com loops separados, o ScrollTrigger mede o scroll
@@ -104,22 +111,52 @@ Animações por seção:
 
 | Seção | Efeito |
 | --- | --- |
-| Hero | Vídeo em loop, título em cascata mascarada, legendas alternando, barra de progresso |
-| Sobre | Texto acendendo palavra a palavra com o scroll, contadores, globo 3D com arcos |
-| Marquee | Faixa infinita que acelera e inclina conforme a velocidade do scroll |
-| Robô | Cena entrando com escala, halo pulsando, cabeça seguindo o cursor |
-| Projetos | Scroll horizontal com a seção presa (desktop), snap nativo no mobile |
+| Hero | Vídeo em loop, título em cascata mascarada, legendas alternando |
+| Sobre | Foto entrando por baixo, texto acendendo palavra a palavra com o scroll |
+| Cargo atual | Cartões em cascata por grupo; o material abre em tela cheia |
+| Métricas | Contadores subindo de zero quando entram na tela |
 | Carreira | Timeline com a trilha preenchendo conforme o scroll |
+| Projetos | Cards empilhados, um trigger por card |
+| Stack | Barra empilhada que se desenha + logos entrando com `back.out` |
 | Certificados | Cartões em cascata; a imagem abre em tela cheia |
-| Stack | Barra empilhada que se desenha + cascata por grupo |
+| Formação | Cartões em cascata, com o ano como âncora visual |
+| Metas | Globo 3D com os arcos saindo de São Paulo |
+| Marquee | Faixa infinita que acelera e inclina conforme a velocidade do scroll |
 | Contato | Título em cascata, cartão de e-mail magnético |
 | Global | Cursor discreto, grão animado, revelação de texto por linha, dock no mobile |
+
+**Topo a cada troca de rota.** O App Router navega sem recarregar, e o Lenis
+mantém a própria posição num transform — o "próximo projeto" abria no meio da
+página, na altura em que o link tinha sido clicado. O `SmoothScroll` observa o
+`usePathname` e manda o Lenis para o topo com `immediate` (animar até lá mostraria
+o conteúdo errado durante a viagem), seguido de um `ScrollTrigger.refresh()`
+porque a página nova tem outra altura. Âncora na URL é a exceção: chegar em
+`/#carreira` tem que ir para a carreira.
 
 > **Linguagens e Stack são uma seção só** (`components/Stack.tsx`, `#stack`).
 > Eram duas, e as listas se repetiam — JavaScript, HTML, CSS e TypeScript
 > apareciam nas duas, e quem lia tinha que juntar sozinho. Hoje a barra medida
-> do GitHub abre a seção e os grupos vêm abaixo, com "Linguagens" ocupando a
-> linha inteira por ser o único grupo com nota por item.
+> do GitHub abre a seção e as logos vêm abaixo, agrupadas.
+>
+> As logos saem do `@tabler/icons-react`, que já era dependência do dock. Quem não
+> tem ícone de marca pronto (n8n, Callbell, ElevenLabs, os softwares de
+> equipamento) cai no monograma — as iniciais dentro do mesmo ladrilho, para a
+> parede ficar uniforme em vez de cheia de buracos.
+
+### 3. Comprovação: feitos e etapas de carreira
+
+`components/Feitos.tsx` · `app/carreira/[slug]/page.tsx` · `components/MediaViewer.tsx`
+
+Portfólio costuma afirmar sem provar. Estas duas partes existem para o contrário:
+cada feito na Bannerjet e cada etapa da carreira carregam o material que mostra o
+trabalho — print, PDF ou vídeo, lidos das pastas descritas lá em cima.
+
+O `MediaViewer` abre em tela cheia com navegação por seta e `Esc`, e trata cada
+tipo do jeito que funciona: imagem inline, vídeo com controles, PDF como link.
+
+As etapas de carreira viram rotas estáticas via `generateStaticParams`. Etapa sem
+material continua tendo página — ela diz que o material está sendo digitalizado,
+em vez de fingir que a etapa não existiu.
 
 ### 4. Projetos: card com capa e página própria
 
@@ -129,6 +166,14 @@ Animações por seção:
 Cada card mostra **uma tela real do projeto** como capa, e o card inteiro leva
 para `/projetos/<slug>/`: uma página com a descrição completa, uma ficha e
 quatro telas. O link externo para o site no ar mora lá dentro, não mais no card.
+
+Os cards são empilhados na vertical. Antes a seção ficava presa (pin) e o trilho
+andava na horizontal conforme a página descia — o movimento lateral só existia
+enquanto o scroll acontecia, e a leitura de cada card dependia de parar no ponto
+certo. Empilhado, cada projeto tem o seu tempo de tela. A área clicável é o card
+inteiro, capa inclusive: o link do título se estica por cima de tudo com o
+`::after`, e o link do repositório sobe acima dele com `z-10` — um destino dentro
+do outro seria HTML inválido.
 
 Como o site é exportado estaticamente, as rotas dinâmicas precisam existir no
 build — quem gera as seis é o `generateStaticParams` da página, lendo o
@@ -220,7 +265,7 @@ O cursor customizado e o efeito magnético são desativados em telas de toque.
 ## Stack
 
 Next.js 15 · React 19 · TypeScript · Tailwind CSS v4 · GSAP 3.15 (ScrollTrigger +
-SplitText) · Lenis · @splinetool/runtime
+SplitText) · Lenis · three + three-globe (globo das Metas) · @tabler/icons-react
 
 Tipografia: Bricolage Grotesque (display), Archivo (texto), Instrument Serif (itálico
 editorial) — todas via `next/font`, sem requisição externa em runtime.

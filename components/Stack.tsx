@@ -1,18 +1,66 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
+import {
+  IconBrandJavascript,
+  IconBrandTypescript,
+  IconBrandHtml5,
+  IconBrandCss3,
+  IconBrandPython,
+  IconBrandReact,
+  IconBrandNextjs,
+  IconBrandTailwind,
+  IconBrandGit,
+  IconBrandGithub,
+  IconBrandNotion,
+  IconBrandWindows,
+  IconBrandSupabase,
+  IconBrandPowershell,
+  IconBrandAdobe,
+  IconBrandGoogle,
+} from "@tabler/icons-react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { stack, background } from "@/lib/content";
+import { stack } from "@/lib/content";
 import RevealText from "./RevealText";
 
-/* Linguagens e ferramentas na mesma seção.
+/* Linguagens e ferramentas na mesma seção, cada uma com a sua logo.
 
-   Antes eram duas: uma com a barra medida do GitHub e outra com os
-   grupos do stack. As duas listas se repetiam — JavaScript, HTML, CSS e
-   TypeScript apareciam nos dois lugares — e quem lia tinha que juntar
-   sozinho. Agora a barra abre a seção (é o dado medido, então merece o
-   topo) e os grupos vêm logo abaixo, com as linguagens ocupando a linha
-   inteira porque são as únicas que carregam nota por item. */
+   As logos vêm do @tabler/icons-react, que já era dependência do dock
+   no celular — nenhum pacote novo, nenhum SVG baixado de CDN (o export
+   é estático e não pode depender de rede em runtime).
+
+   Quem não tem ícone de marca pronto (n8n, Callbell, ElevenLabs, os
+   softwares de equipamento) cai no monograma: as iniciais dentro do
+   mesmo ladrilho. O resultado fica uniforme em vez de virar uma parede
+   com buracos. */
+
+const LOGOS: Record<string, ReactNode> = {
+  javascript: <IconBrandJavascript />,
+  typescript: <IconBrandTypescript />,
+  html: <IconBrandHtml5 />,
+  css: <IconBrandCss3 />,
+  python: <IconBrandPython />,
+  react: <IconBrandReact />,
+  nextjs: <IconBrandNextjs />,
+  tailwind: <IconBrandTailwind />,
+  git: <IconBrandGit />,
+  github: <IconBrandGithub />,
+  notion: <IconBrandNotion />,
+  windows: <IconBrandWindows />,
+  supabase: <IconBrandSupabase />,
+  powershell: <IconBrandPowershell />,
+  adobe: <IconBrandAdobe />,
+  google: <IconBrandGoogle />,
+};
+
+/* Monograma: até duas letras. "Claude Code" vira CC, "n8n" vira N8. */
+function monograma(nome: string) {
+  const palavras = nome.split(/[\s.]+/).filter(Boolean);
+  if (palavras.length > 1) {
+    return (palavras[0][0] + palavras[1][0]).toUpperCase();
+  }
+  return nome.slice(0, 2).toUpperCase();
+}
 
 export default function Stack() {
   const ref = useRef<HTMLElement>(null);
@@ -33,25 +81,26 @@ export default function Stack() {
           scrollTrigger: { trigger: ".lang-bar", start: "top 85%", once: true },
         });
 
-        // Um tween por grupo, disparado pelo próprio grupo: com um único
-        // stagger geral, os grupos do fim da seção já teriam terminado a
-        // animação antes de chegarem na tela.
-        const cols = gsap.utils
+        /* As logos entram girando de leve e crescendo — é o gesto que dá
+           vida à parede sem cada ladrilho pedir atenção sozinho. Um
+           trigger por grupo, porque a seção é mais alta que a tela. */
+        const grupos = gsap.utils
           .toArray<HTMLElement>(".stack-col")
           .map((col) =>
-            gsap.from(col.querySelectorAll("li"), {
+            gsap.from(col.querySelectorAll(".stack-tile"), {
               y: 24,
+              scale: 0.86,
               opacity: 0,
-              duration: 0.8,
-              ease: "power3.out",
-              stagger: 0.05,
+              duration: 0.7,
+              ease: "back.out(1.6)",
+              stagger: 0.045,
               scrollTrigger: { trigger: col, start: "top 90%", once: true },
             })
           );
 
         return () => {
           bars.kill();
-          cols.forEach((t) => t.kill());
+          grupos.forEach((t) => t.kill());
         };
       });
 
@@ -119,76 +168,63 @@ export default function Stack() {
           <p className="mono-label mt-5 text-center">{stack.note}</p>
         </div>
 
-        {/* ---------- grupos ---------- */}
-        <ul className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2">
+        {/* ---------- parede de logos ---------- */}
+        <div className="mt-20 space-y-16">
           {stack.groups.map((group) => (
-            <li
-              key={group.group}
-              className={`stack-col bg-ink p-8 sm:p-10 ${
-                group.wide ? "sm:col-span-2" : ""
-              }`}
-            >
-              <h3 className="mono-label text-plasma">{group.group}</h3>
+            <div key={group.group} className="stack-col">
+              <h3 className="mono-label text-center text-plasma">
+                {group.group}
+              </h3>
 
               <ul
-                className={
+                className={`mx-auto mt-8 grid gap-4 ${
                   group.wide
-                    ? "mt-7 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
-                    : "mt-6 space-y-3"
-                }
+                    ? "grid-cols-2 sm:grid-cols-3"
+                    : "max-w-3xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
+                }`}
               >
-                {group.items.map((item) => (
-                  <li key={item.name} className="group/item">
-                    <div className="flex items-baseline gap-3">
-                      {item.color ? (
-                        <span
-                          aria-hidden="true"
-                          className="h-2.5 w-2.5 shrink-0 translate-y-[-0.1em] rounded-sm transition-transform duration-500 group-hover/item:scale-125"
-                          style={{ background: item.color }}
-                        />
-                      ) : (
-                        <span
-                          aria-hidden="true"
-                          className="h-px w-4 shrink-0 translate-y-[-0.3em] bg-bone/25 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/item:w-7 group-hover/item:bg-plasma"
-                        />
-                      )}
+                {group.items.map((item) => {
+                  const logo = item.icon ? LOGOS[item.icon] : null;
 
-                      <span className="text-lg leading-snug text-bone-dim transition-colors duration-300 group-hover/item:text-bone">
-                        {item.name}
+                  return (
+                    <li
+                      key={item.name}
+                      className="stack-tile group/tile flex flex-col items-center gap-3 rounded-2xl border border-bone/12 bg-ink-2 p-6 text-center transition-colors duration-500 hover:border-plasma/50 hover:bg-ink-3"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="grid h-12 w-12 shrink-0 place-items-center rounded-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/tile:scale-110 [&>svg]:h-7 [&>svg]:w-7"
+                        style={{
+                          color: item.color ?? "var(--color-plasma-soft)",
+                          background: `color-mix(in oklab, ${
+                            item.color ?? "var(--color-plasma)"
+                          } 14%, transparent)`,
+                        }}
+                      >
+                        {logo ?? (
+                          <span className="display text-sm tracking-tight">
+                            {monograma(item.name)}
+                          </span>
+                        )}
                       </span>
 
+                      <span className="text-sm leading-snug">{item.name}</span>
+
                       {item.pct !== undefined && (
-                        <span className="mono-label ml-auto shrink-0">
-                          {item.pct}%
+                        <span className="mono-label">{item.pct}%</span>
+                      )}
+
+                      {item.note && (
+                        <span className="text-xs leading-relaxed text-bone-dim">
+                          {item.note}
                         </span>
                       )}
-                    </div>
-
-                    {item.note && (
-                      <p className="mt-1.5 pl-[1.4rem] text-sm leading-relaxed text-bone-dim">
-                        {item.note}
-                      </p>
-                    )}
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
-            </li>
+            </div>
           ))}
-        </ul>
-
-        {/* ---------- formação ---------- */}
-        <div className="hairline mt-24 pt-14">
-          <h3 className="mono-label text-center text-plasma">
-            {background.label}
-          </h3>
-          <ul className="stack-col mx-auto mt-10 grid max-w-3xl gap-x-10 gap-y-10 sm:grid-cols-3">
-            {background.items.map((item) => (
-              <li key={item.title} className="text-center">
-                <p className="text-lg leading-snug">{item.title}</p>
-                <p className="mono-label mt-2">{item.meta}</p>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>

@@ -7,7 +7,16 @@ import { site } from "@/lib/content";
    direção de scroll: numa página de leitura, ter sempre a saída à mão
    vale mais que ganhar os poucos pixels da barra. */
 
-export default function SubpageNav({ backLabel }: { backLabel: string }) {
+export default function SubpageNav({
+  backLabel,
+  backHref = "/#projetos",
+}: {
+  backLabel: string;
+  /* Para onde o "voltar" leva. Cada família de subpágina volta para a
+     sua seção — projeto para #projetos, etapa de carreira para
+     #carreira. */
+  backHref?: string;
+}) {
   return (
     <nav
       className="sticky top-0 z-50 border-b border-bone/10 bg-ink/80 backdrop-blur-xl"

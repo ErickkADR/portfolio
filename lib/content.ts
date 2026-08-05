@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    CONTEÚDO DO SITE — edite tudo por aqui.
    Preenchido a partir do perfil e dos repositórios de @ErickkADR.
    Nenhum componente tem texto hardcoded.
@@ -14,13 +14,17 @@ export const site = {
   year: "2026",
 };
 
+/* A ordem aqui é a ordem das seções na página — os dois vêm da mesma
+   lista, então mexer numa acerta a outra. */
 export const nav = [
   { label: "Início", href: "#hero" },
-  { label: "Sobre", href: "#manifesto" },
-  { label: "Projetos", href: "#projetos" },
+  { label: "Sobre", href: "#sobre" },
+  { label: "Cargo atual", href: "#cargo-atual" },
   { label: "Carreira", href: "#carreira" },
-  { label: "Certificados", href: "#certificados" },
+  { label: "Projetos", href: "#projetos" },
   { label: "Stack", href: "#stack" },
+  { label: "Certificados", href: "#certificados" },
+  { label: "Metas", href: "#metas" },
   { label: "Contato", href: "#contato" },
 ];
 
@@ -34,44 +38,294 @@ export const hero = {
     { text: "RAG, automação e conteúdo que ensina" },
     { text: "Construído para facilitar a vida de quem usa" },
   ],
-  scrollHint: "Role para revelar",
 };
 
-export const manifesto = {
+/* ---------- Sobre ----------
+   Foto à esquerda, texto à direita.
+
+   A FOTO NÃO PRECISA DE CÓDIGO: salve o arquivo como
+   `public/sobre/erick.jpg` (ou .png / .webp) e ele aparece. Sem arquivo,
+   o espaço vira uma moldura com as iniciais — nada de imagem quebrada. */
+export const sobre = {
   label: "Sobre",
-  /* Frase grande revelada palavra a palavra no scroll. */
-  body:
+  title: "Quem constrói isso",
+  photoName: "erick",
+  photoAlt: "Erick Dantas",
+  /* Parágrafos da coluna da direita. */
+  body: [
     "Tive meu primeiro contato com tecnologia aos 4 anos e nunca mais parei. " +
-    "Acredito que o valor real da tecnologia está em facilitar a vida das pessoas — " +
-    "e que conhecimento deveria ser acessível a todo mundo. Comecei no suporte " +
-    "técnico construindo pequenas ferramentas com IA para resolver problemas reais " +
-    "do meu time, e foi isso que virou o meu trabalho.",
-  /* O que ele faz hoje. Os números saem do que está em produção, não de
-     estimativa — ver os `stats` logo abaixo. */
-  doing: [
-    "Chatbot de suporte com RAG em produção no WhatsApp: n8n orquestrando, Supabase guardando os embeddings e a Callbell como canal",
-    "Base de conhecimento de 209 pares de pergunta e resposta, sincronizada entre o texto puro e o Notion do time",
-    "Fluxograma que mapeou o suporte técnico inteiro — 584 elementos, do primeiro contato ao encerramento do chamado",
-    "Tutoriais técnicos narrados por IA: quando a narração deixou de ser minha voz, o time passou a usar. Hoje é o padrão",
-    "Manuais técnicos, protótipos das telas dos equipamentos e um canal de tutoriais no YouTube",
-    "Engenharia reversa quando não tem jeito oficial — foi assim que o CameraCut ganhou português, mexendo nas DLLs de idioma",
-    "Ferramentas sob medida: um instalador em PowerShell que virou um clique o que antes eram 11 etapas manuais",
+      "Acredito que o valor real da tecnologia está em facilitar a vida das " +
+      "pessoas — e que conhecimento deveria ser acessível a todo mundo.",
+    "Comecei no suporte técnico construindo pequenas ferramentas com IA para " +
+      "resolver problemas reais do meu time. Não era o meu cargo; virou o meu " +
+      "trabalho.",
+    "Hoje projeto e construo a infraestrutura de IA por trás do suporte, da " +
+      "documentação e do treinamento técnico da Bannerjet — do chatbot que " +
+      "atende no WhatsApp ao portal que o time consulta todo dia.",
   ],
-  stats: [
-    { value: "209", label: "Pares de pergunta e resposta na base que alimenta a IA de suporte" },
-    { value: "584", label: "Elementos no fluxograma que mapeou o suporte técnico" },
-    { value: "130+", label: "Produtos catalogados no e-commerce da Nexus" },
+  /* Ficha rápida ao pé da coluna de texto. */
+  facts: [
+    { label: "Onde", value: "São Paulo, Brasil" },
+    { label: "Cargo", value: "Criador de Produto Técnico" },
+    { label: "Empresa", value: "Bannerjet Group" },
+    { label: "Idiomas", value: "Português e inglês" },
   ],
 };
 
-export const robot = {
-  label: "Interativo",
-  title: "Ele te vê",
-  body:
-    "Uma cena 3D em tempo real rodando direto no navegador. " +
-    "Mexa o mouse e acompanhe: a cabeça dele segue o seu cursor.",
-  hint: "Mexa o mouse para ele te seguir",
-  sceneUrl: "https://prod.spline.design/KsIHnT1RVW8Wrgal/scene.splinecode",
+/* ---------- Cargo atual: feitos na Bannerjet ----------
+
+   A seção que prova o que está escrito na carreira. Cada feito pode ter
+   MATERIAL DE COMPROVAÇÃO — print, PDF ou vídeo.
+
+   COMO ANEXAR (sem mexer em código):
+   crie a pasta `public/feitos/<slug>/` e jogue os arquivos dentro.
+   Aceita imagem (.jpg .png .webp .gif), vídeo (.mp4 .webm .mov) e .pdf.
+   Os arquivos aparecem em ordem alfabética, então nomes como
+   `01-visao-geral.png`, `02-fluxo.png` controlam a sequência.
+   Feito sem pasta continua aparecendo, só sem a galeria. */
+
+export type Feito = {
+  slug: string;
+  title: string;
+  body: string;
+  tags: string[];
+  /* Marca os que valem destaque visual na grade. */
+  destaque?: boolean;
+};
+
+export type FeitoGrupo = {
+  group: string;
+  intro: string;
+  items: Feito[];
+};
+
+const feitosGrupos: FeitoGrupo[] = [
+  {
+    group: "Produtos",
+    intro: "O que virou ferramenta de uso diário do time e dos clientes.",
+    items: [
+      {
+        slug: "central-tecnica",
+        title: "Central Técnica",
+        destaque: true,
+        body:
+          "Nasceu de uma conta simples: o tempo que o time gastava procurando um " +
+          "manual antigo, um parâmetro de corte ou a versão certa de um firmware " +
+          "era maior que o tempo de resolver o problema em si. O material existia — " +
+          "espalhado por pastas, e-mails e conversas de WhatsApp. O portal reúne " +
+          "tudo num lugar só: catálogo com página própria por máquina, manuais, " +
+          "peças, firmwares, perfis de cor, parâmetros e cursos com progressão por " +
+          "módulos. O que antes era \"pergunta pro fulano\" virou link. Por cima " +
+          "roda um chatbot que responde dúvidas técnicas usando a mesma base do " +
+          "portal — pergunta em português, resposta com a fonte.",
+        tags: ["Portal", "Chatbot", "Base de conhecimento"],
+      },
+      {
+        slug: "jet-ia-whatsapp",
+        title: "Jet IA — chatbot de suporte no WhatsApp",
+        destaque: true,
+        body:
+          "Chatbot com RAG em produção, atendendo cliente de verdade: n8n " +
+          "orquestrando os fluxos, Supabase guardando os embeddings e a Callbell " +
+          "como canal. Erro aqui tem custo real, então cada mudança na base passa " +
+          "por teste manual antes de valer.",
+        tags: ["RAG", "n8n", "Supabase", "Callbell"],
+      },
+      {
+        slug: "portal-licencas-a3",
+        title: "Portal de instalação da linha A3",
+        body:
+          "Instalação de programas e licenças dos equipamentos da linha A3 num " +
+          "endereço só. A licença do equipamento abre a página dele, com o " +
+          "instalador, a documentação e o vídeo correspondentes — no lugar do " +
+          "envio manual de arquivos a cada venda.",
+        tags: ["Portal", "Pós-venda", "Licenciamento"],
+      },
+      {
+        slug: "erp-modulo-tecnico",
+        title: "ERP — Módulo Técnico",
+        body:
+          "Desenvolvido em conjunto com o Victor Rocha, criador do projeto. " +
+          "Construí o Painel de Atendimentos: a visão geral dos atendimentos " +
+          "técnicos, da equipe e da agenda da semana. E levei a Jet IA para dentro " +
+          "do módulo, dando a todo colaborador acesso ao conhecimento técnico e às " +
+          "informações da empresa sem precisar perguntar a alguém.",
+        tags: ["Dashboard", "Supabase", "Jet IA"],
+      },
+      {
+        slug: "prototipos-equipamentos",
+        title: "Protótipos das telas dos equipamentos",
+        body:
+          "Réplicas navegáveis das interfaces das máquinas. O técnico treina o " +
+          "caminho do menu antes de encostar no equipamento, e o cliente vê o passo " +
+          "exato sem depender de foto de tela tremida.",
+        tags: ["Protótipo", "Treinamento"],
+      },
+    ],
+  },
+  {
+    group: "Automações",
+    intro:
+      "Fluxos que rodam sozinhos e devolvem ao time o tempo que ia embora em " +
+      "tarefa repetida.",
+    items: [
+      {
+        slug: "agendamento-tecnico",
+        title: "Agendamento técnico automático",
+        body:
+          "O cliente marca o horário e o fluxo resolve o resto: cria o evento no " +
+          "Google Agenda, gera o link do Meet e transfere a conversa para o técnico " +
+          "especialista naquele equipamento.",
+        tags: ["Google Agenda", "Meet", "n8n"],
+      },
+      {
+        slug: "ia-supervisora",
+        title: "IA supervisora de atendimentos",
+        body:
+          "Vigia a fila inteira: encontra cliente sem resposta e avisa o técnico, " +
+          "transfere conversa parada e informa o cliente quando o técnico está fora " +
+          "— horário de almoço, fim de expediente. Ninguém fica esperando sem saber.",
+        tags: ["Monitoramento", "n8n"],
+      },
+      {
+        slug: "chatbot-treinamento",
+        title: "Chatbot de treinamento e instalação",
+        destaque: true,
+        body:
+          "Depois de mapear todos os equipamentos e gravar o vídeo de cada um, " +
+          "montei o chatbot que dá o treinamento completo das máquinas da Bannerjet " +
+          "e emite o certificado direto pelo WhatsApp, no fim da trilha.",
+        tags: ["Treinamento", "Certificado", "WhatsApp"],
+      },
+      {
+        slug: "laudo-jet",
+        title: "Laudo Jet",
+        body:
+          "Gera o laudo técnico de cada atendimento a partir da própria conversa, " +
+          "no formato que o time já usava — o registro deixou de depender de alguém " +
+          "lembrar de escrever.",
+        tags: ["Laudo", "n8n"],
+      },
+      {
+        slug: "ia-recepcao-audio",
+        title: "IA de recepção por áudio",
+        body:
+          "Recebe o cliente falando, registra as informações pessoais e encaminha " +
+          "para a automação certa — treinamento, instalação ou suporte.",
+        tags: ["Áudio", "Triagem"],
+      },
+      {
+        slug: "ia-video-audio",
+        title: "IA que entende vídeo e áudio no WhatsApp",
+        body:
+          "Cliente com problema manda vídeo do equipamento, não texto. A automação " +
+          "lê o que foi enviado e devolve resposta sobre aquilo, em vez de pedir " +
+          "que a pessoa descreva por escrito o que já mostrou.",
+        tags: ["Multimodal", "WhatsApp"],
+      },
+      {
+        slug: "ia-notas-contato",
+        title: "IA que atualiza as notas do cliente",
+        body:
+          "Mantém a ficha de cada contato viva na plataforma: equipamento, " +
+          "histórico e o que ficou pendente, escrito pela própria automação ao fim " +
+          "do atendimento.",
+        tags: ["CRM", "Callbell"],
+      },
+      {
+        slug: "drive-notion-laboratorio",
+        title: "Drive sincronizado com o Kanban do laboratório",
+        body:
+          "Cria a pasta no Google Drive de cada equipamento que entra em " +
+          "manutenção e mantém o status em sincronia com o Kanban do Notion do " +
+          "laboratório técnico.",
+        tags: ["Google Drive", "Notion", "n8n"],
+      },
+    ],
+  },
+  {
+    group: "Conteúdo técnico",
+    intro:
+      "A parte que fez o time parar de repetir a mesma explicação e virou o " +
+      "meu cargo.",
+    items: [
+      {
+        slug: "fluxograma-suporte",
+        title: "Fluxograma do suporte técnico",
+        destaque: true,
+        body:
+          "584 elementos mapeando o atendimento inteiro, do primeiro contato ao " +
+          "encerramento do chamado. Foi o diagnóstico que mostrou onde o tempo " +
+          "estava indo embora — e a base de tudo que veio depois.",
+        tags: ["Miro", "Processo"],
+      },
+      {
+        slug: "tutoriais-narrados-ia",
+        title: "Tutoriais técnicos narrados por IA",
+        body:
+          "Produzi os vídeos bem editados e alguns técnicos não usavam, porque era " +
+          "a minha voz. Troquei a narração por IA e o jogo virou: hoje é o padrão " +
+          "do time.",
+        tags: ["ElevenLabs", "Vídeo"],
+      },
+      {
+        slug: "canal-youtube",
+        title: "Canal de tutoriais técnicos no YouTube",
+        body:
+          "O acervo de vídeos publicado onde o cliente já procura. O suporte " +
+          "responde com um link em vez de repetir a explicação por escrito.",
+        tags: ["YouTube", "Vídeo"],
+      },
+      {
+        slug: "manuais-tecnicos",
+        title: "Manuais técnicos",
+        body:
+          "Manuais de equipamento gerados com um framework de prompts e um guia de " +
+          "formatação rígido, para sair tudo com a mesma cara e a identidade da " +
+          "marca — sem depender de quem diagramou.",
+        tags: ["Documentação", "IA"],
+      },
+    ],
+  },
+];
+
+export const feitos = {
+  label: "Cargo atual",
+  title: "Feitos na Bannerjet",
+  intro:
+    "Criador de Produto Técnico. O que está aqui foi construído dentro da " +
+    "empresa e está em uso — cada item traz o material de comprovação.",
+  /* Rótulo do botão que abre a galeria de comprovação. */
+  mediaLabel: "Ver material",
+  mediaEmpty: "Material em digitalização",
+  groups: feitosGrupos,
+};
+
+/* ---------- Métricas de sucesso ----------
+   Números medidos, não estimados. Cada um tem de onde saiu. */
+export const metricas = {
+  label: "Métricas de sucesso",
+  title: "Resultados reais",
+  intro:
+    "Números do que está rodando — não é projeção nem arredondamento " +
+    "otimista.",
+  items: [
+    {
+      value: "209",
+      label: "Pares de pergunta e resposta na base que alimenta a IA de suporte",
+      source: "Jet IA · Bannerjet",
+    },
+    {
+      value: "584",
+      label: "Elementos no fluxograma que mapeou o suporte técnico",
+      source: "Miro · Bannerjet",
+    },
+    {
+      value: "130+",
+      label: "Produtos catalogados no e-commerce da Nexus",
+      source: "Nexus Print",
+    },
+  ],
 };
 
 export type ProjectImage = {
@@ -524,6 +778,11 @@ export type StackItem = {
   color?: string;
   /* Percentual medido no GitHub, quando existe. */
   pct?: number;
+  /* Chave da logo, resolvida em components/Stack.tsx. Sem chave (ou com
+     uma que não existe no mapa), o item cai no monograma — as iniciais
+     dentro do mesmo ladrilho. É o caso de n8n, Callbell, ElevenLabs e
+     dos softwares de equipamento, que não têm ícone de marca pronto. */
+  icon?: string;
 };
 
 export type StackGroup = {
@@ -546,30 +805,35 @@ const stackGroups: StackGroup[] = [
     items: [
       {
         name: "HTML",
+        icon: "html",
         color: "#a855f7",
         pct: 57.7,
         note: "Estrutura de todos os portais e landing pages",
       },
       {
         name: "JavaScript",
+        icon: "javascript",
         color: "#d16bff",
         pct: 23.0,
         note: "Carrinho, catálogos e a lógica dos portais técnicos",
       },
       {
         name: "CSS",
+        icon: "css",
         color: "#6d5cff",
         pct: 18.5,
         note: "Layout responsivo, temas escuros e animações sem JS",
       },
       {
         name: "TypeScript",
+        icon: "typescript",
         color: "#c026d3",
         pct: 0.8,
         note: "O Campro A3 Pro com React 18 — e este portfólio inteiro",
       },
       {
         name: "Python",
+        icon: "python",
         color: "#8b5cf6",
         note: "Pipelines de RAG, embeddings e automações internas",
       },
@@ -584,9 +848,9 @@ const stackGroups: StackGroup[] = [
     group: "IA & Automação",
     items: [
       { name: "RAG" },
-      { name: "Supabase" },
+      { name: "Supabase", icon: "supabase" },
       { name: "n8n" },
-      { name: "Gemini API" },
+      { name: "Gemini API", icon: "google" },
       { name: "ElevenLabs" },
       { name: "Callbell" },
       { name: "Claude Code" },
@@ -595,9 +859,9 @@ const stackGroups: StackGroup[] = [
   {
     group: "Front-end",
     items: [
-      { name: "React" },
-      { name: "Next.js" },
-      { name: "Tailwind CSS" },
+      { name: "React", icon: "react" },
+      { name: "Next.js", icon: "nextjs" },
+      { name: "Tailwind CSS", icon: "tailwind" },
       { name: "GSAP" },
       { name: "Spline" },
     ],
@@ -605,19 +869,20 @@ const stackGroups: StackGroup[] = [
   {
     group: "Base & ferramentas",
     items: [
-      { name: "Git" },
-      { name: "PowerShell" },
-      { name: "Notion" },
+      { name: "Git", icon: "git" },
+      { name: "GitHub", icon: "github" },
+      { name: "PowerShell", icon: "powershell" },
+      { name: "Notion", icon: "notion" },
       { name: "Miro" },
-      { name: "Windows" },
+      { name: "Windows", icon: "windows" },
     ],
   },
   {
     group: "Design & equipamentos",
     items: [
-        { name: "CorelDraw" },
-        { name: "Photoshop" },
-        { name: "SignMaster" },
+      { name: "CorelDraw" },
+      { name: "Photoshop", icon: "adobe" },
+      { name: "SignMaster" },
       { name: "CameraCut" },
       { name: "LightBurn" },
       { name: "EzCad" },
@@ -627,7 +892,7 @@ const stackGroups: StackGroup[] = [
 
 export const stack = {
   label: "Stack",
-  title: "Ferramentas do ofício",
+  title: "Ferramentas que trabalho!",
   intro:
     "O que eu escrevo e com o que eu construo — da linguagem ao software " +
     "que roda na máquina do cliente.",
@@ -644,85 +909,173 @@ export const stack = {
   groups: stackGroups,
 };
 
+/* ---------- Formação ---------- */
 export const background = {
   label: "Formação",
+  title: "Onde eu estudei",
+  intro:
+    "As três portas que abriram o resto — e as duas primeiras vieram por " +
+    "nota, não por mensalidade.",
   items: [
     {
+      period: "2019",
+      title: "Bolsa de estudo · Colégio Monte Sinai",
+      meta: "Metodologia Mackenzie",
+      body:
+        "Conquistei a bolsa e, no fim do ano, o certificado de Aluno Destaque " +
+        "pelas notas.",
+      highlight: "Aluno Destaque",
+    },
+    {
+      period: "2021 — 2023",
+      title: "Curso técnico de Informática",
+      meta: "Certificado de tecnólogo",
+      body:
+        "Infraestrutura de redes, hardware e programação. O desempenho acima da " +
+        "média virou convite do professor para criar as aulas e as apresentações " +
+        "junto com ele — foi o meu primeiro trabalho remunerado com tecnologia.",
+      highlight: "Ensinei junto com o professor",
+    },
+    {
+      period: "2024",
       title: "Análise e Desenvolvimento de Sistemas",
-      meta: "Universidade Paulista · bolsa integral pelo Enem",
-    },
-    {
-      title: "Inglês — 4 anos de curso",
-      meta: "Wizard by Pearson · concluído",
-    },
-    {
-      title: "13 certificados",
-      meta: "Curso em Vídeo, Cidade de São Paulo, APDADOS",
+      meta: "Universidade Paulista",
+      body: "Bolsa de 100% conquistada pela nota do Enem.",
+      highlight: "Bolsa integral",
     },
   ],
 };
 
 /* ---------- Carreira ----------
    Períodos e cargos conferidos com o LinkedIn (agosto de 2026). O que
-   cada função fez de fato vem do relato do Erick e do registro interno
-   dos projetos. */
+   cada função fez de fato vem do relato do Erick.
+
+   CADA ETAPA TEM PÁGINA PRÓPRIA em /carreira/<slug>/, com o material que
+   comprova aquele período. Para anexar: crie `public/carreira/<slug>/` e
+   jogue os arquivos dentro (imagem, vídeo ou PDF). Etapa sem pasta
+   continua no site — a página só não mostra a galeria. */
+
+export type CareerEntry = {
+  slug: string;
+  period: string;
+  role: string;
+  org: string;
+  body: string;
+  tags: string[];
+  /* Texto extra que só aparece na página da etapa. */
+  detail?: string[];
+};
+
+const careerEntries: CareerEntry[] = [
+  {
+    slug: "primeiro-contato",
+    period: "Aos 4 anos",
+    role: "O primeiro contato",
+    org: "",
+    body:
+      "Sentei na frente de um computador pela primeira vez e nunca mais saí. É o marco que explica o resto.",
+    tags: [],
+  },
+  {
+    slug: "curso-tecnico-informatica",
+    period: "2021 — 2023",
+    role: "Curso técnico de Informática",
+    org: "Formação técnica",
+    body:
+      "Infraestrutura de redes, hardware e programação, do começo ao fim, com certificado de tecnólogo. O desempenho acima da média rendeu um convite do próprio professor: criar as aulas e as apresentações junto com ele, remunerado. Foi a primeira vez que ensinar tecnologia me pagou alguma coisa.",
+    tags: ["Redes", "Hardware", "Programação"],
+    detail: [
+      "O curso cobriu a base que sustenta tudo que vem depois: como uma rede realmente funciona, o que acontece dentro da máquina e como escrever software que fala com os dois.",
+      "O convite do professor para produzir material didático foi o primeiro sinal de uma coisa que se repetiria na Bannerjet: explicar bem é um trabalho, e alguém precisa fazê-lo.",
+    ],
+  },
+  {
+    slug: "primeiros-commits",
+    period: "2022", // verificado: conta no GitHub criada em 10/02/2022
+    role: "Primeiros commits",
+    org: "GitHub",
+    body:
+      "Exercícios de CSS e as primeiras páginas responsivas — SiteMisato, a tela de login do Jujutsu, o estudo de parallax. Aprender construindo, sem curso formal no meio.",
+    tags: ["HTML", "CSS", "JavaScript"],
+  },
+  {
+    slug: "achei-montador-designer",
+    period: "2024",
+    role: "Web Designer",
+    org: "Achei Montador",
+    body:
+      "Entrei como designer, responsável pelas atividades criativas da empresa: edição de fotos, retoque e manipulação no Photoshop, e as peças visuais que sustentavam a comunicação da marca.",
+    tags: ["Photoshop", "Edição de imagens", "Design de interface"],
+  },
+  {
+    slug: "achei-montador-trafego",
+    period: "2024",
+    role: "Especialista em Tráfego Pago",
+    org: "Achei Montador",
+    body:
+      "Assumi a gestão e a otimização das campanhas de tráfego pago: Google Ads e Meta Business, com acompanhamento dos resultados pelo Google Analytics.",
+    tags: ["Google Ads", "Meta Business", "Google Analytics"],
+  },
+  {
+    slug: "apdados-assistente",
+    period: "mai de 2024 — jul de 2025",
+    role: "Assistente do Comitê StarTech",
+    org: "APDADOS · freelance, remoto",
+    body:
+      "Suporte administrativo e logístico ao comitê: documentação técnica, organização dos processos e o trabalho de bastidor que faz um comitê voluntário entregar o que promete.",
+    tags: ["Documentação técnica", "Processos", "Trabalho em equipe"],
+  },
+  {
+    slug: "bannerjet-tecnico",
+    period: "abr de 2025 — agora",
+    role: "Técnico IGP",
+    org: "Bannerjet Group",
+    body:
+      "Suporte técnico especializado, quase todo remoto: plotters de recorte, máquinas de fibra laser e sistemas CellCut. Redes, manutenção e configuração de hardware de um lado; CorelDRAW, Photoshop, SignMaster e CameraCut do outro — os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa.",
+    tags: ["Suporte remoto", "Redes", "CorelDRAW", "SignMaster", "CameraCut"],
+  },
+  {
+    slug: "apdados-coordenador",
+    period: "jun de 2025 — agora",
+    role: "Coordenador do Comitê StarTech",
+    org: "APDADOS · freelance, remoto",
+    body:
+      "Coordeno e oriento o comitê, com foco na formação de alunos e profissionais entrando no mercado. É onde a parte analítica e de infraestrutura de TI encontra gente — montar trilha, revisar material, destravar carreira.",
+    tags: ["Coordenação", "Cursos de treinamento", "Mentoria"],
+  },
+  {
+    slug: "bannerjet-produto-tecnico",
+    period: "Hoje",
+    role: "Criador de Produto Técnico",
+    org: "Bannerjet Group",
+    body:
+      "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema. Mapeei o suporte inteiro num fluxograma, produzi os vídeos — e só quando troquei a minha narração por IA o time passou a usar. Daí vieram os manuais, os protótipos das telas dos equipamentos, a base no Notion e o chatbot com RAG que hoje atende no WhatsApp.",
+    tags: ["RAG", "Supabase", "n8n", "ElevenLabs", "Callbell", "Notion"],
+    detail: [
+      "É o cargo atual, e o que está em Feitos na Bannerjet foi construído aqui: a Central Técnica, a Jet IA, o portal de licenças da linha A3, o Painel de Atendimentos do ERP e as automações que rodam sozinhas todo dia.",
+    ],
+  },
+];
+
 export const career = {
   label: "Carreira",
-  title: "Do suporte à infraestrutura de IA",
+  title: "Conheça minha trajetória profissional até aqui!",
   intro:
-    "Nenhum dos passos abaixo foi planejado como carreira. Cada um começou " +
-    "como um problema concreto que precisava ser resolvido.",
-  entries: [
-    {
-      period: "Aos 4 anos",
-      role: "O primeiro contato",
-      org: "",
-      body: "Sentei na frente de um computador pela primeira vez e nunca mais saí. É o marco que explica o resto.",
-      tags: [],
-    },
-    {
-      period: "2022", // verificado: conta no GitHub criada em 10/02/2022
-      role: "Primeiros commits",
-      org: "GitHub",
-      body: "Exercícios de CSS e as primeiras páginas responsivas — SiteMisato, a tela de login do Jujutsu, o estudo de parallax. Aprender construindo, sem curso formal no meio.",
-      tags: ["HTML", "CSS", "JavaScript"],
-    },
-    {
-      period: "jul — out de 2024",
-      role: "Designer, depois Tráfego Pago",
-      org: "Achei Montador",
-      body: "Entrei como designer: edição de fotos, retoque e manipulação no Photoshop, e as peças visuais da empresa. Em setembro assumi também as campanhas de tráfego pago no Google Ads e no Meta Business, cuidando da gestão e da otimização.",
-      tags: ["Photoshop", "Google Ads", "Meta Business", "Google Analytics"],
-    },
-    {
-      period: "mai de 2024 — jul de 2025",
-      role: "Assistente do Comitê StarTech",
-      org: "APDADOS · freelance, remoto",
-      body: "Suporte administrativo e logístico ao comitê: documentação técnica, organização dos processos e o trabalho de bastidor que faz um comitê voluntário entregar o que promete.",
-      tags: ["Documentação técnica", "Processos", "Trabalho em equipe"],
-    },
-    {
-      period: "abr de 2025 — agora",
-      role: "Técnico IGP",
-      org: "Bannerjet Group",
-      body: "Suporte técnico especializado, quase todo remoto: plotters de recorte, máquinas de fibra laser e sistemas CellCut. Redes, manutenção e configuração de hardware de um lado; CorelDRAW, Photoshop, SignMaster e CameraCut do outro — os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa.",
-      tags: ["Suporte remoto", "Redes", "CorelDRAW", "SignMaster", "CameraCut"],
-    },
-    {
-      period: "jun de 2025 — agora",
-      role: "Coordenador do Comitê StarTech",
-      org: "APDADOS · freelance, remoto",
-      body: "Coordeno e oriento o comitê, com foco na formação de alunos e profissionais entrando no mercado. É onde a parte analítica e de infraestrutura de TI encontra gente — montar trilha, revisar material, destravar carreira.",
-      tags: ["Coordenação", "Cursos de treinamento", "Mentoria"],
-    },
-    {
-      period: "Hoje",
-      role: "Conteúdo técnico e infraestrutura de IA",
-      org: "Bannerjet Group",
-      body: "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema. Mapeei o suporte inteiro num fluxograma, produzi os vídeos — e só quando troquei a minha narração por IA o time passou a usar. Daí vieram os manuais, os protótipos das telas dos equipamentos, a base no Notion e o chatbot com RAG que hoje atende no WhatsApp.",
-      tags: ["RAG", "Supabase", "n8n", "ElevenLabs", "Callbell", "Notion"],
-    },
-  ],
+    "Trabalho com o que amo. Cada etapa começou como um problema concreto " +
+    "que precisava ser resolvido.",
+  /* Rótulo do link que leva à página da etapa. */
+  entryCta: "Ver comprovação",
+  entries: careerEntries,
+};
+
+/* Página de uma etapa da carreira. */
+export const careerPage = {
+  back: "Voltar para a carreira",
+  materialLabel: "Material",
+  materialEmpty:
+    "O material desta etapa ainda está sendo digitalizado. Enquanto isso, os " +
+    "certificados e os projetos da época estão no restante do site.",
+  nextLabel: "Próxima etapa",
 };
 
 /* ---------- Certificados ----------
@@ -744,9 +1097,10 @@ export type Certificate = {
   issuer: string;
   /* AAAA-MM — usado só para ordenar. */
   date: string;
-  /* Como a data aparece na tela. */
+  /* Como a data aparece na tela. Só a emissão: a validade saiu do site
+     porque "expira em 2034" não diz nada sobre a competência de quem
+     fez o curso, e enchia o rodapé do cartão. */
   dateLabel: string;
-  expiresLabel?: string;
   credentialId?: string;
   /* Link "exibir credencial", quando existir. */
   href?: string;
@@ -765,7 +1119,6 @@ const certificateItems: Certificate[] = [
       issuer: "APDADOS",
       date: "2024-08",
       dateLabel: "ago de 2024",
-      expiresLabel: "válido até ago de 2034",
       description:
         "Live sobre as particularidades da implementação e da conformidade com a LGPD em cada região do país — como os estados brasileiros vêm lidando com a regulamentação, considerando especificidades locais e desafios regionais.",
     },
@@ -775,7 +1128,6 @@ const certificateItems: Certificate[] = [
       issuer: "APDADOS",
       date: "2024-05",
       dateLabel: "mai de 2024",
-      expiresLabel: "válido até mai de 2034",
       description:
         "Análise das penalidades previstas na LGPD e das condutas esperadas de um Data Protection Officer: responsabilidades, estratégias de mitigação de risco e o papel do DPO na conformidade da organização.",
     },
@@ -785,7 +1137,6 @@ const certificateItems: Certificate[] = [
       issuer: "APDADOS",
       date: "2024-05",
       dateLabel: "mai de 2024",
-      expiresLabel: "válido até mai de 2034",
       description:
         "Estratégias práticas de desenvolvimento de carreira em tecnologia: desafios e oportunidades do mercado, e como alinhar habilidade técnica com o que a indústria está pedindo.",
     },
@@ -795,7 +1146,6 @@ const certificateItems: Certificate[] = [
       issuer: "APDADOS",
       date: "2024-03",
       dateLabel: "mar de 2024",
-      expiresLabel: "válido até jan de 2034",
       skills: [
         "Implicações éticas da IA",
         "Legislação de proteção de dados",
@@ -825,7 +1175,6 @@ const certificateItems: Certificate[] = [
       issuer: "Wizard by Pearson",
       date: "2023-12",
       dateLabel: "dez de 2023",
-      expiresLabel: "válido até dez de 2034",
       skills: ["Inglês como língua estrangeira", "Gramática"],
       description:
         "Quatro anos de estudo intensivo: conversação, escrita, leitura e compreensão auditiva, em contexto acadêmico e profissional. É o que sustenta a conversa técnica em inglês.",
@@ -897,12 +1246,13 @@ export const certificates = {
    Arcos saindo do Brasil: o site inteiro fala em trabalhar fora, e o
    globo é a forma literal de dizer isso. São Paulo é a origem de todos. */
 export const globe = {
-  label: "Alcance",
+  label: "Meta profissional",
   title: "Daqui para o mundo",
   body:
-    "Baseado em São Paulo, mirando o mundo. Quero trabalhar fora do Brasil, " +
-    "afiar o inglês e conhecer novas culturas — enquanto sigo construindo " +
-    "ferramentas que facilitam o trabalho de outras pessoas.",
+    "Nascido em São Paulo, nunca saí do estado — e tenho o sonho de conhecer " +
+    "o mundo, trabalhar fora do país e conhecer novas culturas, enquanto sigo " +
+    "construindo ferramentas que facilitam o trabalho de outras pessoas ao " +
+    "redor do mundo.",
   /* São Paulo → destinos. Edite à vontade. */
   origin: { lat: -23.5505, lng: -46.6333, label: "São Paulo" },
   destinations: [

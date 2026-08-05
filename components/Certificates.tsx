@@ -6,6 +6,9 @@ import { certificates } from "@/lib/content";
 import { asset } from "@/lib/asset";
 import RevealText from "./RevealText";
 
+/* NOTA: as imagens chegam prontas de `arquivoPorSlug("certificados")`,
+   chamado no Server Component da página. Ver lib/media.ts. */
+
 /* Certificado é documento: o valor está em conseguir ler o papel, não em
    ver uma miniatura. Por isso a imagem do cartão abre em tela cheia.
 
@@ -152,10 +155,9 @@ export default function Certificates({ images }: Props) {
                       linha têm alturas diferentes e, sem isso, a linha da
                       credencial flutuaria no meio de uns e no fim de
                       outros. */}
-                  {(cert.credentialId || cert.expiresLabel || cert.href) && (
+                  {(cert.credentialId || cert.href) && (
                     <div className="mono-label mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-6">
                       {cert.credentialId && <span>{cert.credentialId}</span>}
-                      {cert.expiresLabel && <span>{cert.expiresLabel}</span>}
                       {cert.href && (
                         <a
                           href={cert.href}
