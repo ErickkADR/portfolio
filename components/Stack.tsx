@@ -91,7 +91,11 @@ export default function Stack() {
               <ul className="mt-5 flex flex-wrap justify-center gap-2.5">
                 {group.items.map((item) => {
                   const logo = getLogo(item.icon);
-                  const cor = logo?.color ?? "var(--color-plasma-soft)";
+                  /* Ordem da cor: a da logo, se existir; senão a do
+                     próprio item (marcas sem ícone pronto mas com cor
+                     reconhecível, como Claude Code e Blender); e por
+                     último o roxo do site. */
+                  const cor = logo?.color ?? item.color ?? "var(--color-plasma-soft)";
 
                   return (
                     <li key={item.name} className="stack-tile group/tile relative">
@@ -118,9 +122,6 @@ export default function Stack() {
                         className="pointer-events-none absolute -top-2 left-1/2 z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-bone/15 bg-ink-3 px-2.5 py-1 text-[0.6875rem] tracking-wide opacity-0 shadow-lg transition-all duration-300 group-hover/tile:-translate-y-[calc(100%+0.25rem)] group-hover/tile:opacity-100 group-focus-within/tile:-translate-y-[calc(100%+0.25rem)] group-focus-within/tile:opacity-100"
                       >
                         {item.name}
-                        {item.pct !== undefined && (
-                          <span className="ml-1.5 text-bone-dim">{item.pct}%</span>
-                        )}
                       </span>
                     </li>
                   );

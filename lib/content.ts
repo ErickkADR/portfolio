@@ -870,23 +870,18 @@ export const marquee = [
 
 export type StackItem = {
   name: string;
-  /* Só as linguagens têm nota e cor — elas abrem a seção e sustentam a
-     barra medida. Os outros grupos são lista pura. */
-  note?: string;
-  color?: string;
-  /* Percentual medido no GitHub, quando existe. */
-  pct?: number;
-  /* Chave da logo, resolvida em components/Stack.tsx. Sem chave (ou com
-     uma que não existe no mapa), o item cai no monograma — as iniciais
-     dentro do mesmo ladrilho. É o caso de n8n, Callbell, ElevenLabs e
-     dos softwares de equipamento, que não têm ícone de marca pronto. */
+  /* Chave da logo em lib/logos.tsx. Sem chave (ou com uma que não existe
+     no mapa), o item cai no monograma — as iniciais dentro do mesmo
+     ladrilho. É o caso de n8n, Callbell, ElevenLabs e dos softwares de
+     equipamento, que não têm ícone de marca pronto. */
   icon?: string;
+  /* Cor do ladrilho para quem não tem ícone mas tem marca reconhecível
+     (Claude Code, Blender, Fusion). Sem isso, cai no roxo do site. */
+  color?: string;
 };
 
 export type StackGroup = {
   group: string;
-  /* Ocupa a linha inteira da grade, em vez de meia. */
-  wide?: boolean;
   items: StackItem[];
 };
 
@@ -894,72 +889,22 @@ export type StackGroup = {
    literal de cada item, e os campos que só as linguagens preenchem —
    `note`, `color`, `pct` — deixam de existir para quem percorre a lista
    inteira. */
+/* As cinco categorias são a forma como um recrutador lê uma stack:
+   o que a pessoa automatiza, o que ela constrói na tela, o que ela
+   constrói atrás dela, o que ela desenha e com o que ela trabalha.
+
+   "Linguagens" saiu como grupo próprio: HTML e CSS pertencem ao
+   front-end, Python ao back-end, e separá-los obrigava a mesma pessoa
+   a aparecer duas vezes na parede. */
 const stackGroups: StackGroup[] = [
   {
-    group: "Linguagens",
-    /* Este grupo ocupa a linha inteira: é o único com nota por item, e
-       espremido numa coluna as notas quebravam em quatro linhas. */
-    wide: true,
-    items: [
-      {
-        name: "HTML",
-        icon: "html",
-        color: "#a855f7",
-        pct: 57.7,
-        note: "Estrutura de todos os portais e landing pages",
-      },
-      {
-        name: "JavaScript",
-        icon: "javascript",
-        color: "#d16bff",
-        pct: 23.0,
-        note: "Carrinho, catálogos e a lógica dos portais técnicos",
-      },
-      {
-        name: "CSS",
-        icon: "css",
-        color: "#6d5cff",
-        pct: 18.5,
-        note: "Layout responsivo, temas escuros e animações sem JS",
-      },
-      {
-        name: "TypeScript",
-        icon: "typescript",
-        color: "#c026d3",
-        pct: 0.8,
-        note: "O Campro A3 Pro com React 18 — e este portfólio inteiro",
-      },
-      {
-        name: "Python",
-        icon: "python",
-        color: "#8b5cf6",
-        note: "Pipelines de RAG, embeddings e automações internas",
-      },
-      {
-        name: "VBA",
-        color: "#7c3aed",
-        note: "Ferramentas sob medida dentro do fluxo da equipe",
-      },
-    ],
-  },
-  /* Grupo próprio para os agentes de código, separado de "IA &
-     Automação": misturar Claude Code com Supabase e n8n escondia o que
-     é o diferencial dele. Aqui fica claro que ele não usa "uma IA" —
-     usa as quatro principais do mercado e sabe quando trocar. */
-  {
-    group: "IA — agentes de código",
+    group: "IA & Automações",
     items: [
       { name: "Claude Code", color: "#d97757" },
       { name: "Codex", icon: "openai" },
       { name: "Antigravity", icon: "google" },
       { name: "Cursor" },
-    ],
-  },
-  {
-    group: "IA & Automação",
-    items: [
       { name: "RAG" },
-      { name: "Supabase", icon: "supabase" },
       { name: "n8n" },
       { name: "Gemini API", icon: "google" },
       { name: "ElevenLabs" },
@@ -969,6 +914,10 @@ const stackGroups: StackGroup[] = [
   {
     group: "Front-end",
     items: [
+      { name: "HTML", icon: "html" },
+      { name: "CSS", icon: "css" },
+      { name: "JavaScript", icon: "javascript" },
+      { name: "TypeScript", icon: "typescript" },
       { name: "React", icon: "react" },
       { name: "Next.js", icon: "nextjs" },
       { name: "Tailwind CSS", icon: "tailwind" },
@@ -977,14 +926,12 @@ const stackGroups: StackGroup[] = [
     ],
   },
   {
-    group: "Base & ferramentas",
+    group: "Back-end",
     items: [
-      { name: "Git", icon: "git" },
-      { name: "GitHub", icon: "github" },
+      { name: "Python", icon: "python" },
+      { name: "Supabase", icon: "supabase" },
       { name: "PowerShell", icon: "powershell" },
-      { name: "Notion", icon: "notion" },
-      { name: "Miro" },
-      { name: "Windows", icon: "windows" },
+      { name: "VBA" },
     ],
   },
   {
@@ -999,8 +946,14 @@ const stackGroups: StackGroup[] = [
     ],
   },
   {
-    group: "Softwares de equipamento",
+    group: "Ferramentas",
     items: [
+      { name: "Git", icon: "git" },
+      { name: "GitHub", icon: "github" },
+      { name: "VS Code", icon: "vscode" },
+      { name: "Notion", icon: "notion" },
+      { name: "Miro" },
+      { name: "Windows", icon: "windows" },
       { name: "SignMaster" },
       { name: "CameraCut" },
       { name: "LightBurn" },
@@ -1015,16 +968,6 @@ export const stack = {
   intro:
     "O que eu escrevo e com o que eu construo — da linguagem ao software " +
     "que roda na máquina do cliente.",
-  barLabel: "Nos repositórios públicos",
-  note: "Distribuição real dos meus repositórios públicos no GitHub",
-  /* Cores da paleta do site, não as cores de marca de cada linguagem:
-     o amarelo do JS e o laranja do HTML brigariam com o roxo. */
-  measured: [
-    { name: "HTML", pct: 57.7, color: "#a855f7" },
-    { name: "JavaScript", pct: 23.0, color: "#d16bff" },
-    { name: "CSS", pct: 18.5, color: "#6d5cff" },
-    { name: "TypeScript", pct: 0.8, color: "#c026d3" },
-  ],
   groups: stackGroups,
 };
 
