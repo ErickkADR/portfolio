@@ -7,6 +7,7 @@ import { asset } from "@/lib/asset";
 import type { MediaFile } from "@/lib/media";
 import RevealText from "./RevealText";
 import MediaViewer from "./MediaViewer";
+import Carousel from "./Carousel";
 
 /* ============================================================
    CARGO ATUAL — feitos na Bannerjet.
@@ -40,18 +41,16 @@ export default function Feitos({ media }: Props) {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        /* Um trigger por grupo, não um para a seção inteira: a seção é
-           longa e, com um só, os grupos do fim terminariam a animação
-           antes de aparecerem na tela. */
+        /* Os cards agora entram pelo <Carousel>, que anima os próprios
+           filhos. Aqui sobra o cabeçalho de cada grupo. */
         const tweens = gsap.utils
           .toArray<HTMLElement>(".feito-grupo")
           .map((grupo) =>
-            gsap.from(grupo.querySelectorAll(".feito-card"), {
-              y: 30,
+            gsap.from(grupo.querySelector(".feito-head"), {
+              y: 24,
               opacity: 0,
-              duration: 0.85,
+              duration: 0.8,
               ease: "power3.out",
-              stagger: 0.06,
               scrollTrigger: { trigger: grupo, start: "top 88%", once: true },
             })
           );
@@ -90,14 +89,19 @@ export default function Feitos({ media }: Props) {
 
         {feitos.groups.map((grupo) => (
           <div key={grupo.group} className="feito-grupo mt-20">
-            <div className="hairline flex flex-col gap-2 pt-10 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+            <div className="feito-head hairline flex flex-col gap-2 pt-10 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
               <h3 className="mono-label text-plasma">{grupo.group}</h3>
               <p className="max-w-md text-sm leading-relaxed text-bone-dim">
                 {grupo.intro}
               </p>
             </div>
 
-            <ul className="mt-10 grid gap-6 sm:grid-cols-2">
+            {/* Um carrossel por grupo, e não um só para tudo: os grupos
+                têm assuntos diferentes, e misturá-los numa pista única
+                apagaria a divisão que o título de cada um estabelece.
+                O `destaque` deixou de mudar a largura — numa pista
+                horizontal, um card mais largo quebra o ritmo do snap. */}
+            <Carousel label={grupo.group} className="mt-10">
               {grupo.items.map((item) => {
                 const files = media[item.slug] ?? [];
                 const capa = files.find((f) => f.kind === "image");
@@ -105,12 +109,7 @@ export default function Feitos({ media }: Props) {
                 return (
                   <li
                     key={item.slug}
-                    /* Os destaques ocupam a linha inteira: são os que têm
-                       texto longo e, em meia coluna, viravam um bloco
-                       alto e estreito ao lado de um card curto. */
-                    className={`feito-card group flex flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 ${
-                      item.destaque ? "sm:col-span-2" : ""
-                    }`}
+                    className="group flex w-[85vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[24rem]"
                   >
                     {capa && (
                       <button
@@ -187,7 +186,7 @@ export default function Feitos({ media }: Props) {
                   </li>
                 );
               })}
-            </ul>
+            </Carousel>
           </div>
         ))}
       </div>

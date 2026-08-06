@@ -63,24 +63,38 @@ export default function Metricas() {
           </p>
         </div>
 
-        <dl className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-3">
+        {/* O número sozinho não convence: "209 pares de pergunta e
+            resposta" é volume, não resultado. O `outcome` embaixo diz o
+            que aquele número mudou na operação — é ele que transforma
+            entrega em impacto. */}
+        <dl className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2">
           {metricas.items.map((item) => (
             <div
               key={item.value}
-              className="group flex flex-col items-center bg-ink p-10 text-center transition-colors duration-500 hover:bg-ink-2"
+              className="group flex flex-col bg-ink p-9 transition-colors duration-500 hover:bg-ink-2 lg:p-10"
             >
               <dt className="sr-only">{item.label}</dt>
-              <dd className="flex flex-1 flex-col items-center">
+              <dd className="flex flex-1 flex-col">
                 <span
                   data-count={item.value}
-                  className="display block text-[clamp(3rem,8vw,5.5rem)] text-plasma"
+                  className="display block text-[clamp(2.6rem,7vw,4.5rem)] leading-none text-plasma"
                 >
                   {item.value}
                 </span>
-                <span className="mt-4 block max-w-[18rem] text-sm leading-relaxed text-bone-dim">
+
+                <span className="mt-4 block text-lg leading-snug">
                   {item.label}
                 </span>
-                <span className="mono-label mt-auto pt-6">{item.source}</span>
+
+                <span className="mt-5 flex gap-3 text-sm leading-relaxed text-bone-dim">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.6em] h-px w-5 shrink-0 bg-plasma/50"
+                  />
+                  {item.outcome}
+                </span>
+
+                <span className="mono-label mt-auto pt-7">{item.source}</span>
               </dd>
             </div>
           ))}

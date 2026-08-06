@@ -1,6 +1,7 @@
 "use client";
 
 import { FloatingDock } from "@/components/ui/floating-dock";
+import ThemeToggle from "./ThemeToggle";
 import { nav, site } from "@/lib/content";
 import {
   IconHome,
@@ -48,8 +49,14 @@ export default function MobileDock() {
 
   return (
     /* Canto inferior direito, não centralizado: no centro o botão cai
-       em cima da legenda do hero. O dock abre para cima a partir daqui. */
-    <div className="fixed bottom-6 right-5 z-50 md:hidden">
+       em cima da legenda do hero. O dock abre para cima a partir daqui.
+       O tema fica ao lado do dock, e não dentro dele: os itens do dock
+       são links de navegação, e um botão que muda a aparência da página
+       no meio deles seria confundido com mais uma seção. */
+    <div className="fixed bottom-6 right-5 z-50 flex items-center gap-2 md:hidden">
+      <span className="rounded-full border border-bone/12 bg-ink-2/90 p-0.5 backdrop-blur-xl">
+        <ThemeToggle />
+      </span>
       <FloatingDock items={items} />
     </div>
   );

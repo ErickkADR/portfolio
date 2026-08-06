@@ -1,66 +1,24 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
-import {
-  IconBrandJavascript,
-  IconBrandTypescript,
-  IconBrandHtml5,
-  IconBrandCss3,
-  IconBrandPython,
-  IconBrandReact,
-  IconBrandNextjs,
-  IconBrandTailwind,
-  IconBrandGit,
-  IconBrandGithub,
-  IconBrandNotion,
-  IconBrandWindows,
-  IconBrandSupabase,
-  IconBrandPowershell,
-  IconBrandAdobe,
-  IconBrandGoogle,
-} from "@tabler/icons-react";
+import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { stack } from "@/lib/content";
+import { getLogo, monograma } from "@/lib/logos";
 import RevealText from "./RevealText";
 
-/* Linguagens e ferramentas na mesma seção, cada uma com a sua logo.
+/* ============================================================
+   STACK — parede de logos.
 
-   As logos vêm do @tabler/icons-react, que já era dependência do dock
-   no celular — nenhum pacote novo, nenhum SVG baixado de CDN (o export
-   é estático e não pode depender de rede em runtime).
+   Antes cada ferramenta era um cartão com logo, nome e nota embaixo.
+   Ficava uma tabela: muito texto repetido, e a leitura acontecia palavra
+   por palavra em vez de por reconhecimento. Agora o ladrilho carrega só
+   a logo, e o nome aparece no hover — quem reconhece a marca não precisa
+   ler nada, e quem não reconhece descobre passando o mouse.
 
-   Quem não tem ícone de marca pronto (n8n, Callbell, ElevenLabs, os
-   softwares de equipamento) cai no monograma: as iniciais dentro do
-   mesmo ladrilho. O resultado fica uniforme em vez de virar uma parede
-   com buracos. */
-
-const LOGOS: Record<string, ReactNode> = {
-  javascript: <IconBrandJavascript />,
-  typescript: <IconBrandTypescript />,
-  html: <IconBrandHtml5 />,
-  css: <IconBrandCss3 />,
-  python: <IconBrandPython />,
-  react: <IconBrandReact />,
-  nextjs: <IconBrandNextjs />,
-  tailwind: <IconBrandTailwind />,
-  git: <IconBrandGit />,
-  github: <IconBrandGithub />,
-  notion: <IconBrandNotion />,
-  windows: <IconBrandWindows />,
-  supabase: <IconBrandSupabase />,
-  powershell: <IconBrandPowershell />,
-  adobe: <IconBrandAdobe />,
-  google: <IconBrandGoogle />,
-};
-
-/* Monograma: até duas letras. "Claude Code" vira CC, "n8n" vira N8. */
-function monograma(nome: string) {
-  const palavras = nome.split(/[\s.]+/).filter(Boolean);
-  if (palavras.length > 1) {
-    return (palavras[0][0] + palavras[1][0]).toUpperCase();
-  }
-  return nome.slice(0, 2).toUpperCase();
-}
+   As linhas usam flex-wrap centralizado, e não uma grade de N colunas:
+   a última linha de cada grupo fica centralizada sozinha, em vez de
+   ficar encostada à esquerda com buracos à direita.
+   ============================================================ */
 
 export default function Stack() {
   const ref = useRef<HTMLElement>(null);
@@ -70,37 +28,35 @@ export default function Stack() {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Os segmentos crescem a partir da esquerda, em cascata: a barra
-        // se "desenha" da maior para a menor fatia.
-        const bars = gsap.from(".lang-seg", {
+        /* Um trigger por grupo: a seção é mais alta que a viewport e,
+           com um stagger único, os últimos grupos terminariam a animação
+           antes mesmo de aparecerem na tela. */
+        const grupos = gsap.utils
+          .toArray<HTMLElement>(".stack-group")
+          .map((col) =>
+            gsap.from(col.querySelectorAll(".stack-tile"), {
+              y: 22,
+              scale: 0.85,
+              opacity: 0,
+              duration: 0.6,
+              ease: "back.out(1.7)",
+              stagger: 0.035,
+              scrollTrigger: { trigger: col, start: "top 90%", once: true },
+            })
+          );
+
+        const barra = gsap.from(".lang-seg", {
           scaleX: 0,
           transformOrigin: "left center",
           duration: 1.1,
           ease: "expo.out",
           stagger: 0.08,
-          scrollTrigger: { trigger: ".lang-bar", start: "top 85%", once: true },
+          scrollTrigger: { trigger: ".lang-bar", start: "top 92%", once: true },
         });
 
-        /* As logos entram girando de leve e crescendo — é o gesto que dá
-           vida à parede sem cada ladrilho pedir atenção sozinho. Um
-           trigger por grupo, porque a seção é mais alta que a tela. */
-        const grupos = gsap.utils
-          .toArray<HTMLElement>(".stack-col")
-          .map((col) =>
-            gsap.from(col.querySelectorAll(".stack-tile"), {
-              y: 24,
-              scale: 0.86,
-              opacity: 0,
-              duration: 0.7,
-              ease: "back.out(1.6)",
-              stagger: 0.045,
-              scrollTrigger: { trigger: col, start: "top 90%", once: true },
-            })
-          );
-
         return () => {
-          bars.kill();
           grupos.forEach((t) => t.kill());
+          barra.kill();
         };
       });
 
@@ -131,11 +87,63 @@ export default function Stack() {
           </p>
         </div>
 
-        {/* ---------- barra medida ---------- */}
-        <div className="mt-20">
+        {/* ---------- parede de logos ---------- */}
+        <div className="mt-20 space-y-14">
+          {stack.groups.map((group) => (
+            <div key={group.group} className="stack-group">
+              <h3 className="mono-label text-center text-plasma">
+                {group.group}
+              </h3>
+
+              <ul className="mt-7 flex flex-wrap justify-center gap-3 sm:gap-4">
+                {group.items.map((item) => {
+                  const logo = getLogo(item.icon);
+                  const cor = logo?.color ?? "var(--color-plasma-soft)";
+
+                  return (
+                    <li key={item.name} className="stack-tile group/tile relative">
+                      {/* `button` e não `div`: o tooltip precisa aparecer
+                          também no foco por teclado, e só um elemento
+                          focável recebe :focus-visible. */}
+                      <button
+                        type="button"
+                        aria-label={item.name}
+                        className="grid h-[4.5rem] w-[4.5rem] place-items-center rounded-2xl border border-bone/10 bg-ink-2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-bone/25 hover:bg-ink-3 sm:h-20 sm:w-20 [&>*]:h-8 [&>*]:w-8"
+                        style={{ color: cor }}
+                      >
+                        {logo?.node ?? (
+                          <span className="display grid h-8 w-8 place-items-center text-sm tracking-tight">
+                            {monograma(item.name)}
+                          </span>
+                        )}
+                      </button>
+
+                      {/* Tooltip. `pointer-events-none` para ele nunca
+                          roubar o hover do próprio ladrilho e piscar. */}
+                      <span
+                        role="tooltip"
+                        className="pointer-events-none absolute -top-2 left-1/2 z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-bone/15 bg-ink-3 px-2.5 py-1 text-[0.6875rem] tracking-wide opacity-0 shadow-lg transition-all duration-300 group-hover/tile:-translate-y-[calc(100%+0.25rem)] group-hover/tile:opacity-100 group-focus-within/tile:-translate-y-[calc(100%+0.25rem)] group-focus-within/tile:opacity-100"
+                      >
+                        {item.name}
+                        {item.pct !== undefined && (
+                          <span className="ml-1.5 text-bone-dim">{item.pct}%</span>
+                        )}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* ---------- distribuição medida ----------
+            Fica no rodapé da seção, e não no topo: é dado de apoio, não
+            o assunto. O assunto é a parede de logos. */}
+        <div className="hairline mt-20 pt-12">
           <p className="mono-label text-center">{stack.barLabel}</p>
 
-          <div className="lang-bar mt-5 flex h-3 w-full gap-1 overflow-hidden rounded-full">
+          <div className="lang-bar mx-auto mt-5 flex h-2 w-full max-w-2xl gap-1 overflow-hidden rounded-full">
             {stack.measured.map((l) => (
               <div
                 key={l.name}
@@ -151,12 +159,12 @@ export default function Stack() {
             ))}
           </div>
 
-          <ul className="mt-5 flex flex-wrap justify-center gap-x-7 gap-y-2">
+          <ul className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2">
             {stack.measured.map((l) => (
               <li key={l.name} className="flex items-center gap-2 text-sm">
                 <span
                   aria-hidden="true"
-                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  className="h-2 w-2 shrink-0 rounded-full"
                   style={{ background: l.color }}
                 />
                 <span>{l.name}</span>
@@ -164,67 +172,6 @@ export default function Stack() {
               </li>
             ))}
           </ul>
-
-          <p className="mono-label mt-5 text-center">{stack.note}</p>
-        </div>
-
-        {/* ---------- parede de logos ---------- */}
-        <div className="mt-20 space-y-16">
-          {stack.groups.map((group) => (
-            <div key={group.group} className="stack-col">
-              <h3 className="mono-label text-center text-plasma">
-                {group.group}
-              </h3>
-
-              <ul
-                className={`mx-auto mt-8 grid gap-4 ${
-                  group.wide
-                    ? "grid-cols-2 sm:grid-cols-3"
-                    : "max-w-3xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"
-                }`}
-              >
-                {group.items.map((item) => {
-                  const logo = item.icon ? LOGOS[item.icon] : null;
-
-                  return (
-                    <li
-                      key={item.name}
-                      className="stack-tile group/tile flex flex-col items-center gap-3 rounded-2xl border border-bone/12 bg-ink-2 p-6 text-center transition-colors duration-500 hover:border-plasma/50 hover:bg-ink-3"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="grid h-12 w-12 shrink-0 place-items-center rounded-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/tile:scale-110 [&>svg]:h-7 [&>svg]:w-7"
-                        style={{
-                          color: item.color ?? "var(--color-plasma-soft)",
-                          background: `color-mix(in oklab, ${
-                            item.color ?? "var(--color-plasma)"
-                          } 14%, transparent)`,
-                        }}
-                      >
-                        {logo ?? (
-                          <span className="display text-sm tracking-tight">
-                            {monograma(item.name)}
-                          </span>
-                        )}
-                      </span>
-
-                      <span className="text-sm leading-snug">{item.name}</span>
-
-                      {item.pct !== undefined && (
-                        <span className="mono-label">{item.pct}%</span>
-                      )}
-
-                      {item.note && (
-                        <span className="text-xs leading-relaxed text-bone-dim">
-                          {item.note}
-                        </span>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
         </div>
       </div>
     </section>

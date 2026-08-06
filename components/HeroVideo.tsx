@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { hero, site } from "@/lib/content";
+import { getLogo } from "@/lib/logos";
 
 /* ============================================================
    HERO — o vídeo roda sozinho, em loop.
@@ -73,7 +74,16 @@ export default function HeroVideo() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="hero" className="relative h-svh w-full overflow-hidden">
+    /* `data-theme="dark"` fixo: o fundo aqui é um vídeo escuro em
+       qualquer tema, então os tokens precisam continuar sendo os
+       escuros. Sem isso, no tema claro o nome vira texto quase preto
+       sobre a cena escura e some. */
+    <section
+      ref={sectionRef}
+      id="hero"
+      data-theme="dark"
+      className="relative h-svh w-full overflow-hidden bg-ink text-bone"
+    >
       {/* ---------- vídeo ---------- */}
       {/* O basePath do Next não alcança `src` escrito à mão — só o que
           passa por next/link, next/image e pelos chunks. Publicado em
@@ -117,42 +127,64 @@ export default function HeroVideo() {
 
       {/* ---------- conteúdo ---------- */}
       <div className="shell relative z-10 flex h-full flex-col justify-between py-8">
-        {/* O canto esquerdo pertence à logo do nav (fixa por cima);
-            repetir um rótulo ali empilharia dois textos no mesmo ponto. */}
-        <header className="flex items-start justify-end pt-[max(1rem,env(safe-area-inset-top))]">
-          <span className="mono-label hero-fade text-right">
-            {site.location}
-            <br />
-            {site.year}
-          </span>
-        </header>
+        {/* A barra fixa ocupa os dois cantos superiores — logo à
+            esquerda, botão de tema à direita. Qualquer coisa colocada
+            aqui em cima cai embaixo dela; a localização foi para o pé
+            do hero, ao lado da legenda. */}
+        <div aria-hidden="true" />
 
         {/* A personagem do vídeo ocupa a metade direita do quadro, então
-            o título fica preso à esquerda e não passa de ~52% da largura
+            o bloco fica preso à esquerda e não passa de ~58% da largura
             em telas grandes — senão as letras caem em cima do rosto. */}
-        <h1 className="display max-w-[min(100%,15ch)] text-[clamp(2.9rem,9.2vw,8.2rem)] -ml-[0.05em] lg:max-w-[58%]">
-          {hero.titleLines.map((line, i) => (
-            <span key={line} className="line-mask">
-              <span className="line-inner hero-line-inner block">
-                {line}
-                {i === hero.titleLines.length - 1 && (
-                  <span
-                    className="editorial ml-[0.15em] text-plasma"
-                    style={{ fontSize: "0.62em" }}
-                  >
-                    .
-                  </span>
-                )}
+        <div className="max-w-[min(100%,18ch)] lg:max-w-[58%]">
+          <p className="hero-fade mono-label mb-3">{hero.greeting}</p>
+
+          {/* O nome em caixa alta e apertado: é a única coisa nesta tela
+              que precisa ser lida de longe. */}
+          <h1 className="display text-[clamp(2.9rem,9.4vw,8.4rem)] uppercase -ml-[0.05em] leading-[0.86]">
+            {hero.nameLines.map((line) => (
+              <span key={line} className="line-mask">
+                <span className="line-inner hero-line-inner block">{line}</span>
               </span>
-            </span>
-          ))}
-        </h1>
+            ))}
+          </h1>
+
+          <p className="display hero-fade mt-3 text-[clamp(1.05rem,3vw,2.1rem)] uppercase tracking-tight text-plasma">
+            {hero.role}
+          </p>
+
+          {/* Fila de logos: mostra a stack antes de qualquer texto sobre
+              ela. Só entram as chaves que existem no mapa. */}
+          <ul className="hero-fade mt-7 flex flex-wrap items-center gap-2.5">
+            {hero.techIcons.map((key) => {
+              const logo = getLogo(key);
+              if (!logo) return null;
+              return (
+                <li key={key}>
+                  <span
+                    title={key}
+                    aria-hidden="true"
+                    className="grid h-10 w-10 place-items-center rounded-xl border border-bone/12 bg-ink-2/70 backdrop-blur-md transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 [&>*]:h-5 [&>*]:w-5"
+                    style={{ color: logo.color }}
+                  >
+                    {logo.node}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          {/* A fila acima é decorativa; a lista real e nomeada das
+              tecnologias é a seção Stack. */}
+          <span className="sr-only">
+            Tecnologias: {hero.techIcons.join(", ")}
+          </span>
+        </div>
 
         {/* O canto direito tinha o "role para revelar" com a barra de
             progresso do vídeo ao lado. Saiu: instrução de scroll é
             enfeite — quem chega numa página já sabe rolar — e a barra
             servia a ela. Sobrou a legenda, que é conteúdo. */}
-        <div className="flex items-end pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="flex items-end justify-between gap-8 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="hero-fade max-w-xs">
             {/* A que sai e a que entra ocupam a mesma célula do grid
                 para o bloco não mudar de altura no meio da transição. */}
@@ -173,6 +205,12 @@ export default function HeroVideo() {
               ))}
             </div>
           </div>
+
+          <span className="mono-label hero-fade hidden text-right sm:block">
+            {site.location}
+            <br />
+            {site.year}
+          </span>
         </div>
       </div>
     </section>

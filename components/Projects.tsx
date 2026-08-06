@@ -1,20 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
 import { projects } from "@/lib/content";
 import { asset } from "@/lib/asset";
+import Carousel from "./Carousel";
 import RevealText from "./RevealText";
 
 /* ============================================================
-   PROJETOS — cards empilhados na vertical.
+   PROJETOS — carrossel de cards.
 
-   Antes a seção ficava presa (pin) e o trilho andava na horizontal
-   conforme a página descia. Duas coisas quebravam: o movimento lateral
-   só existia enquanto o scroll acontecia, e a leitura de cada card
-   dependia de parar no ponto certo. Empilhado, cada projeto tem o seu
-   tempo de tela e a seção fica mais longa — que era o objetivo.
+   Cada card é um slide de largura fixa: com largura fluida os cards
+   mudariam de proporção conforme a janela e as capas cortariam em
+   pontos diferentes. O `snap-start` encaixa o começo do card na borda
+   esquerda da pista, então nunca sobra meio card colado no canto.
 
    O card inteiro é clicável, capa inclusive: o link do título se estica
    por cima de tudo com o ::after. O link do repositório sobe acima dele
@@ -22,42 +20,8 @@ import RevealText from "./RevealText";
    ============================================================ */
 
 export default function Projects() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        /* Um trigger por card, não um stagger para a lista toda: a lista
-           é mais alta que a viewport e, com um só, os últimos cards
-           terminariam a animação antes de aparecerem. */
-        const tweens = gsap.utils
-          .toArray<HTMLElement>(".projeto-card")
-          .map((card) =>
-            gsap.from(card, {
-              y: 48,
-              opacity: 0,
-              duration: 1,
-              ease: "expo.out",
-              scrollTrigger: { trigger: card, start: "top 88%", once: true },
-            })
-          );
-
-        return () => tweens.forEach((t) => t.kill());
-      });
-
-      return () => mm.revert();
-    },
-    { scope: sectionRef }
-  );
-
   return (
-    <section
-      ref={sectionRef}
-      id="projetos"
-      className="border-t border-bone/10 py-32 sm:py-44"
-    >
+    <section id="projetos" className="border-t border-bone/10 py-32 sm:py-44">
       <div className="shell shell-narrow">
         <div className="section-head">
           <span className="mono-label">
@@ -72,17 +36,17 @@ export default function Projects() {
           </RevealText>
         </div>
 
-        <ul className="mt-20 space-y-10">
+        <Carousel label="Projetos" className="mt-16">
           {projects.map((p) => (
             <li
               key={p.slug}
-              className="projeto-card group relative overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25"
+              className="group relative w-[85vw] shrink-0 snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[26rem]"
             >
               {/* ---------- capa: tela real do projeto ---------- */}
               {/* <img> e não next/image: no export estático a otimização
                   é desligada de qualquer jeito, e o basePath não chega
                   ao src — quem monta o prefixo é o asset(). */}
-              <div className="relative aspect-[16/9] overflow-hidden bg-ink-3 sm:aspect-[2/1]">
+              <div className="relative aspect-[16/10] overflow-hidden bg-ink-3">
                 <img
                   src={asset(p.cover.src)}
                   alt={p.cover.alt}
@@ -90,7 +54,8 @@ export default function Projects() {
                   height={1125}
                   loading="lazy"
                   decoding="async"
-                  className="h-full w-full object-cover object-top transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                  draggable={false}
+                  className="h-full w-full object-cover object-top transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                 />
 
                 {/* A captura é clara em alguns projetos e escura em
@@ -111,10 +76,10 @@ export default function Projects() {
                   }}
                 />
 
-                <span className="mono-label absolute left-5 top-5 rounded-full bg-ink/70 px-3 py-1 backdrop-blur-md">
+                <span className="mono-label absolute left-4 top-4 rounded-full bg-ink/70 px-3 py-1 backdrop-blur-md">
                   {p.index}
                 </span>
-                <span className="mono-label absolute right-5 top-5 rounded-full bg-ink/70 px-3 py-1 backdrop-blur-md">
+                <span className="mono-label absolute right-4 top-4 rounded-full bg-ink/70 px-3 py-1 backdrop-blur-md">
                   {p.year}
                 </span>
               </div>
@@ -127,15 +92,10 @@ export default function Projects() {
               />
 
               {/* ---------- texto ---------- */}
-              <div className="p-7 lg:p-10">
-                <span
-                  className="mono-label transition-colors duration-500"
-                  style={{ ["--tint" as string]: p.tint }}
-                >
-                  {p.category}
-                </span>
+              <div className="flex flex-col p-7">
+                <span className="mono-label">{p.category}</span>
 
-                <h3 className="display mt-3 text-3xl lg:text-4xl">
+                <h3 className="display mt-3 text-2xl lg:text-3xl">
                   {/* O ::after cobre o card inteiro — capa inclusive —
                       então clicar na imagem também navega. */}
                   <Link
@@ -146,48 +106,49 @@ export default function Projects() {
                   </Link>
                 </h3>
 
-                <p className="mt-4 max-w-2xl leading-relaxed text-bone-dim">
+                <p className="mt-3 line-clamp-3 leading-relaxed text-bone-dim">
                   {p.description}
                 </p>
 
-                <div className="mt-7 flex flex-wrap items-center justify-between gap-5">
-                  <ul className="flex flex-wrap gap-1.5">
-                    {p.tags.map((tag) => (
-                      <li
-                        key={tag}
-                        className="rounded-full border border-bone/15 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
+                <ul className="mt-5 flex flex-wrap gap-1.5">
+                  {p.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-bone/15 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
 
-                  <div className="flex items-center gap-6">
-                    {p.repo && (
-                      <a
-                        href={p.repo}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="relative z-10 mono-label transition-colors hover:text-plasma"
-                      >
-                        Código ↗
-                      </a>
-                    )}
-                    <span className="mono-label inline-flex items-center gap-2 transition-colors duration-500 group-hover:text-plasma">
-                      Ver o projeto
-                      <span
-                        aria-hidden="true"
-                        className="transition-transform duration-500 group-hover:translate-x-1"
-                      >
-                        →
-                      </span>
+                <div className="mt-6 flex items-center justify-between gap-4 border-t border-bone/10 pt-5">
+                  {p.repo ? (
+                    <a
+                      href={p.repo}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="relative z-10 mono-label transition-colors hover:text-plasma"
+                    >
+                      Código ↗
+                    </a>
+                  ) : (
+                    <span />
+                  )}
+
+                  <span className="mono-label inline-flex items-center gap-2 transition-colors duration-500 group-hover:text-plasma">
+                    Ver mais
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform duration-500 group-hover:translate-x-1"
+                    >
+                      →
                     </span>
-                  </div>
+                  </span>
                 </div>
               </div>
             </li>
           ))}
-        </ul>
+        </Carousel>
       </div>
     </section>
   );

@@ -1,9 +1,25 @@
 "use client";
 
 import { useRef } from "react";
+import {
+  IconSchool,
+  IconCertificate,
+  IconDeviceDesktopCode,
+  IconBook2,
+} from "@tabler/icons-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { background } from "@/lib/content";
 import RevealText from "./RevealText";
+
+/* Ícone pequeno por tipo de formação — bolsa, curso técnico, graduação.
+   `IconBook2` é o padrão para um tipo que ainda não foi mapeado, para a
+   moldura nunca ficar vazia. */
+function IconeFormacao({ tipo }: { tipo?: string }) {
+  if (tipo === "escola") return <IconSchool />;
+  if (tipo === "tecnico") return <IconDeviceDesktopCode />;
+  if (tipo === "graduacao") return <IconCertificate />;
+  return <IconBook2 />;
+}
 
 /* A formação era três linhas de texto no rodapé do Stack, sem destaque
    nenhum. Virou seção própria com um cartão por etapa: o ano em número
@@ -19,7 +35,7 @@ export default function Formacao() {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const t = gsap.from(".formacao-card", {
+        const entrada = gsap.from(".formacao-card", {
           y: 32,
           opacity: 0,
           duration: 0.9,
@@ -27,7 +43,24 @@ export default function Formacao() {
           stagger: 0.1,
           scrollTrigger: { trigger: ".formacao-grid", start: "top 88%", once: true },
         });
-        return () => t.kill();
+
+        /* Flutuação contínua dos ícones. O `each` no stagger dessincroniza
+           os três: subindo juntos pareceriam um bloco só se mexendo, e o
+           efeito de "vida" vem justamente de estarem em fases diferentes. */
+        const flutua = gsap.to(".formacao-icone", {
+          y: -5,
+          rotate: 4,
+          duration: 2.4,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          stagger: { each: 0.45, from: "start" },
+        });
+
+        return () => {
+          entrada.kill();
+          flutua.kill();
+        };
       });
 
       return () => mm.revert();
@@ -72,10 +105,20 @@ export default function Formacao() {
 
               <div className="grid gap-6 p-8 sm:grid-cols-[auto_1fr] sm:gap-10 sm:p-10">
                 {/* O ano é o âncora visual: grande, na cor de acento e
-                    fora do fluxo do texto. */}
-                <span className="display text-[clamp(1.6rem,4vw,2.4rem)] leading-none text-plasma sm:w-[7.5rem]">
-                  {item.period}
-                </span>
+                    fora do fluxo do texto. Abaixo dele, o ícone pequeno
+                    da instituição, flutuando devagar. */}
+                <div className="flex items-center gap-4 sm:w-[7.5rem] sm:flex-col sm:items-start sm:gap-3">
+                  <span className="display text-[clamp(1.6rem,4vw,2.4rem)] leading-none text-plasma">
+                    {item.period}
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className="formacao-icone grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-bone/12 bg-ink-3 text-plasma-soft [&>svg]:h-[18px] [&>svg]:w-[18px]"
+                  >
+                    <IconeFormacao tipo={item.icon} />
+                  </span>
+                </div>
 
                 <div>
                   <span className="mono-label inline-block rounded-full border border-plasma/30 px-3 py-1 text-plasma-soft">

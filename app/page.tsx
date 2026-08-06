@@ -6,6 +6,7 @@ import Metricas from "@/components/Metricas";
 import Career from "@/components/Career";
 import Projects from "@/components/Projects";
 import Stack from "@/components/Stack";
+import Recomendacoes from "@/components/Recomendacoes";
 import Certificates from "@/components/Certificates";
 import Formacao from "@/components/Formacao";
 import Metas from "@/components/Metas";
@@ -40,6 +41,10 @@ export default function Home() {
         <Metricas />
         <Career />
         <Projects />
+        {/* A recomendação vem logo depois dos projetos: é a validação de
+            terceiro para o que a pessoa acabou de ver. Some sozinha
+            enquanto a lista estiver vazia. */}
+        <Recomendacoes />
         <Stack />
         <Certificates images={imagensCertificados} />
         <Formacao />

@@ -30,6 +30,57 @@
   color-scheme: dark;
 }
 
+/* Os valores escuros repetidos aqui, e não só no @theme, para que o
+   seletor funcione ANINHADO: o hero tem um vídeo escuro de fundo e
+   precisa continuar com texto claro mesmo quando a página está no tema
+   claro. Marcando aquela seção com data-theme="dark", os tokens voltam
+   ao escuro só ali dentro. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-ink: #07060b;
+  --color-ink-2: #0f0c17;
+  --color-ink-3: #181327;
+  --color-bone: #f2f0f7;
+  --color-bone-dim: #9c97ad;
+  --color-plasma: #a855f7;
+  --color-plasma-soft: #cba6f7;
+}
+
+/* ---------- Tema claro ----------
+   Os nomes dos tokens continuam os mesmos — "ink" é o fundo, "bone" é o
+   texto — e só os valores trocam. Nenhum componente precisa saber que
+   existe um segundo tema: quem escreve `bg-ink text-bone` acerta nos
+   dois. Trocar os nomes por "bg"/"fg" seria mais honesto, mas exigiria
+   reescrever todos os componentes por ganho nenhum em pixel.
+
+   O roxo escurece no claro: #a855f7 sobre branco fica com contraste
+   ~2.9:1, abaixo do mínimo legível para texto. O tom abaixo passa.  */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-ink: #faf9fc;
+  --color-ink-2: #f2f0f7;
+  --color-ink-3: #e7e3f0;
+  --color-bone: #14111c;
+  --color-bone-dim: #5d5773;
+  --color-plasma: #7c2fd4;
+  --color-plasma-soft: #9b5de5;
+}
+
+/* No claro o grão e o degradê do hero foram calibrados para fundo
+   escuro: o grão vira sujeira cinza e o degradê, uma mancha. */
+[data-theme="light"] .grain {
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+/* A transição evita o corte seco ao trocar de tema. Fica fora dos
+   elementos que já animam transform, para não competir com o GSAP. */
+html[data-theme] body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
 * {
   min-width: 0;
 }

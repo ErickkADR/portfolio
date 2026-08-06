@@ -29,9 +29,26 @@ export const nav = [
 ];
 
 export const hero = {
-  /* Cada string é uma linha do título. Elas sobem em cascata. */
-  titleLines: ["Ferramentas", "que movem", "o mundo"],
-  kicker: "Portfólio",
+  greeting: "Olá, meu nome é",
+  /* Uma linha por parte do nome — elas sobem em cascata. */
+  nameLines: ["Erick", "Dantas"],
+  /* A categoria mais buscada que descreve de fato o que ele faz: constrói
+     a interface e o back de IA dos portais que entrega, ponta a ponta.
+     "Front-end" venderia menos do que o trabalho é; "Full-stack com IA"
+     é o termo que um recrutador digita. */
+  role: "Desenvolvedor Full-stack & IA",
+  /* Logos que aparecem em fila sob o nome. As chaves são as mesmas de
+     lib/logos.tsx — sem chave conhecida, o item nem é renderizado. */
+  techIcons: [
+    "javascript",
+    "typescript",
+    "react",
+    "nextjs",
+    "python",
+    "supabase",
+    "tailwind",
+    "git",
+  ],
   /* Legendas que se alternam sozinhas, a cada ~4s. */
   captions: [
     { text: "Suporte técnico virou infraestrutura de IA" },
@@ -303,29 +320,96 @@ export const feitos = {
 
 /* ---------- Métricas de sucesso ----------
    Números medidos, não estimados. Cada um tem de onde saiu. */
+/* ---------- Métricas ----------
+   Cada item responde "o que a empresa ganhou", não "o que eu construí".
+   Por isso o par `value` + `outcome`: o número é a prova, e o `outcome`
+   diz o que ele significa para a operação.
+
+   ⚠️ COMPLETAR: os campos `outcome` marcados com [MEDIR] esperam o
+   número real da Bannerjet — tempo de atendimento antes e depois,
+   chamados repetidos que deixaram de existir, horas de treinamento
+   economizadas. São os que mais convencem, e são os que eu não tenho
+   como levantar daqui. Enquanto não vierem, o cartão mostra só o que
+   é verificável. */
 export const metricas = {
-  label: "Métricas de sucesso",
-  title: "Resultados reais",
+  label: "Resultados",
+  title: "O que isso deu para a Bannerjet",
   intro:
-    "Números do que está rodando — não é projeção nem arredondamento " +
-    "otimista.",
+    "Não é portfólio de protótipo: cada número abaixo veio de algo que " +
+    "está em produção e que a equipe usa todo dia.",
   items: [
     {
       value: "209",
-      label: "Pares de pergunta e resposta na base que alimenta a IA de suporte",
+      label: "pares de pergunta e resposta na base que alimenta a Jet IA",
+      outcome:
+        "O time deixou de responder à mão a dúvida que já tinha sido respondida antes.",
       source: "Jet IA · Bannerjet",
     },
     {
       value: "584",
-      label: "Elementos no fluxograma que mapeou o suporte técnico",
+      label: "elementos no fluxograma que mapeou o suporte técnico inteiro",
+      outcome:
+        "O caminho de cada chamado deixou de morar na cabeça de quem já estava na casa.",
       source: "Miro · Bannerjet",
     },
     {
+      value: "24/7",
+      label: "atendimento do chatbot com RAG no WhatsApp",
+      outcome:
+        "A primeira resposta ao cliente não depende mais de haver alguém disponível.",
+      source: "Callbell + n8n · Bannerjet",
+    },
+    {
       value: "130+",
-      label: "Produtos catalogados no e-commerce da Nexus",
+      label: "produtos catalogados no e-commerce da Nexus",
+      outcome:
+        "Pedido fechado direto no WhatsApp, sem intermediário e sem tabela de preço por e-mail.",
       source: "Nexus Print",
     },
   ],
+};
+
+/* ---------- Recomendações ----------
+   ⚠️ ESTE BLOCO ESTÁ VAZIO DE PROPÓSITO.
+
+   Depoimento é palavra de outra pessoa, com o nome dela em cima. Não dá
+   para eu escrever no lugar de um gestor ou de um professor: mesmo que
+   o conteúdo fosse plausível, seria uma citação inventada atribuída a
+   alguém real — e num portfólio isso é o tipo de coisa que destrói a
+   credibilidade que a seção deveria construir.
+
+   COMO PREENCHER: peça a recomendação (o LinkedIn tem "Solicitar
+   recomendação" e o texto vem pronto), copie o que a pessoa escreveu e
+   adicione um item aqui. Com a lista vazia, a seção simplesmente não
+   aparece no site — nada quebra.
+
+   Exemplo do formato:
+     {
+       quote: "texto exatamente como a pessoa escreveu",
+       name: "Nome Sobrenome",
+       role: "Cargo",
+       org: "Empresa",
+       href: "https://www.linkedin.com/in/...",  // opcional
+       avatar: "fulano",  // opcional: public/recomendacoes/fulano.jpg
+     }
+*/
+export type Recomendacao = {
+  quote: string;
+  name: string;
+  role: string;
+  org: string;
+  href?: string;
+  /* Nome do arquivo (sem extensão) em public/recomendacoes/. */
+  avatar?: string;
+};
+
+export const recomendacoes = {
+  label: "Recomendações",
+  title: "O que dizem de mim",
+  intro:
+    "Pessoas com quem trabalhei — gestores, professores e colegas de " +
+    "comitê.",
+  items: [] as Recomendacao[],
 };
 
 export type ProjectImage = {
@@ -375,7 +459,11 @@ export const projects: Project[] = [
     slug: "central-tecnica",
     index: "01",
     title: "Central Técnica",
-    category: "Portal interno · Bannerjet Group",
+    /* As categorias são escritas como o termo que alguém digitaria numa
+       busca — "plataforma de treinamento técnico", e não "portal
+       interno". O nome da marca já está no título; a categoria serve
+       para dizer que tipo de produto é. */
+    category: "Plataforma de treinamento técnico",
     year: "2026",
     description:
       "Hub técnico que reúne catálogo de equipamentos, manuais, peças, firmwares e cursos com progressão por módulos — mais um chatbot de IA que responde dúvidas técnicas direto no site.",
@@ -435,7 +523,7 @@ export const projects: Project[] = [
     slug: "atomai",
     index: "02",
     title: "Atomai",
-    category: "SaaS · Chatbots com IA",
+    category: "Plataforma SaaS de chatbot com IA",
     year: "2026",
     description:
       "Plataforma SaaS de chatbots com IA especializada: integração com a Gemini API, painel administrativo e uma interface dark pensada para uso prolongado.",
@@ -495,7 +583,7 @@ export const projects: Project[] = [
     slug: "nexus-print",
     index: "03",
     title: "Nexus Print",
-    category: "E-commerce · Comunicação visual",
+    category: "Marketplace de produtos personalizados",
     year: "2026",
     description:
       "Loja virtual com mais de 130 produtos em 6 categorias, quatro modelos de precificação por produto, carrinho completo e fechamento de pedido direto no WhatsApp.",
@@ -555,7 +643,7 @@ export const projects: Project[] = [
     slug: "campro-a3-pro",
     index: "04",
     title: "Campro A3 Pro",
-    category: "Portal de licença · Pós-venda",
+    category: "Portal de pós-venda e licenciamento",
     year: "2026",
     description:
       "Cada equipamento vendido ganha um link permanente pela sua licença, com instalador, manuais e vídeo. Substituiu o envio manual de arquivos a cada venda.",
@@ -615,7 +703,7 @@ export const projects: Project[] = [
     slug: "mugiwaras",
     index: "05",
     title: "Bando dos Mugiwaras",
-    category: "Landing page · Fã-projeto",
+    category: "Landing page responsiva",
     year: "2026",
     description:
       "Landing page de One Piece com os 10 integrantes do Bando do Chapéu de Palha, biografia e barras de atributos — feita só com HTML e CSS.",
@@ -675,7 +763,7 @@ export const projects: Project[] = [
     slug: "apenas-um-escritor",
     index: "06",
     title: "Apenas Um Escritor",
-    category: "Experimento · Parallax",
+    category: "Site com efeito parallax",
     year: "2025",
     description:
       "Estudo do efeito parallax e da ilusão de ótica que ele cria — o projeto onde a vontade de trabalhar com movimento começou.",
@@ -919,6 +1007,7 @@ export const background = {
   items: [
     {
       period: "2019",
+      icon: "escola",
       title: "Bolsa de estudo · Colégio Monte Sinai",
       meta: "Metodologia Mackenzie",
       body:
@@ -928,6 +1017,7 @@ export const background = {
     },
     {
       period: "2021 — 2023",
+      icon: "tecnico",
       title: "Curso técnico de Informática",
       meta: "Certificado de tecnólogo",
       body:
@@ -938,6 +1028,7 @@ export const background = {
     },
     {
       period: "2024",
+      icon: "graduacao",
       title: "Análise e Desenvolvimento de Sistemas",
       meta: "Universidade Paulista",
       body: "Bolsa de 100% conquistada pela nota do Enem.",
@@ -966,27 +1057,22 @@ export type CareerEntry = {
   detail?: string[];
 };
 
+/* O `body` de cada etapa é deliberadamente curto — uma ou duas frases.
+   Na linha do tempo, dois parágrafos por etapa transformam a seção num
+   texto corrido e ninguém termina de ler. A história inteira vive no
+   `detail`, que só aparece na página da etapa, atrás do "Ver mais". */
 const careerEntries: CareerEntry[] = [
-  {
-    slug: "primeiro-contato",
-    period: "Aos 4 anos",
-    role: "O primeiro contato",
-    org: "",
-    body:
-      "Sentei na frente de um computador pela primeira vez e nunca mais saí. É o marco que explica o resto.",
-    tags: [],
-  },
   {
     slug: "curso-tecnico-informatica",
     period: "2021 — 2023",
     role: "Curso técnico de Informática",
     org: "Formação técnica",
     body:
-      "Infraestrutura de redes, hardware e programação, do começo ao fim, com certificado de tecnólogo. O desempenho acima da média rendeu um convite do próprio professor: criar as aulas e as apresentações junto com ele, remunerado. Foi a primeira vez que ensinar tecnologia me pagou alguma coisa.",
+      "Redes, hardware e programação, com certificado de tecnólogo. O desempenho rendeu um convite do próprio professor para produzir as aulas junto com ele.",
     tags: ["Redes", "Hardware", "Programação"],
     detail: [
       "O curso cobriu a base que sustenta tudo que vem depois: como uma rede realmente funciona, o que acontece dentro da máquina e como escrever software que fala com os dois.",
-      "O convite do professor para produzir material didático foi o primeiro sinal de uma coisa que se repetiria na Bannerjet: explicar bem é um trabalho, e alguém precisa fazê-lo.",
+      "Criar as aulas e as apresentações junto com o professor, remunerado, foi a primeira vez que ensinar tecnologia me pagou alguma coisa — e o primeiro sinal de algo que se repetiria na Bannerjet: explicar bem é um trabalho, e alguém precisa fazê-lo.",
     ],
   },
   {
@@ -995,8 +1081,12 @@ const careerEntries: CareerEntry[] = [
     role: "Primeiros commits",
     org: "GitHub",
     body:
-      "Exercícios de CSS e as primeiras páginas responsivas — SiteMisato, a tela de login do Jujutsu, o estudo de parallax. Aprender construindo, sem curso formal no meio.",
+      "As primeiras páginas responsivas, aprendendo construindo — sem curso formal no meio.",
     tags: ["HTML", "CSS", "JavaScript"],
+    detail: [
+      "Exercícios de CSS e os primeiros projetos publicados: o SiteMisato, a tela de login do Jujutsu e o estudo de parallax que virou o Apenas Um Escritor.",
+      "Nenhum deles era encomenda de ninguém. Eram desculpas para descobrir como uma coisa funcionava, e é assim que a maior parte do que eu sei foi aprendida.",
+    ],
   },
   {
     slug: "achei-montador-designer",
@@ -1004,8 +1094,11 @@ const careerEntries: CareerEntry[] = [
     role: "Web Designer",
     org: "Achei Montador",
     body:
-      "Entrei como designer, responsável pelas atividades criativas da empresa: edição de fotos, retoque e manipulação no Photoshop, e as peças visuais que sustentavam a comunicação da marca.",
+      "Responsável pelas peças visuais da marca: edição, retoque e manipulação no Photoshop.",
     tags: ["Photoshop", "Edição de imagens", "Design de interface"],
+    detail: [
+      "Entrei como designer, cuidando das atividades criativas da empresa — das fotos de produto às peças que sustentavam a comunicação da marca.",
+    ],
   },
   {
     slug: "achei-montador-trafego",
@@ -1013,8 +1106,12 @@ const careerEntries: CareerEntry[] = [
     role: "Especialista em Tráfego Pago",
     org: "Achei Montador",
     body:
-      "Assumi a gestão e a otimização das campanhas de tráfego pago: Google Ads e Meta Business, com acompanhamento dos resultados pelo Google Analytics.",
+      "Gestão e otimização das campanhas no Google Ads e no Meta Business, com leitura de resultado no Analytics.",
     tags: ["Google Ads", "Meta Business", "Google Analytics"],
+    detail: [
+      "Assumi a operação de tráfego pago depois do design: definir público, acompanhar custo por resultado e cortar o que não performava.",
+      "Foi onde aprendi a olhar para número como argumento, e não como enfeite de relatório — o que mudou a forma como eu apresento trabalho até hoje.",
+    ],
   },
   {
     slug: "apdados-assistente",
@@ -1022,7 +1119,7 @@ const careerEntries: CareerEntry[] = [
     role: "Assistente do Comitê StarTech",
     org: "APDADOS · freelance, remoto",
     body:
-      "Suporte administrativo e logístico ao comitê: documentação técnica, organização dos processos e o trabalho de bastidor que faz um comitê voluntário entregar o que promete.",
+      "Documentação técnica e organização dos processos do comitê — o bastidor que faz um grupo voluntário entregar o que promete.",
     tags: ["Documentação técnica", "Processos", "Trabalho em equipe"],
   },
   {
@@ -1031,8 +1128,12 @@ const careerEntries: CareerEntry[] = [
     role: "Técnico IGP",
     org: "Bannerjet Group",
     body:
-      "Suporte técnico especializado, quase todo remoto: plotters de recorte, máquinas de fibra laser e sistemas CellCut. Redes, manutenção e configuração de hardware de um lado; CorelDRAW, Photoshop, SignMaster e CameraCut do outro — os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa.",
+      "Suporte remoto a plotters de recorte, máquinas de fibra laser e sistemas CellCut.",
     tags: ["Suporte remoto", "Redes", "CorelDRAW", "SignMaster", "CameraCut"],
+    detail: [
+      "Redes, manutenção e configuração de hardware de um lado; CorelDRAW, Photoshop, SignMaster e CameraCut do outro.",
+      "Os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa — foi vendo o mesmo problema voltar que nasceu a ideia de documentar tudo.",
+    ],
   },
   {
     slug: "apdados-coordenador",
@@ -1040,8 +1141,11 @@ const careerEntries: CareerEntry[] = [
     role: "Coordenador do Comitê StarTech",
     org: "APDADOS · freelance, remoto",
     body:
-      "Coordeno e oriento o comitê, com foco na formação de alunos e profissionais entrando no mercado. É onde a parte analítica e de infraestrutura de TI encontra gente — montar trilha, revisar material, destravar carreira.",
+      "Coordeno o comitê com foco na formação de quem está entrando no mercado.",
     tags: ["Coordenação", "Cursos de treinamento", "Mentoria"],
+    detail: [
+      "É onde a parte analítica e de infraestrutura de TI encontra gente: montar trilha, revisar material, destravar carreira.",
+    ],
   },
   {
     slug: "bannerjet-produto-tecnico",
@@ -1049,9 +1153,11 @@ const careerEntries: CareerEntry[] = [
     role: "Criador de Produto Técnico",
     org: "Bannerjet Group",
     body:
-      "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema. Mapeei o suporte inteiro num fluxograma, produzi os vídeos — e só quando troquei a minha narração por IA o time passou a usar. Daí vieram os manuais, os protótipos das telas dos equipamentos, a base no Notion e o chatbot com RAG que hoje atende no WhatsApp.",
+      "Mapeei o suporte inteiro, troquei a minha narração por IA e o time finalmente passou a usar. Daí vieram os manuais, a base no Notion e o chatbot com RAG no WhatsApp.",
     tags: ["RAG", "Supabase", "n8n", "ElevenLabs", "Callbell", "Notion"],
     detail: [
+      "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema.",
+      "Mapeei o suporte num fluxograma e produzi os vídeos — mas só quando troquei a minha narração por IA o time passou a assistir. O atrito não era o conteúdo, era o formato.",
       "É o cargo atual, e o que está em Feitos na Bannerjet foi construído aqui: a Central Técnica, a Jet IA, o portal de licenças da linha A3, o Painel de Atendimentos do ERP e as automações que rodam sozinhas todo dia.",
     ],
   },
@@ -1063,8 +1169,9 @@ export const career = {
   intro:
     "Trabalho com o que amo. Cada etapa começou como um problema concreto " +
     "que precisava ser resolvido.",
-  /* Rótulo do link que leva à página da etapa. */
-  entryCta: "Ver comprovação",
+  /* Rótulo do link que leva à página da etapa, onde mora a história
+     inteira — o card da linha do tempo só dá o resumo. */
+  entryCta: "Ver mais",
   entries: careerEntries,
 };
 

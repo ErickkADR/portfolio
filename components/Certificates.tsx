@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
 import { certificates } from "@/lib/content";
 import { asset } from "@/lib/asset";
+import Carousel from "./Carousel";
 import RevealText from "./RevealText";
 
 /* NOTA: as imagens chegam prontas de `arquivoPorSlug("certificados")`,
@@ -44,26 +44,9 @@ export default function Certificates({ images }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [zoom, close]);
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const t = gsap.from(".cert-card", {
-          y: 30,
-          opacity: 0,
-          duration: 0.85,
-          ease: "power3.out",
-          stagger: 0.05,
-          scrollTrigger: { trigger: ".cert-grid", start: "top 88%", once: true },
-        });
-        return () => t.kill();
-      });
-
-      return () => mm.revert();
-    },
-    { scope: ref }
-  );
+  /* A entrada em cascata dos cards agora é do <Carousel>, que anima os
+     próprios filhos — manter um tween aqui, mirando classes que não
+     existem mais, só criaria um ScrollTrigger órfão. */
 
   return (
     <section
@@ -87,14 +70,17 @@ export default function Certificates({ images }: Props) {
           </p>
         </div>
 
-        <ul className="cert-grid mt-20 grid gap-6 sm:grid-cols-2">
+        {/* `items-stretch` (padrão do flex) iguala a altura de todos os
+            cards à do mais alto: num carrossel, cards de alturas
+            diferentes fazem a base da pista serrilhar a cada arrasto. */}
+        <Carousel label="Certificados" className="mt-16">
           {items.map((cert) => {
             const image = images[cert.slug];
 
             return (
               <li
                 key={cert.slug}
-                className="cert-card group flex flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25"
+                className="group flex w-[80vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[21rem]"
               >
                 {image && (
                   <button
@@ -174,7 +160,7 @@ export default function Certificates({ images }: Props) {
               </li>
             );
           })}
-        </ul>
+        </Carousel>
       </div>
 
       {/* ---------- visualização em tela cheia ---------- */}
