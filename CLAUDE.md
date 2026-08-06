@@ -95,6 +95,25 @@ nunca aplicam e o componente sai claro.
 O deploy é por branch e não por GitHub Actions porque o token `gh` do Erick não tem escopo
 `workflow` — commitar `.github/workflows/*` falha no push. Para mudar: `gh auth refresh -s workflow`.
 
+## As logos da seção Stack
+
+São PNG de verdade, com fundo transparente, em `public/stack/<slug>.png` — o slug é o nome do
+item no `content.ts` em minúsculas com hífen ("Claude Code" → `claude-code`). A pasta é lida
+no build, como a dos certificados: **largar o arquivo já coloca a logo no ar**, sem cadastrar
+caminho em lugar nenhum. Item sem PNG cai no monograma, no mesmo ladrilho.
+
+`node scripts/baixa-logos.mjs` baixa o que falta e rasteriza com o sharp. Ele pula o que já
+existe, então rodar de novo é seguro — para trocar uma logo, apague o PNG antes.
+
+- O **simple-icons removeu** as marcas que pediram (Microsoft, Adobe, OpenAI): `visualstudiocode`,
+  `adobephotoshop`, `powershell`, `windows11` e `openai` respondem **404** hoje. O devicon tem
+  todas essas, e coloridas. A do Codex sai de uma **versão antiga** do pacote no npm.
+- Ícone de biblioteca (Tabler) não serve aqui: é silhueta de uma cor só, e numa parede de logos
+  a cor é metade do reconhecimento. O hero ainda usa o Tabler — lá são 8 ícones pequenos.
+- **Logo preta some no fundo escuro.** O Cursor caiu nisso: a cor de marca dele é um cubo preto,
+  e o ladrilho ficava vazio. Nesses casos, forçar branco no `siCor`.
+- Sem logo hoje: Spline, MakerWorld, RAG, VBA, Callbell, SignMaster, CameraCut, LightBurn, EzCad.
+
 ## Armadilhas de responsividade (já custaram caro uma vez)
 
 - **`gsap.from({ x: … })` em card de largura cheia estoura a página na horizontal.** O `from`

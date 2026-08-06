@@ -1,27 +1,83 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { stack } from "@/lib/content";
-import { getLogo, monograma } from "@/lib/logos";
+import { monograma, slugify } from "@/lib/logos";
+import { asset } from "@/lib/asset";
 import RevealText from "./RevealText";
 
 /* ============================================================
-   STACK — parede de logos.
+   STACK — parede de logos que reage ao ponteiro.
 
-   Antes cada ferramenta era um cartão com logo, nome e nota embaixo.
-   Ficava uma tabela: muito texto repetido, e a leitura acontecia palavra
-   por palavra em vez de por reconhecimento. Agora o ladrilho carrega só
-   a logo, e o nome aparece no hover — quem reconhece a marca não precisa
-   ler nada, e quem não reconhece descobre passando o mouse.
+   O ladrilho sob o cursor cresce e sobe; os VIZINHOS crescem um pouco,
+   como se a parede afundasse ao redor do dedo. É o que dá a sensação de
+   relevo: sem os vizinhos o ladrilho só incha sozinho, e o efeito lê
+   como zoom em vez de profundidade.
 
-   As linhas usam flex-wrap centralizado, e não uma grade de N colunas:
-   a última linha de cada grupo fica centralizada sozinha, em vez de
-   ficar encostada à esquerda com buracos à direita.
+   ---- Por que os vizinhos são achados por GEOMETRIA ----
+   A implementação óbvia é aritmética de índice numa grade de N colunas:
+   i-1, i+1, i-N, i+N. Só que aqui as linhas são `flex-wrap` centralizado,
+   e não uma grade fixa — a última linha de cada grupo fica centralizada
+   sozinha em vez de encostada à esquerda com buracos à direita. Com o
+   número de colunas mudando por breakpoint e a última linha deslocada,
+   a conta por índice erra justamente nas bordas. Medir a distância entre
+   os retângulos acerta em qualquer arranjo, e roda uma vez por hover —
+   não por frame.
+
+   ---- As logos ----
+   PNG de verdade, com fundo transparente, lidos de `public/stack/` no
+   build (ver lib/media.ts). Ícone de biblioteca é silhueta de uma cor só,
+   e logo de produto tem forma E cor — a cor é metade do reconhecimento.
+   Quem ainda não tem PNG cai no monograma, no mesmo ladrilho, sem
+   quebrar o alinhamento. Para acrescentar: `public/stack/<slug>.png`,
+   onde o slug é o nome do item em minúsculas com hífen.
    ============================================================ */
 
-export default function Stack() {
+type Props = {
+  /* slug → caminho em public/. Montado no Server Component da página. */
+  logos: Record<string, string>;
+};
+
+/* Um vizinho é quem está a menos de 1,4 ladrilho de distância nos dois
+   eixos — pega os oito ao redor e ignora o resto da linha. */
+const ALCANCE = 1.4;
+
+export default function Stack({ logos }: Props) {
   const ref = useRef<HTMLElement>(null);
+
+  /* Chave "grupo:índice". Uma só para a seção inteira: só existe um
+     ponteiro, então só um ladrilho pode estar sob ele. */
+  const [ativo, setAtivo] = useState<string | null>(null);
+  const [vizinhos, setVizinhos] = useState<Set<string>>(new Set());
+
+  const entrar = useCallback((e: React.PointerEvent<HTMLLIElement>, chave: string) => {
+    const alvo = e.currentTarget;
+    const lista = alvo.parentElement;
+    if (!lista) return;
+
+    const a = alvo.getBoundingClientRect();
+    const perto = new Set<string>();
+
+    for (const outro of lista.children) {
+      if (outro === alvo) continue;
+      const b = outro.getBoundingClientRect();
+      const dx = Math.abs(b.left - a.left);
+      const dy = Math.abs(b.top - a.top);
+      if (dx <= a.width * ALCANCE && dy <= a.height * ALCANCE) {
+        const k = (outro as HTMLElement).dataset.chave;
+        if (k) perto.add(k);
+      }
+    }
+
+    setAtivo(chave);
+    setVizinhos(perto);
+  }, []);
+
+  const sair = useCallback(() => {
+    setAtivo(null);
+    setVizinhos(new Set());
+  }, []);
 
   useGSAP(
     () => {
@@ -41,6 +97,10 @@ export default function Stack() {
               duration: 0.6,
               ease: "back.out(1.7)",
               stagger: 0.035,
+              /* Devolve o controle ao CSS: o transform do GSAP e o do
+                 hover disputam a mesma propriedade, e sem isso o
+                 primeiro ladrilho a receber o mouse dá um salto. */
+              clearProps: "transform,opacity",
               scrollTrigger: { trigger: col, start: "top 90%", once: true },
             })
           );
@@ -75,41 +135,71 @@ export default function Stack() {
           </p>
         </div>
 
-        {/* ---------- parede de logos ----------
-            Compacta de propósito: com os grupos que entraram, ladrilhos
-            de 80px e 14 de respiro entre grupos faziam a seção sozinha
-            ocupar duas telas e meia de rolagem. Em 56px o conjunto cabe
-            de uma vez, que é o ponto de uma parede de logos — ela existe
-            para ser lida de relance, não percorrida. */}
-        <div className="mt-16 space-y-9">
-          {stack.groups.map((group) => (
+        <div className="mt-16 space-y-10">
+          {stack.groups.map((group, gi) => (
             <div key={group.group} className="stack-group">
               <h3 className="mono-label text-center text-plasma">
                 {group.group}
               </h3>
 
-              <ul className="mt-5 flex flex-wrap justify-center gap-2.5">
-                {group.items.map((item) => {
-                  const logo = getLogo(item.icon);
-                  /* Ordem da cor: a da logo, se existir; senão a do
-                     próprio item (marcas sem ícone pronto mas com cor
-                     reconhecível, como Claude Code e Blender); e por
-                     último o roxo do site. */
-                  const cor = logo?.color ?? item.color ?? "var(--color-plasma-soft)";
+              {/* `perspective` no container e `translateZ` no ladrilho: é
+                  o que faz o que cresce vir na direção de quem olha, em
+                  vez de só ficar maior no plano. */}
+              <ul
+                onPointerLeave={sair}
+                className="mt-5 flex flex-wrap justify-center gap-2 [perspective:1200px]"
+              >
+                {group.items.map((item, ii) => {
+                  const chave = `${gi}:${ii}`;
+                  const slug = slugify(item.name);
+                  const logo = logos[slug];
+
+                  const grande = ativo === chave;
+                  const medio = !grande && vizinhos.has(chave);
 
                   return (
-                    <li key={item.name} className="stack-tile group/tile relative">
-                      {/* `button` e não `div`: o tooltip precisa aparecer
+                    <li
+                      key={item.name}
+                      data-chave={chave}
+                      onPointerEnter={(e) => entrar(e, chave)}
+                      className={`stack-tile group/tile relative transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] ${
+                        grande
+                          ? "z-30 -translate-x-1.5 -translate-y-1.5 scale-[1.22]"
+                          : medio
+                            ? "z-20 -translate-x-0.5 -translate-y-0.5 scale-[1.07]"
+                            : "z-10"
+                      }`}
+                    >
+                      {/* `button` e não `div`: o nome precisa aparecer
                           também no foco por teclado, e só um elemento
                           focável recebe :focus-visible. */}
                       <button
                         type="button"
                         aria-label={item.name}
-                        className="grid h-14 w-14 place-items-center rounded-xl border border-bone/10 bg-ink-2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-bone/25 hover:bg-ink-3 [&>*]:h-6 [&>*]:w-6"
-                        style={{ color: cor }}
+                        className={`grid h-16 w-16 place-items-center rounded-xl border bg-ink p-3 transition-[border-color,box-shadow] duration-300 sm:h-[4.5rem] sm:w-[4.5rem] ${
+                          grande
+                            ? "border-plasma/60 shadow-[0_0_28px_-6px_var(--color-plasma)]"
+                            : "border-bone/12"
+                        }`}
+                        style={{ color: item.color ?? "var(--color-plasma-soft)" }}
                       >
-                        {logo?.node ?? (
-                          <span className="display grid h-6 w-6 place-items-center text-xs tracking-tight">
+                        {logo ? (
+                          <img
+                            src={asset(logo)}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            draggable={false}
+                            className={`h-full w-full object-contain transition-opacity duration-300 ${
+                              grande ? "opacity-100" : "opacity-70"
+                            }`}
+                          />
+                        ) : (
+                          <span
+                            className={`display grid h-full w-full place-items-center text-sm tracking-tight transition-opacity duration-300 ${
+                              grande ? "opacity-100" : "opacity-70"
+                            }`}
+                          >
                             {monograma(item.name)}
                           </span>
                         )}
@@ -119,7 +209,7 @@ export default function Stack() {
                           roubar o hover do próprio ladrilho e piscar. */}
                       <span
                         role="tooltip"
-                        className="pointer-events-none absolute -top-2 left-1/2 z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-bone/15 bg-ink-3 px-2.5 py-1 text-[0.6875rem] tracking-wide opacity-0 shadow-lg transition-all duration-300 group-hover/tile:-translate-y-[calc(100%+0.25rem)] group-hover/tile:opacity-100 group-focus-within/tile:-translate-y-[calc(100%+0.25rem)] group-focus-within/tile:opacity-100"
+                        className="pointer-events-none absolute -top-2 left-1/2 z-40 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-bone/15 bg-ink-3 px-2.5 py-1 text-[0.6875rem] tracking-wide opacity-0 shadow-lg transition-all duration-300 group-hover/tile:-translate-y-[calc(100%+0.25rem)] group-hover/tile:opacity-100 group-focus-within/tile:-translate-y-[calc(100%+0.25rem)] group-focus-within/tile:opacity-100"
                       >
                         {item.name}
                       </span>

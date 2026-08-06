@@ -71,6 +71,21 @@ export const LOGOS: Record<string, Logo> = {
   three: { node: <IconBrandThreejs />, color: "var(--color-bone)" },
 };
 
+/* Nome do item → nome do arquivo em public/stack/.
+   "Claude Code" → claude-code, "Next.js" → next-js, "Fusion 360" →
+   fusion-360. É o que permite acrescentar uma ferramenta no content.ts e
+   a logo aparecer só por existir o PNG na pasta, sem cadastrar caminho
+   em lugar nenhum. */
+export function slugify(nome: string) {
+  return nome
+    .toLowerCase()
+    .normalize("NFD")
+    // Tira os acentos que o NFD separou da letra.
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 /* Monograma: até duas letras. "Claude Code" vira CC, "n8n" vira N8. */
 export function monograma(nome: string) {
   const palavras = nome.split(/[\s.]+/).filter(Boolean);

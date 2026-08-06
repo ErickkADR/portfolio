@@ -32,6 +32,9 @@ export default function Home() {
   const fotoSobreIA = imagemAvulsa("sobre", sobre.photoIAName);
   const midiaFeitos = mediaPorSlug("feitos");
   const imagensCertificados = arquivoPorSlug("certificados");
+  /* As logos da parede de ferramentas. Mesma ideia das outras varreduras:
+     largar `public/stack/<slug>.png` já coloca a logo no ar. */
+  const logosStack = arquivoPorSlug("stack");
 
   return (
     <>
@@ -48,7 +51,7 @@ export default function Home() {
             terceiro para o que a pessoa acabou de ver. Some sozinha
             enquanto a lista estiver vazia. */}
         <Recomendacoes />
-        <Stack />
+        <Stack logos={logosStack} />
         <Certificates images={imagensCertificados} />
         <Formacao />
         <Metas />
