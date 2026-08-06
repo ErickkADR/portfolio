@@ -206,6 +206,21 @@ html.lenis body {
   border-top: 1px solid color-mix(in oklab, var(--color-bone) 12%, transparent);
 }
 
+/* ---------- Carrossel largo ----------
+   As pistas saem da coluna de leitura (68rem) e vão até 92rem, sem
+   nunca encostar na borda da tela. O texto continua na coluna estreita
+   porque linha longa cansa de ler; card não tem esse problema, e mais
+   largura significa card maior e mais deles visíveis de uma vez.
+
+   `margin-left: calc(50% - metade da largura)` recentraliza: o 50% é
+   relativo ao pai (a coluna estreita), então isso puxa a pista para
+   fora dela igualmente dos dois lados. */
+.carousel-wide {
+  --carousel-w: min(calc(100vw - 2 * var(--gutter)), 92rem);
+  width: var(--carousel-w);
+  margin-left: calc(50% - var(--carousel-w) / 2);
+}
+
 /* ---------- Slides do carrossel ----------
    A largura é uma FRAÇÃO EXATA da pista, não um valor fixo. Com
    `w-[24rem]` a conta nunca fechava com a largura da coluna e sobrava
@@ -234,10 +249,12 @@ html.lenis body {
   .carousel-slide {
     flex-basis: calc((100% - 2.5rem) / 3);
   }
-  /* Certificados e recomendações são mais baixos: cabem quatro sem
-     virar miniatura ilegível. */
+  /* Eram quatro por linha. Com quatro, o certificado ficava do tamanho
+     de uma miniatura e não dava para reconhecer a instituição sem abrir
+     — o que é justamente o trabalho do card. Três, na pista larga,
+     deixam o documento legível. */
   .carousel-slide-sm {
-    flex-basis: calc((100% - 3.75rem) / 4);
+    flex-basis: calc((100% - 2.5rem) / 3);
   }
 }
 

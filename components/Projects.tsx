@@ -39,13 +39,13 @@ export default function Projects() {
           {projects.map((p) => (
             <li
               key={p.slug}
-              className="carousel-slide group relative snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25"
+              className="carousel-slide-sm group relative snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50"
             >
               {/* ---------- capa: tela real do projeto ---------- */}
               {/* <img> e não next/image: no export estático a otimização
                   é desligada de qualquer jeito, e o basePath não chega
                   ao src — quem monta o prefixo é o asset(). */}
-              <div className="relative aspect-[16/10] overflow-hidden bg-ink-3">
+              <div className="relative aspect-[4/3] overflow-hidden bg-ink-3">
                 <img
                   src={asset(p.cover.src)}
                   alt={p.cover.alt}
@@ -57,84 +57,54 @@ export default function Projects() {
                   className="h-full w-full object-cover object-top transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                 />
 
-                {/* A captura é clara em alguns projetos e escura em
-                    outros; o degradê para o fundo do card costura os
-                    dois casos e sustenta o texto logo abaixo. */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(to top, var(--color-ink-2) 2%, ${p.tint}00 60%)`,
-                  }}
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                  style={{
-                    background: `linear-gradient(to top, ${p.tint}33, transparent 60%)`,
-                  }}
-                />
-
                 <span className="mono-label absolute left-4 top-4 rounded-full bg-ink/70 px-3 py-1 backdrop-blur-md">
                   {p.index}
                 </span>
                 <span className="mono-label absolute right-4 top-4 rounded-full bg-ink/70 px-3 py-1 backdrop-blur-md">
                   {p.year}
                 </span>
-              </div>
 
-              {/* Fio na cor do projeto, no pé do card. */}
-              <span
-                aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
-                style={{ background: p.tint }}
-              />
+                {/* Véu + informações, entrando juntos no hover — o mesmo
+                    gesto dos certificados. As capas são claras em uns
+                    projetos e escuras em outros; o véu opaco garante o
+                    contraste do texto sobre qualquer uma delas. */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-ink/92 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
+                />
 
-              {/* ---------- texto ---------- */}
-              <div className="flex flex-col p-7">
-                <span className="mono-label">{p.category}</span>
+                <div className="absolute inset-0 flex translate-y-3 flex-col justify-end p-6 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                  <span className="mono-label" style={{ color: p.tint }}>
+                    {p.category}
+                  </span>
 
-                <h3 className="display mt-3 text-2xl lg:text-3xl">
-                  {/* O ::after cobre o card inteiro — capa inclusive —
-                      então clicar na imagem também navega. */}
-                  <Link
-                    href={`/projetos/${p.slug}/`}
-                    className="after:absolute after:inset-0 after:content-['']"
-                  >
-                    {p.title}
-                  </Link>
-                </h3>
-
-                <p className="mt-3 line-clamp-3 leading-relaxed text-bone-dim">
-                  {p.description}
-                </p>
-
-                <ul className="mt-5 flex flex-wrap gap-1.5">
-                  {p.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-full border border-bone/15 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
+                  <h3 className="display mt-2 text-xl leading-tight">
+                    {/* O ::after cobre o card inteiro — capa inclusive —
+                        então clicar em qualquer ponto navega. */}
+                    <Link
+                      href={`/projetos/${p.slug}/`}
+                      className="after:absolute after:inset-0 after:content-['']"
                     >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
+                      {p.title}
+                    </Link>
+                  </h3>
 
-                <div className="mt-6 flex items-center justify-between gap-4 border-t border-bone/10 pt-5">
-                  {p.repo ? (
-                    <a
-                      href={p.repo}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="relative z-10 mono-label transition-colors hover:text-plasma"
-                    >
-                      Código ↗
-                    </a>
-                  ) : (
-                    <span />
-                  )}
+                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-bone-dim">
+                    {p.description}
+                  </p>
 
-                  <span className="mono-label inline-flex items-center gap-2 transition-colors duration-500 group-hover:text-plasma">
+                  <ul className="mt-4 flex flex-wrap gap-1.5">
+                    {p.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded-full border border-bone/20 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <span className="mono-label mt-4 inline-flex items-center gap-2 text-plasma">
                     Ver mais
                     <span
                       aria-hidden="true"
@@ -145,6 +115,19 @@ export default function Projects() {
                   </span>
                 </div>
               </div>
+
+              {/* Fora do véu: o repositório precisa continuar clicável
+                  por cima dele, e link dentro de link seria inválido. */}
+              {p.repo && (
+                <a
+                  href={p.repo}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="mono-label absolute bottom-5 right-5 z-10 rounded-full border border-bone/25 bg-ink/80 px-3 py-1.5 opacity-0 backdrop-blur-md transition-all duration-500 hover:border-plasma hover:text-plasma group-hover:opacity-100 focus-visible:opacity-100"
+                >
+                  Código ↗
+                </a>
+              )}
             </li>
           ))}
         </Carousel>

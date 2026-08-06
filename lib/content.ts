@@ -70,22 +70,21 @@ export const sobre = {
   title: "Eu construo com IA",
   photoName: "erick",
   photoAlt: "Erick Dantas",
-  /* Parágrafos da coluna da direita. */
+  /* Dois parágrafos, e não quatro: a coluna fica ao lado da foto, e
+     quatro blocos de texto empurravam a seção para muito além da altura
+     da imagem. O que saiu foi repetição — a ideia de cada um continua. */
   body: [
     "Tive meu primeiro contato com tecnologia aos 4 anos e nunca mais parei. " +
-      "Acredito que o valor real da tecnologia está em facilitar a vida das " +
-      "pessoas — e que conhecimento deveria ser acessível a todo mundo.",
-    "Comecei no suporte técnico construindo pequenas ferramentas com IA para " +
-      "resolver problemas reais do meu time. Não era o meu cargo; virou o meu " +
-      "trabalho.",
-    "Hoje a IA é a minha ferramenta principal, não um assunto de conversa. " +
-      "Trabalho todo dia com Claude Code, Codex, Antigravity e Cursor, e " +
-      "conheço a diferença prática entre eles — qual usar para refatorar um " +
-      "projeto inteiro, qual usar para uma correção cirúrgica, qual segura " +
-      "melhor um contexto longo.",
-    "É com isso que projeto e construo a infraestrutura de IA por trás do " +
-      "suporte, da documentação e do treinamento técnico da Bannerjet — do " +
-      "chatbot que atende no WhatsApp ao portal que o time consulta todo dia.",
+      "Comecei no suporte técnico construindo pequenas ferramentas com IA " +
+      "para resolver problemas reais do meu time — não era o meu cargo, " +
+      "virou o meu trabalho.",
+    "Hoje a IA é a minha ferramenta principal, não assunto de conversa: " +
+      "trabalho todo dia com Claude Code, Codex, Antigravity e Cursor, e sei " +
+      "qual usar para refatorar um projeto inteiro e qual usar para uma " +
+      "correção cirúrgica. É com isso que construo a infraestrutura de IA " +
+      "por trás do suporte, da documentação e do treinamento técnico da " +
+      "Bannerjet — do chatbot no WhatsApp ao portal que o time consulta todo " +
+      "dia.",
   ],
   /* Ficha rápida ao pé da coluna de texto. */
   facts: [
@@ -340,7 +339,11 @@ export const feitos = {
    é verificável. */
 export const metricas = {
   label: "Resultados",
-  title: "O que meus projetos trouxeram de resultado para a Bannerjet",
+  /* O título anterior — "O que meus projetos trouxeram de resultado para
+     a Bannerjet" — quebrava em quatro linhas e repetia "resultado", que
+     já é o rótulo logo acima. "Retorno" diz a mesma coisa em uma linha e
+     é a palavra que um gestor usa. */
+  title: "O retorno para a Bannerjet",
   intro:
     "Não é portfólio de protótipo: cada número abaixo veio de algo que " +
     "está em produção e que a equipe usa todo dia.",

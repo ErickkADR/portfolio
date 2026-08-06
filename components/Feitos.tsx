@@ -68,7 +68,7 @@ export default function Feitos({ media }: Props) {
             arrastar três pistas separadas para ver o conjunto. O grupo
             não se perdeu: virou o rótulo no topo de cada card, então dá
             para saber de onde o feito veio sem um cabeçalho por bloco. */}
-        <Carousel label="Feitos na Bannerjet" className="mt-16">
+        <Carousel label="Feitos na Bannerjet" className="mt-16" auto>
           {feitos.groups.flatMap((grupo) =>
             grupo.items.map((item) => {
               const files = media[item.slug] ?? [];

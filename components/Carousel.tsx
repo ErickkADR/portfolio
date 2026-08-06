@@ -14,18 +14,21 @@ import { gsap, useGSAP } from "@/lib/gsap";
    O deslocamento é o scroll horizontal nativo, e não um transform: o
    arrasto por toque, o `scroll-snap` e a navegação por Tab vêm de graça.
 
-   ---- Por que a barra de progresso NÃO é estado do React ----
-   Ela era. Cada evento de scroll disparava três setState, e arrastar
-   dispara scroll a cada frame — ou seja, o React re-renderizava a lista
-   inteira (nos Certificados, 20 cards) 60 vezes por segundo. Era isso
-   que travava o arrasto. Agora a barra é escrita direto no DOM por um
-   ref, e só o estado das setas (dois booleanos que mudam raramente)
-   continua no React.
+   ---- Por que quase nada aqui é estado do React ----
+   O scroll dispara a cada frame do arrasto. Havia uma barra de
+   progresso alimentada por setState, e ela re-renderizava a lista
+   inteira (nos Certificados, 20 cards) 60 vezes por segundo — era isso
+   que travava o gesto. A barra saiu; o que sobrou de estado são os dois
+   booleanos das setas, que mudam raramente.
 
    ---- Por que nenhum card fica cortado ----
    A largura do card é uma fração exata da pista (ver .carousel-slide no
    globals.css), então sempre cabe um número inteiro deles. Com largura
    fixa em rem, a conta nunca fechava e sobrava meio card na borda.
+
+   A pista também é mais larga que a coluna de leitura (.carousel-wide):
+   o texto continua estreito porque linha longa cansa, mas card não tem
+   esse problema.
    ============================================================ */
 
 type Props = {
@@ -45,7 +48,6 @@ export default function Carousel({
   auto = false,
 }: Props) {
   const trackRef = useRef<HTMLUListElement>(null);
-  const barraRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
   /* No modo automático o gesto e o hover precisam parar a deriva. */
@@ -76,10 +78,6 @@ export default function Carousel({
       setCanPrev(prev);
       setCanNext(next);
 
-      if (barraRef.current) {
-        const p = max > 0 ? el.scrollLeft / max : 0;
-        barraRef.current.style.transform = `scaleX(${Math.max(Math.min(p, 1), 0.04)})`;
-      }
     });
   }, [auto]);
 
@@ -294,21 +292,27 @@ export default function Carousel({
     "grid h-11 w-11 place-items-center rounded-full border border-bone/15 transition-all duration-300 hover:border-plasma hover:text-plasma disabled:pointer-events-none disabled:opacity-25";
 
   /* A cópia que fecha o loop. `cloneElement` com key nova evita o aviso
-     de chave duplicada, e `aria-hidden` impede que um leitor de tela
-     anuncie a lista inteira duas vezes. */
+     de chave duplicada.
+
+     `inert` e não só `aria-hidden`: os cards têm botões e links dentro,
+     e `aria-hidden` num container com descendente focável é violação de
+     acessibilidade — o leitor de tela ignora o elemento, mas o Tab
+     ainda para nele, deixando o foco num lugar que não é anunciado.
+     `inert` faz as duas coisas: some da árvore de acessibilidade e sai
+     da ordem de tabulação. */
   const copia = auto
     ? Children.map(children, (filho, i) =>
         isValidElement(filho)
-          ? cloneElement(filho as React.ReactElement<{ "aria-hidden"?: boolean }>, {
+          ? cloneElement(filho as React.ReactElement<{ inert?: boolean }>, {
               key: `loop-${i}`,
-              "aria-hidden": true,
+              inert: true,
             })
           : filho
       )
     : null;
 
   return (
-    <div className={className}>
+    <div className={`carousel-wide ${className}`}>
       {/* `select-none` porque, arrastando, o browser selecionaria o
           texto dos cards no caminho. No modo automático o snap sai: ele
           brigaria com a deriva, travando a pista em cada card. */}
@@ -344,13 +348,6 @@ export default function Carousel({
           >
             <span aria-hidden="true">→</span>
           </button>
-        </div>
-
-        <div className="h-px flex-1 bg-bone/15" aria-hidden="true">
-          <div
-            ref={barraRef}
-            className="h-full origin-left scale-x-[0.04] bg-plasma"
-          />
         </div>
 
         <span className="mono-label hidden shrink-0 sm:block">
