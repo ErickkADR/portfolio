@@ -44,7 +44,7 @@ export default function Recomendacoes() {
           {recomendacoes.items.map((r) => (
             <li
               key={`${r.name}-${r.org}`}
-              className="flex w-[85vw] shrink-0 snap-start flex-col rounded-2xl border border-bone/12 bg-ink-2 p-8 transition-colors duration-500 hover:border-plasma/40 sm:w-[26rem]"
+              className="carousel-slide-sm flex snap-start flex-col rounded-2xl border border-bone/12 bg-ink-2 p-8 transition-colors duration-500 hover:border-plasma/40"
             >
               <span
                 aria-hidden="true"

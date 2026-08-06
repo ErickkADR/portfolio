@@ -9,10 +9,9 @@ import RevealText from "./RevealText";
 /* ============================================================
    PROJETOS — carrossel de cards.
 
-   Cada card é um slide de largura fixa: com largura fluida os cards
-   mudariam de proporção conforme a janela e as capas cortariam em
-   pontos diferentes. O `snap-start` encaixa o começo do card na borda
-   esquerda da pista, então nunca sobra meio card colado no canto.
+   A largura do card vem de `.carousel-slide`: uma fração exata da
+   pista, para caber sempre um número inteiro deles e nenhum ficar
+   cortado na borda.
 
    O card inteiro é clicável, capa inclusive: o link do título se estica
    por cima de tudo com o ::after. O link do repositório sobe acima dele
@@ -30,9 +29,9 @@ export default function Projects() {
 
           <RevealText
             as="h2"
-            className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
+            className="display mt-4 text-[clamp(2.1rem,5vw,3.8rem)]"
           >
-            Projetos
+            Conheça os meus principais projetos desenvolvidos
           </RevealText>
         </div>
 
@@ -40,7 +39,7 @@ export default function Projects() {
           {projects.map((p) => (
             <li
               key={p.slug}
-              className="group relative w-[85vw] shrink-0 snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[26rem]"
+              className="carousel-slide group relative snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25"
             >
               {/* ---------- capa: tela real do projeto ---------- */}
               {/* <img> e não next/image: no export estático a otimização

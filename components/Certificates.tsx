@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { certificates } from "@/lib/content";
 import { asset } from "@/lib/asset";
 import Carousel from "./Carousel";
@@ -26,12 +26,36 @@ export default function Certificates({ images }: Props) {
   const ref = useRef<HTMLElement>(null);
   const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
 
-  /* A ordem é a do content.ts, sem reordenar por data: o diploma da UNIP
-     precisa abrir a lista e as duas da Wizard vir logo atrás, e isso é
-     uma decisão editorial — "mais recente primeiro" jogaria o inglês
-     para o meio do meio. O campo `date` continua existindo porque é o
-     que aparece no cartão. */
-  const items = certificates.items;
+  /* A ordem NÃO é por data. Duas regras, nesta ordem:
+
+     1. Os "fixos" abrem a seção — o diploma da UNIP e as duas da Wizard.
+        São as credenciais mais fortes e precisam ser as primeiras que a
+        pessoa vê; "mais recente primeiro" jogaria o inglês para o meio.
+
+     2. O resto é INTERCALADO entre as origens (Curso em Vídeo, APDADOS,
+        Cate), em vez de sair em blocos. Em bloco, quem arrasta encara
+        cinco certificados iguais seguidos e desiste; alternando, cada
+        card seguinte é de outro tipo e a pista fica variada do começo
+        ao fim.
+
+     O revezamento é feito em código, e não escrevendo a lista já
+     embaralhada no content.ts: assim, acrescentar um certificado novo
+     mantém a alternância sozinho. */
+  const items = useMemo(() => {
+    const fixos = certificates.items.filter((c) => c.grupo === "fixo");
+    const resto = certificates.items.filter((c) => c.grupo !== "fixo");
+
+    // A ordem dos grupos é a ordem em que eles aparecem no content.ts.
+    const ordem = [...new Set(resto.map((c) => c.grupo))];
+    const filas = ordem.map((g) => resto.filter((c) => c.grupo === g));
+
+    const intercalado: typeof resto = [];
+    for (let i = 0; filas.some((f) => f[i]); i++) {
+      for (const fila of filas) if (fila[i]) intercalado.push(fila[i]);
+    }
+
+    return [...fixos, ...intercalado];
+  }, []);
 
   const close = useCallback(() => setZoom(null), []);
 
@@ -81,14 +105,14 @@ export default function Certificates({ images }: Props) {
             card é vitrine, não é o lugar de ler o papel. `object-top`
             garante que o que sobrevive ao corte é o cabeçalho: logo da
             instituição e nome. */}
-        <Carousel label="Certificados" className="mt-16">
+        <Carousel label="Certificados" className="mt-16" auto>
           {items.map((cert) => {
             const image = images[cert.slug];
 
             return (
               <li
                 key={cert.slug}
-                className="group relative w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50 sm:w-[24rem]"
+                className="carousel-slide-sm group relative snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50"
               >
                 <button
                   type="button"

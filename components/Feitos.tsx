@@ -77,7 +77,7 @@ export default function Feitos({ media }: Props) {
               return (
                   <li
                     key={item.slug}
-                    className="group flex w-[85vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[24rem]"
+                    className="carousel-slide group flex snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25"
                   >
                     {capa && (
                       <button

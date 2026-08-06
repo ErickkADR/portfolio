@@ -1228,6 +1228,10 @@ export const careerPage = {
 export type Certificate = {
   /* Também é o nome do arquivo da imagem em public/certificados/. */
   slug: string;
+  /* Origem do certificado. "fixo" abre a seção, na ordem escrita aqui;
+     os demais são intercalados entre si na tela, para a pista não sair
+     em blocos de cinco certificados iguais. Ver Certificates.tsx. */
+  grupo: "fixo" | "curso-em-video" | "apdados" | "cate";
   title: string;
   issuer: string;
   /* AAAA-MM — usado só para ordenar. */
@@ -1258,6 +1262,7 @@ const certificateItems: Certificate[] = [
      originais foram convertidos para .webp (primeira página). */
   {
     slug: "unip-ads",
+    grupo: "fixo",
     title: "Tecnólogo em Análise e Desenvolvimento de Sistemas",
     issuer: "Universidade Paulista — UNIP",
     date: "2026-02",
@@ -1270,6 +1275,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "wizard-conclusao",
+    grupo: "fixo",
     title: "Conclusão do Teens Course",
     issuer: "Wizard — Vila Medeiros",
     date: "2023-12",
@@ -1279,6 +1285,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "wizard-aluno-destaque",
+    grupo: "fixo",
     title: "Certificate of Excellence",
     issuer: "Wizard — Vila Medeiros",
     date: "2023-12",
@@ -1289,6 +1296,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "javascript-40h",
+    grupo: "curso-em-video",
     title: "JavaScript",
     issuer: "Curso em Vídeo / Digirati",
     date: "2023-01",
@@ -1299,6 +1307,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "html-css-modulo-1",
+    grupo: "curso-em-video",
     title: "HTML5 e CSS3 — Módulo 1 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-07",
@@ -1308,6 +1317,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "html-css-modulo-2",
+    grupo: "curso-em-video",
     title: "HTML5 e CSS3 — Módulo 2 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-09",
@@ -1317,6 +1327,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "html-css-modulo-3",
+    grupo: "curso-em-video",
     title: "HTML5 e CSS3 — Módulo 3 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-09",
@@ -1326,6 +1337,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "html-css-modulo-4",
+    grupo: "curso-em-video",
     title: "HTML5 e CSS3 — Módulo 4 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-12",
@@ -1335,6 +1347,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "apdados-ia-para-dpos",
+    grupo: "apdados",
     title: "Inteligências Artificiais para DPOs",
     issuer: "APDADOS — CNPPD 2024",
     date: "2024-03",
@@ -1345,6 +1358,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "apdados-cnppd-2025",
+    grupo: "apdados",
     title: "Soberania Digital",
     issuer: "APDADOS — CNPPD 2025",
     date: "2025-06",
@@ -1354,6 +1368,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "apdados-cnppd-2024",
+    grupo: "apdados",
     title: "V Congresso Nacional dos Profissionais de Privacidade de Dados",
     issuer: "APDADOS",
     date: "2024-03",
@@ -1362,6 +1377,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "apdados-panorama-lgpd",
+    grupo: "apdados",
     title: "Aniversário da LGPD: panorama em cada estado do Brasil",
     issuer: "APDADOS",
     date: "2024-08",
@@ -1370,6 +1386,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "apdados-cenario-multas-dpo",
+    grupo: "apdados",
     title: "Aniversário de 6 anos do GDPR",
     issuer: "APDADOS",
     date: "2024-05",
@@ -1380,6 +1397,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "apdados-orientacao-carreira-ti",
+    grupo: "apdados",
     title: "Orientação de Carreira para Profissionais de TI",
     issuer: "APDADOS — Comitê StarTech",
     date: "2024-05",
@@ -1388,6 +1406,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "assistente-administrativo",
+    grupo: "cate",
     title: "Assistente Administrativo",
     issuer: "Portal Cate — São Paulo",
     date: "2023-11",
@@ -1396,6 +1415,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "soft-skills",
+    grupo: "cate",
     title: "Soft Skills: habilidades dos profissionais do futuro",
     issuer: "Portal Cate — São Paulo",
     date: "2023-10",
@@ -1404,6 +1424,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "relacionamento-interpessoal",
+    grupo: "cate",
     title: "Relacionamento interpessoal: da inteligência emocional à negociação",
     issuer: "Portal Cate — São Paulo",
     date: "2023-10",
@@ -1412,6 +1433,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "processo-seletivo",
+    grupo: "cate",
     title: "Processo Seletivo",
     issuer: "Portal Cate — São Paulo",
     date: "2023-10",
@@ -1420,6 +1442,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "preciso-trabalhar",
+    grupo: "cate",
     title: "Preciso trabalhar, e agora?",
     issuer: "Portal Cate — São Paulo",
     date: "2023-10",
@@ -1428,6 +1451,7 @@ const certificateItems: Certificate[] = [
   },
   {
     slug: "postura-imagem-profissional",
+    grupo: "cate",
     title: "Postura e imagem profissional",
     issuer: "Portal Cate — São Paulo",
     date: "2023-10",

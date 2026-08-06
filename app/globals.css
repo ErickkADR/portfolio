@@ -206,6 +206,41 @@ html.lenis body {
   border-top: 1px solid color-mix(in oklab, var(--color-bone) 12%, transparent);
 }
 
+/* ---------- Slides do carrossel ----------
+   A largura é uma FRAÇÃO EXATA da pista, não um valor fixo. Com
+   `w-[24rem]` a conta nunca fechava com a largura da coluna e sobrava
+   sempre um card pela metade na borda direita. Com fração, cabe um
+   número inteiro de cards em qualquer tela e nenhum fica cortado.
+
+   O desconto no calc é o gap acumulado: 2 cards têm 1 gap entre eles,
+   3 cards têm 2. O gap é o `gap-5` do Tailwind = 1.25rem. */
+.carousel-slide {
+  flex: 0 0 100%;
+}
+.carousel-slide-sm {
+  flex: 0 0 100%;
+}
+
+@media (min-width: 640px) {
+  .carousel-slide {
+    flex-basis: calc((100% - 1.25rem) / 2);
+  }
+  .carousel-slide-sm {
+    flex-basis: calc((100% - 2.5rem) / 3);
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-slide {
+    flex-basis: calc((100% - 2.5rem) / 3);
+  }
+  /* Certificados e recomendações são mais baixos: cabem quatro sem
+     virar miniatura ilegível. */
+  .carousel-slide-sm {
+    flex-basis: calc((100% - 3.75rem) / 4);
+  }
+}
+
 /* ---------- Link magnético / botões ---------- */
 
 .btn {

@@ -45,19 +45,7 @@ export default function Stack() {
             })
           );
 
-        const barra = gsap.from(".lang-seg", {
-          scaleX: 0,
-          transformOrigin: "left center",
-          duration: 1.1,
-          ease: "expo.out",
-          stagger: 0.08,
-          scrollTrigger: { trigger: ".lang-bar", start: "top 92%", once: true },
-        });
-
-        return () => {
-          grupos.forEach((t) => t.kill());
-          barra.kill();
-        };
+        return () => grupos.forEach((t) => t.kill());
       });
 
       return () => mm.revert();
@@ -142,42 +130,11 @@ export default function Stack() {
           ))}
         </div>
 
-        {/* ---------- distribuição medida ----------
-            Fica no rodapé da seção, e não no topo: é dado de apoio, não
-            o assunto. O assunto é a parede de logos. */}
-        <div className="hairline mt-20 pt-12">
-          <p className="mono-label text-center">{stack.barLabel}</p>
-
-          <div className="lang-bar mx-auto mt-5 flex h-2 w-full max-w-2xl gap-1 overflow-hidden rounded-full">
-            {stack.measured.map((l) => (
-              <div
-                key={l.name}
-                className="lang-seg h-full rounded-full"
-                style={{
-                  // O mínimo de 1.5% mantém a fatia do TypeScript (0,8%)
-                  // visível; sem isso ela vira um fio de um pixel.
-                  width: `${Math.max(l.pct, 1.5)}%`,
-                  background: l.color,
-                }}
-                title={`${l.name} — ${l.pct}%`}
-              />
-            ))}
-          </div>
-
-          <ul className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {stack.measured.map((l) => (
-              <li key={l.name} className="flex items-center gap-2 text-sm">
-                <span
-                  aria-hidden="true"
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ background: l.color }}
-                />
-                <span>{l.name}</span>
-                <span className="text-bone-dim">{l.pct}%</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* A barra com a distribuição de linguagens dos repositórios
+            públicos saiu daqui: 57% de HTML descreve o peso dos arquivos
+            no GitHub, não a competência de quem escreveu — e num
+            portfólio esse número trabalha contra. As logos já dizem com
+            o que ele constrói. */}
       </div>
     </section>
   );
