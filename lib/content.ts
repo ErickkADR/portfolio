@@ -65,7 +65,9 @@ export const hero = {
    o espaço vira uma moldura com as iniciais — nada de imagem quebrada. */
 export const sobre = {
   label: "Sobre",
-  title: "Quem constrói isso",
+  /* "Quem constrói isso" era vago e não dizia nada sobre ele. O título
+     agora entrega a posição em três palavras: construir com IA. */
+  title: "Eu construo com IA",
   photoName: "erick",
   photoAlt: "Erick Dantas",
   /* Parágrafos da coluna da direita. */
@@ -76,9 +78,14 @@ export const sobre = {
     "Comecei no suporte técnico construindo pequenas ferramentas com IA para " +
       "resolver problemas reais do meu time. Não era o meu cargo; virou o meu " +
       "trabalho.",
-    "Hoje projeto e construo a infraestrutura de IA por trás do suporte, da " +
-      "documentação e do treinamento técnico da Bannerjet — do chatbot que " +
-      "atende no WhatsApp ao portal que o time consulta todo dia.",
+    "Hoje a IA é a minha ferramenta principal, não um assunto de conversa. " +
+      "Trabalho todo dia com Claude Code, Codex, Antigravity e Cursor, e " +
+      "conheço a diferença prática entre eles — qual usar para refatorar um " +
+      "projeto inteiro, qual usar para uma correção cirúrgica, qual segura " +
+      "melhor um contexto longo.",
+    "É com isso que projeto e construo a infraestrutura de IA por trás do " +
+      "suporte, da documentação e do treinamento técnico da Bannerjet — do " +
+      "chatbot que atende no WhatsApp ao portal que o time consulta todo dia.",
   ],
   /* Ficha rápida ao pé da coluna de texto. */
   facts: [
@@ -333,7 +340,7 @@ export const feitos = {
    é verificável. */
 export const metricas = {
   label: "Resultados",
-  title: "O que isso deu para a Bannerjet",
+  title: "O que meus projetos trouxeram de resultado para a Bannerjet",
   intro:
     "Não é portfólio de protótipo: cada número abaixo veio de algo que " +
     "está em produção e que a equipe usa todo dia.",
@@ -360,11 +367,11 @@ export const metricas = {
       source: "Callbell + n8n · Bannerjet",
     },
     {
-      value: "130+",
-      label: "produtos catalogados no e-commerce da Nexus",
+      value: "1",
+      label: "portal único no lugar de pastas, e-mails e conversas soltas",
       outcome:
-        "Pedido fechado direto no WhatsApp, sem intermediário e sem tabela de preço por e-mail.",
-      source: "Nexus Print",
+        "Manual, parâmetro de corte e firmware deixaram de morar em cinco lugares diferentes — o técnico abre um link em vez de perguntar a alguém.",
+      source: "Central Técnica · Bannerjet",
     },
   ],
 };
@@ -932,6 +939,19 @@ const stackGroups: StackGroup[] = [
       },
     ],
   },
+  /* Grupo próprio para os agentes de código, separado de "IA &
+     Automação": misturar Claude Code com Supabase e n8n escondia o que
+     é o diferencial dele. Aqui fica claro que ele não usa "uma IA" —
+     usa as quatro principais do mercado e sabe quando trocar. */
+  {
+    group: "IA — agentes de código",
+    items: [
+      { name: "Claude Code", color: "#d97757" },
+      { name: "Codex", icon: "openai" },
+      { name: "Antigravity", icon: "google" },
+      { name: "Cursor" },
+    ],
+  },
   {
     group: "IA & Automação",
     items: [
@@ -941,7 +961,6 @@ const stackGroups: StackGroup[] = [
       { name: "Gemini API", icon: "google" },
       { name: "ElevenLabs" },
       { name: "Callbell" },
-      { name: "Claude Code" },
     ],
   },
   {
@@ -966,10 +985,19 @@ const stackGroups: StackGroup[] = [
     ],
   },
   {
-    group: "Design & equipamentos",
+    group: "Design & 3D",
     items: [
-      { name: "CorelDraw" },
+      { name: "Figma", icon: "figma" },
       { name: "Photoshop", icon: "adobe" },
+      { name: "CorelDraw" },
+      { name: "Blender", color: "#ea7600" },
+      { name: "Fusion 360", color: "#f47216" },
+      { name: "MakerWorld" },
+    ],
+  },
+  {
+    group: "Softwares de equipamento",
+    items: [
       { name: "SignMaster" },
       { name: "CameraCut" },
       { name: "LightBurn" },
@@ -1006,7 +1034,7 @@ export const background = {
     "nota, não por mensalidade.",
   items: [
     {
-      period: "2019",
+      period: "2017 — 2020",
       icon: "escola",
       title: "Bolsa de estudo · Colégio Monte Sinai",
       meta: "Metodologia Mackenzie",
@@ -1027,7 +1055,7 @@ export const background = {
       highlight: "Ensinei junto com o professor",
     },
     {
-      period: "2024",
+      period: "2024 — 2025",
       icon: "graduacao",
       title: "Análise e Desenvolvimento de Sistemas",
       meta: "Universidade Paulista",
@@ -1220,121 +1248,191 @@ export type Certificate = {
    opcionais que ninguém preencheu ainda — `href`, por exemplo — deixam
    de existir para quem consome a lista. */
 const certificateItems: Certificate[] = [
-    {
-      slug: "lgpd-panorama-estados",
-      title: "Panorama da LGPD em Cada Estado do Brasil",
-      issuer: "APDADOS",
-      date: "2024-08",
-      dateLabel: "ago de 2024",
-      description:
-        "Live sobre as particularidades da implementação e da conformidade com a LGPD em cada região do país — como os estados brasileiros vêm lidando com a regulamentação, considerando especificidades locais e desafios regionais.",
-    },
-    {
-      slug: "dpo-multas-e-condutas",
-      title: "Cenário de Multas e Condutas para o Desenvolvimento de um DPO",
-      issuer: "APDADOS",
-      date: "2024-05",
-      dateLabel: "mai de 2024",
-      description:
-        "Análise das penalidades previstas na LGPD e das condutas esperadas de um Data Protection Officer: responsabilidades, estratégias de mitigação de risco e o papel do DPO na conformidade da organização.",
-    },
-    {
-      slug: "orientacao-carreira-ti",
-      title: "Orientação de Carreira para Profissionais de T.I",
-      issuer: "APDADOS",
-      date: "2024-05",
-      dateLabel: "mai de 2024",
-      description:
-        "Estratégias práticas de desenvolvimento de carreira em tecnologia: desafios e oportunidades do mercado, e como alinhar habilidade técnica com o que a indústria está pedindo.",
-    },
-    {
-      slug: "ia-para-dpos",
-      title: "Inteligências Artificiais para DPOs",
-      issuer: "APDADOS",
-      date: "2024-03",
-      dateLabel: "mar de 2024",
-      skills: [
-        "Implicações éticas da IA",
-        "Legislação de proteção de dados",
-      ],
-      description:
-        "Uso de IA no contexto da proteção de dados — como um DPO pode aplicar essas tecnologias para melhorar conformidade e segurança dentro da organização.",
-    },
-    {
-      slug: "ux-design",
-      title: "User Experience — UX Design",
-      issuer: "Cidade de São Paulo",
-      date: "2024-02",
-      dateLabel: "fev de 2024",
-      skills: ["Prototipagem", "Web design responsivo"],
-    },
-    {
-      slug: "banco-de-dados-relacional",
-      title: "Banco de Dados Relacional",
-      issuer: "Cidade de São Paulo",
-      date: "2024-02",
-      dateLabel: "fev de 2024",
-      skills: ["SQL", "Armazenamento de dados"],
-    },
-    {
-      slug: "wizard-teens-course",
-      title: "Teens Course",
-      issuer: "Wizard by Pearson",
-      date: "2023-12",
-      dateLabel: "dez de 2023",
-      skills: ["Inglês como língua estrangeira", "Gramática"],
-      description:
-        "Quatro anos de estudo intensivo: conversação, escrita, leitura e compreensão auditiva, em contexto acadêmico e profissional. É o que sustenta a conversa técnica em inglês.",
-    },
-    {
-      slug: "javascript-curso-em-video",
-      title: "JavaScript — 40 horas",
-      issuer: "Curso em Vídeo",
-      date: "2023-01",
-      dateLabel: "jan de 2023",
-      credentialId: "842AD-6C61-A",
-      skills: ["JavaScript", "Aplicações web interativas"],
-    },
-    {
-      slug: "html5-css3-modulo-4",
-      title: "HTML5 e CSS3 — módulo 4 · 40 horas",
-      issuer: "Curso em Vídeo",
-      date: "2022-12",
-      dateLabel: "dez de 2022",
-      credentialId: "842AD-26CB1-9",
-      skills: ["Scripts HTML", "Programação lógica"],
-    },
-    {
-      slug: "html5-css3-modulo-3",
-      title: "HTML5 e CSS3 — módulo 3 · 40 horas",
-      issuer: "Curso em Vídeo",
-      date: "2022-09",
-      dateLabel: "set de 2022",
-      credentialId: "842AD-15678-1",
-    },
-    {
-      slug: "html5-css3-modulo-2",
-      title: "HTML5 e CSS3 — módulo 2 · 40 horas",
-      issuer: "Curso em Vídeo",
-      date: "2022-09",
-      dateLabel: "set de 2022",
-      credentialId: "842AD-E776-6",
-      skills: ["CSS"],
-    },
-    {
-      slug: "html5-css3-modulo-1",
-      title: "HTML5 e CSS3 — módulo 1 · 40 horas",
-      issuer: "Curso em Vídeo",
-      date: "2022-07",
-      dateLabel: "jul de 2022",
-      credentialId: "842AD-C9E9-4",
-    },
+  /* A ORDEM AQUI É A ORDEM NA TELA. O componente não reordena mais por
+     data: o diploma da UNIP abre a lista porque é a credencial mais
+     forte, e as duas da Wizard vêm logo atrás porque inglês é o que o
+     Erick quer usar para trabalhar fora. Depois vem programação, e por
+     fim os eventos e os cursos de carreira.
+
+     A imagem de cada um é `public/certificados/<slug>.<ext>` — os PDFs
+     originais foram convertidos para .webp (primeira página). */
   {
-    slug: "aluno-destaque",
-    title: "Aluno Destaque",
-    issuer: "Colégio Monte Sinai",
-    date: "2019-12",
-    dateLabel: "dez de 2019",
+    slug: "unip-ads",
+    title: "Tecnólogo em Análise e Desenvolvimento de Sistemas",
+    issuer: "Universidade Paulista — UNIP",
+    date: "2026-02",
+    dateLabel: "Fevereiro de 2026",
+    credentialId: "Validação 322.322.408bbec064",
+    href: "https://www.unip.br/aluno/documentos-digitais",
+    skills: ["Graduação", "Diploma registrado"],
+    description:
+      "Curso concluído em 31/12/2025, com colação de grau em 27/01/2026. Bolsa integral conquistada pela nota do Enem.",
+  },
+  {
+    slug: "wizard-conclusao",
+    title: "Conclusão do Teens Course",
+    issuer: "Wizard — Vila Medeiros",
+    date: "2023-12",
+    dateLabel: "14 de dezembro de 2023",
+    skills: ["Inglês"],
+    description: "Quatro anos de curso de inglês concluídos.",
+  },
+  {
+    slug: "wizard-aluno-destaque",
+    title: "Certificate of Excellence",
+    issuer: "Wizard — Vila Medeiros",
+    date: "2023-12",
+    dateLabel: "2023",
+    skills: ["Inglês", "Destaque da turma"],
+    description:
+      "Concedido por concluir as aulas com desenvolvimento e proficiência acima da média da turma.",
+  },
+  {
+    slug: "javascript-40h",
+    title: "JavaScript",
+    issuer: "Curso em Vídeo / Digirati",
+    date: "2023-01",
+    dateLabel: "20 de janeiro de 2023",
+    credentialId: "842AD-6C61-A",
+    skills: ["JavaScript", "40 horas"],
+    description: "Aproveitamento superior a 70%.",
+  },
+  {
+    slug: "html-css-modulo-1",
+    title: "HTML5 e CSS3 — Módulo 1 de 5",
+    issuer: "Curso em Vídeo / Digirati",
+    date: "2022-07",
+    dateLabel: "24 de julho de 2022",
+    credentialId: "842AD-C9E9-4",
+    skills: ["HTML", "CSS", "40 horas"],
+  },
+  {
+    slug: "html-css-modulo-2",
+    title: "HTML5 e CSS3 — Módulo 2 de 5",
+    issuer: "Curso em Vídeo / Digirati",
+    date: "2022-09",
+    dateLabel: "4 de setembro de 2022",
+    credentialId: "842AD-E776-6",
+    skills: ["HTML", "CSS", "40 horas"],
+  },
+  {
+    slug: "html-css-modulo-3",
+    title: "HTML5 e CSS3 — Módulo 3 de 5",
+    issuer: "Curso em Vídeo / Digirati",
+    date: "2022-09",
+    dateLabel: "8 de setembro de 2022",
+    credentialId: "842AD-15678-1",
+    skills: ["HTML", "CSS", "40 horas"],
+  },
+  {
+    slug: "html-css-modulo-4",
+    title: "HTML5 e CSS3 — Módulo 4 de 5",
+    issuer: "Curso em Vídeo / Digirati",
+    date: "2022-12",
+    dateLabel: "7 de dezembro de 2022",
+    credentialId: "842AD-26CB1-9",
+    skills: ["HTML", "CSS", "40 horas"],
+  },
+  {
+    slug: "apdados-ia-para-dpos",
+    title: "Inteligências Artificiais para DPOs",
+    issuer: "APDADOS — CNPPD 2024",
+    date: "2024-03",
+    dateLabel: "22 e 23 de março de 2024",
+    skills: ["IA aplicada", "Privacidade", "20 horas"],
+    description:
+      "Tema do V Congresso Nacional dos Profissionais de Privacidade de Dados: como a IA muda o trabalho de quem cuida de dados pessoais.",
+  },
+  {
+    slug: "apdados-cnppd-2025",
+    title: "Soberania Digital",
+    issuer: "APDADOS — CNPPD 2025",
+    date: "2025-06",
+    dateLabel: "27 e 28 de junho de 2025",
+    skills: ["Soberania digital", "20 horas"],
+    description: "VI Congresso Nacional dos Profissionais de Privacidade de Dados.",
+  },
+  {
+    slug: "apdados-cnppd-2024",
+    title: "V Congresso Nacional dos Profissionais de Privacidade de Dados",
+    issuer: "APDADOS",
+    date: "2024-03",
+    dateLabel: "Março de 2024",
+    skills: ["LGPD", "Privacidade"],
+  },
+  {
+    slug: "apdados-panorama-lgpd",
+    title: "Aniversário da LGPD: panorama em cada estado do Brasil",
+    issuer: "APDADOS",
+    date: "2024-08",
+    dateLabel: "14 de agosto de 2024",
+    skills: ["LGPD", "9 horas"],
+  },
+  {
+    slug: "apdados-cenario-multas-dpo",
+    title: "Aniversário de 6 anos do GDPR",
+    issuer: "APDADOS",
+    date: "2024-05",
+    dateLabel: "25 de maio de 2024",
+    skills: ["GDPR", "2 horas"],
+    description:
+      "Cenário das multas e condutas para o desenvolvimento do DPO/Encarregado.",
+  },
+  {
+    slug: "apdados-orientacao-carreira-ti",
+    title: "Orientação de Carreira para Profissionais de TI",
+    issuer: "APDADOS — Comitê StarTech",
+    date: "2024-05",
+    dateLabel: "11 de maio de 2024",
+    skills: ["Carreira em TI", "3 horas"],
+  },
+  {
+    slug: "assistente-administrativo",
+    title: "Assistente Administrativo",
+    issuer: "Portal Cate — São Paulo",
+    date: "2023-11",
+    dateLabel: "18 de novembro de 2023",
+    skills: ["30 horas"],
+  },
+  {
+    slug: "soft-skills",
+    title: "Soft Skills: habilidades dos profissionais do futuro",
+    issuer: "Portal Cate — São Paulo",
+    date: "2023-10",
+    dateLabel: "1 de outubro de 2023",
+    skills: ["7 horas"],
+  },
+  {
+    slug: "relacionamento-interpessoal",
+    title: "Relacionamento interpessoal: da inteligência emocional à negociação",
+    issuer: "Portal Cate — São Paulo",
+    date: "2023-10",
+    dateLabel: "1 de outubro de 2023",
+    skills: ["3 horas"],
+  },
+  {
+    slug: "processo-seletivo",
+    title: "Processo Seletivo",
+    issuer: "Portal Cate — São Paulo",
+    date: "2023-10",
+    dateLabel: "1 de outubro de 2023",
+    skills: ["12 horas"],
+  },
+  {
+    slug: "preciso-trabalhar",
+    title: "Preciso trabalhar, e agora?",
+    issuer: "Portal Cate — São Paulo",
+    date: "2023-10",
+    dateLabel: "1 de outubro de 2023",
+    skills: ["7 horas"],
+  },
+  {
+    slug: "postura-imagem-profissional",
+    title: "Postura e imagem profissional",
+    issuer: "Portal Cate — São Paulo",
+    date: "2023-10",
+    dateLabel: "1 de outubro de 2023",
+    skills: ["5 horas"],
   },
 ];
 

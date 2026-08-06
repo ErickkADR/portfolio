@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { nav, site } from "@/lib/content";
-import ThemeToggle from "./ThemeToggle";
 
 /* Barra que some ao descer e volta ao subir. O gatilho é a direção do
    scroll, não a posição: esconder por posição faz a barra piscar toda
@@ -74,9 +73,10 @@ export default function Nav() {
           ))}
         </ul>
 
-        <div className="justify-self-end rounded-full border border-bone/12 bg-ink-2/60 p-1 backdrop-blur-xl">
-          <ThemeToggle />
-        </div>
+        {/* Terceira coluna vazia de propósito: ela é o contrapeso da
+            logo. Sem ela, `grid-cols-[1fr_auto_1fr]` viraria duas
+            colunas e a pílula do menu escorregaria para a direita. */}
+        <div aria-hidden="true" />
       </div>
     </nav>
   );

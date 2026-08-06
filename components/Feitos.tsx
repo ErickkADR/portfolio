@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+
 import { feitos } from "@/lib/content";
 import { asset } from "@/lib/asset";
 import type { MediaFile } from "@/lib/media";
@@ -36,32 +36,8 @@ export default function Feitos({ media }: Props) {
     index: number;
   } | null>(null);
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        /* Os cards agora entram pelo <Carousel>, que anima os próprios
-           filhos. Aqui sobra o cabeçalho de cada grupo. */
-        const tweens = gsap.utils
-          .toArray<HTMLElement>(".feito-grupo")
-          .map((grupo) =>
-            gsap.from(grupo.querySelector(".feito-head"), {
-              y: 24,
-              opacity: 0,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: { trigger: grupo, start: "top 88%", once: true },
-            })
-          );
-
-        return () => tweens.forEach((t) => t.kill());
-      });
-
-      return () => mm.revert();
-    },
-    { scope: ref }
-  );
+  /* Não sobrou animação própria: os cabeçalhos de grupo saíram quando os
+     três carrosséis viraram um, e a entrada dos cards é do <Carousel>. */
 
   const arquivos = aberto ? media[aberto.slug] ?? [] : [];
 
@@ -87,26 +63,18 @@ export default function Feitos({ media }: Props) {
           </p>
         </div>
 
-        {feitos.groups.map((grupo) => (
-          <div key={grupo.group} className="feito-grupo mt-20">
-            <div className="feito-head hairline flex flex-col gap-2 pt-10 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
-              <h3 className="mono-label text-plasma">{grupo.group}</h3>
-              <p className="max-w-md text-sm leading-relaxed text-bone-dim">
-                {grupo.intro}
-              </p>
-            </div>
+        {/* UM carrossel para tudo, na ordem em que os grupos aparecem no
+            content.ts. Antes era um por grupo, e a pessoa precisava
+            arrastar três pistas separadas para ver o conjunto. O grupo
+            não se perdeu: virou o rótulo no topo de cada card, então dá
+            para saber de onde o feito veio sem um cabeçalho por bloco. */}
+        <Carousel label="Feitos na Bannerjet" className="mt-16">
+          {feitos.groups.flatMap((grupo) =>
+            grupo.items.map((item) => {
+              const files = media[item.slug] ?? [];
+              const capa = files.find((f) => f.kind === "image");
 
-            {/* Um carrossel por grupo, e não um só para tudo: os grupos
-                têm assuntos diferentes, e misturá-los numa pista única
-                apagaria a divisão que o título de cada um estabelece.
-                O `destaque` deixou de mudar a largura — numa pista
-                horizontal, um card mais largo quebra o ritmo do snap. */}
-            <Carousel label={grupo.group} className="mt-10">
-              {grupo.items.map((item) => {
-                const files = media[item.slug] ?? [];
-                const capa = files.find((f) => f.kind === "image");
-
-                return (
+              return (
                   <li
                     key={item.slug}
                     className="group flex w-[85vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[24rem]"
@@ -139,11 +107,17 @@ export default function Feitos({ media }: Props) {
                     )}
 
                     <div className="flex flex-1 flex-col p-7 lg:p-8">
-                      <h4 className="display text-xl leading-tight lg:text-2xl">
+                      {/* O grupo virou rótulo do card quando os três
+                          carrosséis viraram um só. */}
+                      <span className="mono-label text-plasma">
+                        {grupo.group}
+                      </span>
+
+                      <h4 className="display mt-3 text-xl leading-tight lg:text-2xl">
                         {item.title}
                       </h4>
 
-                      <p className="mt-4 text-sm leading-relaxed text-bone-dim">
+                      <p className="mt-4 line-clamp-4 text-sm leading-relaxed text-bone-dim">
                         {item.body}
                       </p>
 
@@ -184,11 +158,10 @@ export default function Feitos({ media }: Props) {
                       </div>
                     </div>
                   </li>
-                );
-              })}
-            </Carousel>
-          </div>
-        ))}
+              );
+            })
+          )}
+        </Carousel>
       </div>
 
       {aberto && arquivos.length > 0 && (

@@ -26,12 +26,12 @@ export default function Certificates({ images }: Props) {
   const ref = useRef<HTMLElement>(null);
   const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
 
-  /* Mais recente primeiro. A ordenação fica aqui, e não na lista, para
-     que dê para inserir um certificado novo em qualquer posição do
-     content.ts sem pensar em ordem. */
-  const items = [...certificates.items].sort((a, b) =>
-    b.date.localeCompare(a.date)
-  );
+  /* A ordem é a do content.ts, sem reordenar por data: o diploma da UNIP
+     precisa abrir a lista e as duas da Wizard vir logo atrás, e isso é
+     uma decisão editorial — "mais recente primeiro" jogaria o inglês
+     para o meio do meio. O campo `date` continua existindo porque é o
+     que aparece no cartão. */
+  const items = certificates.items;
 
   const close = useCallback(() => setZoom(null), []);
 
@@ -70,9 +70,17 @@ export default function Certificates({ images }: Props) {
           </p>
         </div>
 
-        {/* `items-stretch` (padrão do flex) iguala a altura de todos os
-            cards à do mais alto: num carrossel, cards de alturas
-            diferentes fazem a base da pista serrilhar a cada arrasto. */}
+        {/* O CARD É O CERTIFICADO. Antes o documento ocupava o topo e o
+            resto era um bloco de texto — os certificados ficavam
+            pequenos e cada card tinha altura diferente, o que serrilhava
+            a base da pista. Agora a imagem preenche o card inteiro e o
+            texto só aparece no hover, por cima.
+
+            `object-cover` corta um pouco das bordas, e isso é aceitável
+            porque o clique abre o documento inteiro em tela cheia — o
+            card é vitrine, não é o lugar de ler o papel. `object-top`
+            garante que o que sobrevive ao corte é o cabeçalho: logo da
+            instituição e nome. */}
         <Carousel label="Certificados" className="mt-16">
           {items.map((cert) => {
             const image = images[cert.slug];
@@ -80,83 +88,87 @@ export default function Certificates({ images }: Props) {
             return (
               <li
                 key={cert.slug}
-                className="group flex w-[80vw] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 sm:w-[21rem]"
+                className="group relative w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50 sm:w-[24rem]"
               >
-                {image && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setZoom({
-                        src: asset(image),
-                        alt: `Certificado: ${cert.title} — ${cert.issuer}`,
-                      })
-                    }
-                    className="relative block aspect-[4/3] w-full overflow-hidden bg-ink-3"
-                    aria-label={`Ampliar o certificado ${cert.title}`}
-                  >
+                <button
+                  type="button"
+                  onClick={() =>
+                    image &&
+                    setZoom({
+                      src: asset(image),
+                      alt: `Certificado: ${cert.title} — ${cert.issuer}`,
+                    })
+                  }
+                  className="relative block aspect-[4/3] w-full overflow-hidden bg-ink-3 text-left"
+                  aria-label={`Ampliar o certificado ${cert.title}`}
+                >
+                  {image ? (
                     <img
                       src={asset(image)}
                       alt={`Certificado: ${cert.title} — ${cert.issuer}`}
                       loading="lazy"
                       decoding="async"
-                      /* `contain`, não `cover`: certificado é documento —
-                         cortar a borda pode comer o nome ou a assinatura. */
-                      className="h-full w-full object-contain transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                      draggable={false}
+                      className="h-full w-full object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                     />
-                    <span className="mono-label absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink-2 to-transparent px-5 pb-4 pt-10 text-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                      {certificates.imageHint}
+                  ) : (
+                    <span className="mono-label absolute inset-0 grid place-items-center px-6 text-center">
+                      {cert.title}
                     </span>
-                  </button>
+                  )}
+
+                  {/* Véu + informações: entram juntos no hover. O véu
+                      escurece o documento o bastante para o texto branco
+                      ficar legível sobre qualquer certificado — os do
+                      Cate são brancos, os da APDADOS são azul-escuros. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-ink/92 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
+                  />
+
+                  <div className="absolute inset-0 flex translate-y-3 flex-col justify-end p-6 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                    <span className="mono-label text-plasma">
+                      {cert.issuer}
+                    </span>
+
+                    <h3 className="display mt-2 text-lg leading-tight">
+                      {cert.title}
+                    </h3>
+
+                    <span className="mono-label mt-2">{cert.dateLabel}</span>
+
+                    {cert.skills && cert.skills.length > 0 && (
+                      <ul className="mt-4 flex flex-wrap gap-1.5">
+                        {cert.skills.map((skill) => (
+                          <li
+                            key={skill}
+                            className="rounded-full border border-bone/20 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
+                          >
+                            {skill}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <span className="mono-label mt-4 text-plasma">
+                      {certificates.imageHint} →
+                    </span>
+                  </div>
+                </button>
+
+                {/* Fora do botão: link dentro de botão é HTML inválido, e
+                    a credencial precisa continuar clicável por cima do
+                    véu. Só aparece no hover, como o resto. */}
+                {cert.href && (
+                  <a
+                    href={cert.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="mono-label absolute right-5 top-5 z-10 rounded-full border border-bone/25 bg-ink/80 px-3 py-1.5 opacity-0 backdrop-blur-md transition-all duration-500 hover:border-plasma hover:text-plasma group-hover:opacity-100 focus-visible:opacity-100"
+                  >
+                    Credencial ↗
+                  </a>
                 )}
-
-                <div className="flex flex-1 flex-col p-7">
-                  <span className="mono-label">
-                    {cert.issuer} · {cert.dateLabel}
-                  </span>
-
-                  <h3 className="display mt-3 text-xl leading-tight">
-                    {cert.title}
-                  </h3>
-
-                  {cert.description && (
-                    <p className="mt-4 text-sm leading-relaxed text-bone-dim">
-                      {cert.description}
-                    </p>
-                  )}
-
-                  {cert.skills && cert.skills.length > 0 && (
-                    <ul className="mt-5 flex flex-wrap gap-1.5">
-                      {cert.skills.map((skill) => (
-                        <li
-                          key={skill}
-                          className="rounded-full border border-bone/15 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
-                        >
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {/* `mt-auto` cola o rodapé na base: os cartões da mesma
-                      linha têm alturas diferentes e, sem isso, a linha da
-                      credencial flutuaria no meio de uns e no fim de
-                      outros. */}
-                  {(cert.credentialId || cert.href) && (
-                    <div className="mono-label mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-6">
-                      {cert.credentialId && <span>{cert.credentialId}</span>}
-                      {cert.href && (
-                        <a
-                          href={cert.href}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          className="transition-colors hover:text-plasma"
-                        >
-                          Credencial ↗
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
               </li>
             );
           })}

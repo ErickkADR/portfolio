@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { contact, site } from "@/lib/content";
 
@@ -72,6 +72,32 @@ function Magnetic({
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null);
+  const [copiado, setCopiado] = useState(false);
+
+  const copiar = async () => {
+    try {
+      await navigator.clipboard.writeText(site.email);
+    } catch {
+      /* A Clipboard API exige contexto seguro (https ou localhost) e
+         pode ser negada. O fallback antigo ainda funciona em todo
+         lugar: um campo fora da tela, selecionado, e execCommand. */
+      const campo = document.createElement("textarea");
+      campo.value = site.email;
+      campo.style.position = "fixed";
+      campo.style.opacity = "0";
+      document.body.appendChild(campo);
+      campo.select();
+      try {
+        document.execCommand("copy");
+      } catch {
+        // Sem clipboard nenhum, o endereço continua visível na tela
+        // para ser selecionado à mão — nada fica inacessível.
+      }
+      document.body.removeChild(campo);
+    }
+    setCopiado(true);
+    window.setTimeout(() => setCopiado(false), 2000);
+  };
 
   useGSAP(
     () => {
@@ -138,26 +164,44 @@ export default function Contact() {
           </p>
         </div>
 
-        {/* ---------- e-mail ---------- */}
-        {/* O endereço É o link. `break-all` porque o e-mail é uma palavra
-            só de 26 caracteres: sem isso ele estoura a caixa no celular
-            em vez de quebrar. */}
+        {/* ---------- e-mail ----------
+            O bloco inteiro era um `mailto:`. O problema: `mailto:` só
+            faz alguma coisa se a máquina tiver um cliente de e-mail
+            registrado — em Windows sem Outlook configurado, ou em quem
+            usa Gmail pelo navegador, o clique não faz absolutamente
+            nada e a pessoa conclui que o site está quebrado.
+
+            Agora o endereço fica visível e o botão principal COPIA (que
+            funciona em qualquer máquina). O `mailto:` continua ali, como
+            atalho secundário para quem tem cliente configurado.
+
+            `break-all` porque o e-mail é uma palavra só de 26
+            caracteres: sem isso ele estoura a caixa no celular. */}
         <div className="contact-fade mt-16 flex justify-center">
-          <Magnetic
-            href={`mailto:${site.email}`}
-            className="group inline-flex max-w-full flex-col items-center gap-3 rounded-2xl border border-bone/15 px-8 py-10 text-center transition-colors duration-500 hover:border-plasma sm:px-16"
-          >
+          <div className="inline-flex max-w-full flex-col items-center gap-4 rounded-2xl border border-bone/15 px-8 py-10 text-center transition-colors duration-500 hover:border-plasma sm:px-16">
             <span className="mono-label">{contact.emailHint}</span>
-            <span className="display break-all text-[clamp(1.35rem,4vw,2.5rem)] transition-colors duration-500 group-hover:text-plasma">
+
+            <span className="display break-all text-[clamp(1.35rem,4vw,2.5rem)]">
               {site.email}
             </span>
-            <span
-              aria-hidden="true"
-              className="mono-label transition-transform duration-500 group-hover:translate-x-1"
-            >
-              Escrever agora →
-            </span>
-          </Magnetic>
+
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={copiar}
+                className="mono-label rounded-full border border-bone/20 px-5 py-2.5 transition-colors duration-500 hover:border-plasma hover:text-plasma"
+              >
+                {copiado ? "Copiado ✓" : "Copiar e-mail"}
+              </button>
+
+              <Magnetic
+                href={`mailto:${site.email}`}
+                className="mono-label rounded-full border border-plasma/40 px-5 py-2.5 text-plasma transition-colors duration-500 hover:border-plasma"
+              >
+                Abrir no e-mail →
+              </Magnetic>
+            </div>
+          </div>
         </div>
 
         {/* ---------- disponibilidade ---------- */}

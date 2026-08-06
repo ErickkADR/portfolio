@@ -4,18 +4,23 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 
 /* ============================================================
-   CARROSSEL — usado por Projetos, Feitos e Certificados.
+   CARROSSEL — usado por Projetos, Feitos, Certificados e Recomendações.
 
-   O deslocamento é o scroll horizontal nativo do container, não um
-   transform. Três coisas vêm de graça com isso e teriam de ser
-   reimplementadas à mão num carrossel de transform: o arrasto por toque
-   no celular, a navegação por teclado (Tab leva ao próximo card e o
-   container acompanha) e o `scroll-snap`, que encaixa o card no lugar
-   sem uma linha de JavaScript.
+   ARRASTAR É A INTERAÇÃO PRINCIPAL. As setas continuam existindo (para
+   teclado e para quem prefere clicar), mas a pista inteira é uma área
+   de arrasto: `cursor: grab` o tempo todo, e o ponteiro captura no
+   primeiro pixel de movimento. Antes o arrasto era um extra escondido
+   sobre uma faixa estreita; agora é o jeito óbvio de usar.
 
-   O que o JavaScript acrescenta: as setas, o indicador de progresso, o
-   arrasto com o mouse no desktop (que o scroll nativo não dá) e a
-   entrada animada dos cards.
+   O deslocamento continua sendo o scroll horizontal nativo, e não um
+   transform: o arrasto por toque, o `scroll-snap` e a navegação por Tab
+   vêm de graça e teriam de ser reimplementados à mão de outro jeito.
+
+   NENHUM CARD FICA CORTADO. A pista "sangra" para fora da coluna de
+   leitura com margens negativas e recebe o mesmo valor como padding
+   interno: o primeiro card começa alinhado ao texto da seção, e o
+   último termina com folga na borda da tela, em vez de morrer colado
+   nela. O `scroll-padding` faz o snap respeitar essa mesma folga.
    ============================================================ */
 
 type Props = {
@@ -69,51 +74,62 @@ export default function Carousel({ children, label, className = "" }: Props) {
     el.scrollBy({ left: dir * delta, behavior: "smooth" });
   };
 
-  /* ---------- arrastar com o mouse ---------- */
+  /* ---------- arrastar ---------- */
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
+    // No toque, o próprio scroll nativo já arrasta melhor que qualquer
+    // reimplementação — este bloco é só para ponteiro fino.
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    let dragging = false;
-    let startX = 0;
-    let startScroll = 0;
-    let moved = 0;
+    let arrastando = false;
+    let inicioX = 0;
+    let inicioScroll = 0;
+    let andou = 0;
 
     const down = (e: PointerEvent) => {
-      // Só botão principal, e nunca a partir de um link ou botão: senão
-      // arrastar de leve sobre um card cancelaria o clique dele.
       if (e.button !== 0) return;
-      if ((e.target as HTMLElement).closest("a, button")) return;
-      dragging = true;
-      moved = 0;
-      startX = e.clientX;
-      startScroll = el.scrollLeft;
+      /* Começar o arrasto em cima de um link é permitido: o card
+         inteiro é clicável, e exigir que a pessoa acerte o espaço entre
+         cards para arrastar seria absurdo. Quem decide se aquilo virou
+         clique ou arrasto é o `andou`, lá embaixo. */
+      arrastando = true;
+      andou = 0;
+      inicioX = e.clientX;
+      inicioScroll = el.scrollLeft;
       el.style.cursor = "grabbing";
+      // Enquanto arrasta, o snap brigaria puxando a pista de volta.
+      el.style.scrollSnapType = "none";
     };
 
     const move = (e: PointerEvent) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-      moved = Math.abs(dx);
-      if (moved > 3) el.setPointerCapture(e.pointerId);
-      el.scrollLeft = startScroll - dx;
+      if (!arrastando) return;
+      const dx = e.clientX - inicioX;
+      andou = Math.abs(dx);
+      // Captura já no primeiro movimento real: sem isso, sair de cima
+      // da pista no meio do gesto interrompe o arrasto.
+      if (andou > 2 && !el.hasPointerCapture(e.pointerId)) {
+        el.setPointerCapture(e.pointerId);
+      }
+      el.scrollLeft = inicioScroll - dx;
     };
 
     const up = (e: PointerEvent) => {
-      if (!dragging) return;
-      dragging = false;
+      if (!arrastando) return;
+      arrastando = false;
       el.style.cursor = "";
+      el.style.scrollSnapType = "";
       if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
     };
 
-    // Um arrasto que passou de alguns pixels não deve virar clique no
-    // card que estava sob o cursor quando o dedo soltou.
+    /* Um arrasto que passou de alguns pixels não deve virar clique no
+       card que estava sob o cursor quando o dedo soltou. Na fase de
+       captura, para chegar antes do handler do próprio link. */
     const click = (e: MouseEvent) => {
-      if (moved > 5) {
+      if (andou > 5) {
         e.preventDefault();
         e.stopPropagation();
-        moved = 0;
+        andou = 0;
       }
     };
 
@@ -122,6 +138,8 @@ export default function Carousel({ children, label, className = "" }: Props) {
     el.addEventListener("pointerup", up);
     el.addEventListener("pointercancel", up);
     el.addEventListener("click", click, true);
+    // Arrastar uma imagem dispara o drag nativo do browser e mata o gesto.
+    el.addEventListener("dragstart", (e) => e.preventDefault());
 
     return () => {
       el.removeEventListener("pointerdown", down);
@@ -157,11 +175,15 @@ export default function Carousel({ children, label, className = "" }: Props) {
 
   return (
     <div className={className}>
+      {/* A sangria negativa tira a pista da coluna estreita e leva até a
+          borda da tela; o padding devolve o alinhamento ao primeiro card
+          e dá respiro ao último. `select-none` porque, arrastando, o
+          browser selecionaria o texto dos cards no caminho. */}
       <ul
         ref={trackRef}
         aria-label={label}
         tabIndex={0}
-        className="carousel-track flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="carousel-track -mx-[var(--gutter)] flex cursor-grab snap-x snap-mandatory select-none gap-5 overflow-x-auto scroll-pl-[var(--gutter)] px-[var(--gutter)] pb-2 [scrollbar-width:none] active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
       >
         {children}
       </ul>
@@ -196,6 +218,10 @@ export default function Carousel({ children, label, className = "" }: Props) {
             style={{ transform: `scaleX(${Math.max(progress, 0.04)})` }}
           />
         </div>
+
+        <span className="mono-label hidden shrink-0 sm:block">
+          Arraste para o lado
+        </span>
       </div>
     </div>
   );

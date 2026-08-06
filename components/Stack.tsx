@@ -87,15 +87,20 @@ export default function Stack() {
           </p>
         </div>
 
-        {/* ---------- parede de logos ---------- */}
-        <div className="mt-20 space-y-14">
+        {/* ---------- parede de logos ----------
+            Compacta de propósito: com os grupos que entraram, ladrilhos
+            de 80px e 14 de respiro entre grupos faziam a seção sozinha
+            ocupar duas telas e meia de rolagem. Em 56px o conjunto cabe
+            de uma vez, que é o ponto de uma parede de logos — ela existe
+            para ser lida de relance, não percorrida. */}
+        <div className="mt-16 space-y-9">
           {stack.groups.map((group) => (
             <div key={group.group} className="stack-group">
               <h3 className="mono-label text-center text-plasma">
                 {group.group}
               </h3>
 
-              <ul className="mt-7 flex flex-wrap justify-center gap-3 sm:gap-4">
+              <ul className="mt-5 flex flex-wrap justify-center gap-2.5">
                 {group.items.map((item) => {
                   const logo = getLogo(item.icon);
                   const cor = logo?.color ?? "var(--color-plasma-soft)";
@@ -108,11 +113,11 @@ export default function Stack() {
                       <button
                         type="button"
                         aria-label={item.name}
-                        className="grid h-[4.5rem] w-[4.5rem] place-items-center rounded-2xl border border-bone/10 bg-ink-2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-bone/25 hover:bg-ink-3 sm:h-20 sm:w-20 [&>*]:h-8 [&>*]:w-8"
+                        className="grid h-14 w-14 place-items-center rounded-xl border border-bone/10 bg-ink-2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:border-bone/25 hover:bg-ink-3 [&>*]:h-6 [&>*]:w-6"
                         style={{ color: cor }}
                       >
                         {logo?.node ?? (
-                          <span className="display grid h-8 w-8 place-items-center text-sm tracking-tight">
+                          <span className="display grid h-6 w-6 place-items-center text-xs tracking-tight">
                             {monograma(item.name)}
                           </span>
                         )}

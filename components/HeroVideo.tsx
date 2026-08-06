@@ -74,14 +74,9 @@ export default function HeroVideo() {
   }, []);
 
   return (
-    /* `data-theme="dark"` fixo: o fundo aqui é um vídeo escuro em
-       qualquer tema, então os tokens precisam continuar sendo os
-       escuros. Sem isso, no tema claro o nome vira texto quase preto
-       sobre a cena escura e some. */
     <section
       ref={sectionRef}
       id="hero"
-      data-theme="dark"
       className="relative h-svh w-full overflow-hidden bg-ink text-bone"
     >
       {/* ---------- vídeo ---------- */}
