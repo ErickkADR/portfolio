@@ -27,6 +27,9 @@ import { sobre } from "@/lib/content";
 
 export default function Home() {
   const fotoSobre = imagemAvulsa("sobre", sobre.photoName);
+  /* A segunda foto do Sobre: é ela que aparece dentro da mancha líquida
+     no hover. Ausente, o quadro volta a ser uma foto comum. */
+  const fotoSobreIA = imagemAvulsa("sobre", sobre.photoIAName);
   const midiaFeitos = mediaPorSlug("feitos");
   const imagensCertificados = arquivoPorSlug("certificados");
 
@@ -36,7 +39,7 @@ export default function Home() {
       <MobileDock />
       <main>
         <HeroVideo />
-        <Sobre photo={fotoSobre} />
+        <Sobre photo={fotoSobre} photoIA={fotoSobreIA} />
         <Feitos media={midiaFeitos} />
         <Metricas />
         <Career />

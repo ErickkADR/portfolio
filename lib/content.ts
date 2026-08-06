@@ -62,7 +62,14 @@ export const hero = {
 
    A FOTO NÃO PRECISA DE CÓDIGO: salve o arquivo como
    `public/sobre/erick.jpg` (ou .png / .webp) e ele aparece. Sem arquivo,
-   o espaço vira uma moldura com as iniciais — nada de imagem quebrada. */
+   o espaço vira uma moldura com as iniciais — nada de imagem quebrada.
+
+   A SEGUNDA FOTO é a que aparece sob a mancha líquida quando o mouse
+   passa: `public/sobre/erick-ia.jpg`. As duas precisam ter o MESMO
+   enquadramento — mesma pose, mesmo tamanho — porque a revelação é um
+   buraco na de cima, e qualquer diferença de posição vira um pulo dentro
+   da mancha. Sem esse arquivo o efeito some sozinho e a foto fica
+   normal. */
 export const sobre = {
   label: "Sobre",
   /* "Quem constrói isso" era vago e não dizia nada sobre ele. O título
@@ -70,6 +77,14 @@ export const sobre = {
   title: "Eu construo com IA",
   photoName: "erick",
   photoAlt: "Erick Dantas",
+  photoIAName: "erick-ia",
+  photoIAAlt: "O mesmo retrato com o rosto substituído por uma cabeça de androide",
+  /* A imagem não anuncia sozinha que reage ao mouse. O aviso segue o
+     mesmo padrão do "Arraste para o lado" do carrossel: some assim que a
+     pessoa descobre. */
+  photoHint: "Passe o mouse",
+  /* No celular não há hover — a troca vira botão. [mostrar, voltar] */
+  photoTap: ["Ver a versão IA", "Ver a foto"] as [string, string],
   /* Dois parágrafos, e não quatro: a coluna fica ao lado da foto, e
      quatro blocos de texto empurravam a seção para muito além da altura
      da imagem. O que saiu foi repetição — a ideia de cada um continua. */

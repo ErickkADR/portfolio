@@ -53,6 +53,23 @@ export default function Carousel({
   /* No modo automático o gesto e o hover precisam parar a deriva. */
   const pausado = useRef(false);
 
+  /* ---------- a deriva é só de tela grande ----------
+     No celular cabe UM card por tela e não existe hover para pausar a
+     esteira: a pessoa encara um card que nunca para de escorregar e que
+     nunca está inteiro no quadro, porque o modo automático desliga o
+     `scroll-snap`. Aqui embaixo o carrossel volta a ser o de sempre —
+     um card por arrasto, encaixado. Começa desligado para o HTML do
+     build bater com a primeira renderização do cliente. */
+  const [derivar, setDerivar] = useState(false);
+  useEffect(() => {
+    if (!auto) return;
+    const mq = window.matchMedia("(min-width: 1024px) and (hover: hover)");
+    const ler = () => setDerivar(mq.matches);
+    ler();
+    mq.addEventListener("change", ler);
+    return () => mq.removeEventListener("change", ler);
+  }, [auto]);
+
   /* Uma leitura por frame, no máximo. Sem o rAF, um arrasto rápido
      dispara dezenas de scrolls por frame e cada um força o layout. */
   const pendente = useRef(0);
@@ -64,9 +81,9 @@ export default function Carousel({
       const el = trackRef.current;
       if (!el) return;
 
-      /* No modo automático a lista está duplicada, então o curso "real"
-         é metade da pista — sem isso a barra nunca passaria de 50%. */
-      const largura = auto ? el.scrollWidth / 2 : el.scrollWidth;
+      /* Derivando, a lista está duplicada, então o curso "real" é
+         metade da pista — sem isso a seta nunca desativaria no fim. */
+      const largura = derivar ? el.scrollWidth / 2 : el.scrollWidth;
       const max = largura - el.clientWidth;
       // A tolerância de 4px evita a seta piscando no fim do curso por
       // causa do arredondamento subpixel do scroll.
@@ -79,7 +96,7 @@ export default function Carousel({
       setCanNext(next);
 
     });
-  }, [auto]);
+  }, [derivar]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -199,7 +216,7 @@ export default function Carousel({
      somar um valor fixo por frame amarraria a velocidade à taxa de
      quadros, e a faixa correria ao dobro num monitor de 120Hz. */
   useEffect(() => {
-    if (!auto) return;
+    if (!derivar) return;
     const el = trackRef.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -255,7 +272,7 @@ export default function Carousel({
       el.removeEventListener("focusout", seguir);
       io.disconnect();
     };
-  }, [auto]);
+  }, [derivar]);
 
   /* ---------- entrada dos cards ---------- */
   useGSAP(
@@ -300,7 +317,7 @@ export default function Carousel({
      ainda para nele, deixando o foco num lugar que não é anunciado.
      `inert` faz as duas coisas: some da árvore de acessibilidade e sai
      da ordem de tabulação. */
-  const copia = auto
+  const copia = derivar
     ? Children.map(children, (filho, i) =>
         isValidElement(filho)
           ? cloneElement(filho as React.ReactElement<{ inert?: boolean }>, {
@@ -321,7 +338,7 @@ export default function Carousel({
         aria-label={label}
         tabIndex={0}
         className={`carousel-track flex cursor-grab select-none gap-5 overflow-x-auto pb-2 [scrollbar-width:none] active:cursor-grabbing [&::-webkit-scrollbar]:hidden ${
-          auto ? "" : "snap-x snap-mandatory"
+          derivar ? "" : "snap-x snap-mandatory"
         }`}
       >
         {children}

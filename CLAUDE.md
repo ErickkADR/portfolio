@@ -57,6 +57,28 @@ nunca aplicam e o componente sai claro.
 
 4. **`@react-three/fiber` está preso na v9.** A v10-alpha importa `act` do React 19 e quebra.
 
+5. **A seção Sobre é uma faixa de tela cheia com a foto de fundo**, não um retrato
+   emoldurado. As duas imagens (`public/sobre/erick.webp` e `erick-ia.webp`) foram feitas
+   com o sujeito no alto à esquerda e fundo vazio à direita — o texto ocupa esse vazio.
+   Trocar por uma foto de enquadramento diferente quebra a composição inteira.
+   O corte é ancorado em `object-left-top` para que o que sobra seja sempre fundo.
+
+6. **A revelação no hover é máscara SVG, não `mask-image` do CSS.** Máscara CSS não aceita
+   filtro no conteúdo, e é o filtro `goo` (borrar + estourar o alfa) que funde as quatro
+   gotas numa massa só. Ver `components/PhotoReveal.tsx`.
+   - As gotas crescem no `pointermove`, **não** só no `pointerenter`: o enter não dispara
+     quando o cursor já estava parado sobre a área ou quando desce de um elemento fixo
+     por cima (o menu). Amarrar só ao enter deixava o efeito morto em metade das entradas.
+   - No toque e em `prefers-reduced-motion` o componente cai para fade entre as duas
+     imagens; no celular a troca é por botão.
+   - **A altura da faixa no celular (`56svh`) está em DOIS lugares** — a constante `AREA` do
+     PhotoReveal e o espaçador em `Sobre.tsx`. Mexeu numa, mexe na outra.
+
+7. **O carrossel só anda sozinho a partir de 1024px e com hover disponível.** No celular
+   cabe um card por tela e não há hover para pausar a esteira: a pessoa encarava um card
+   que nunca parava e nunca estava inteiro no quadro (o modo automático desliga o
+   `scroll-snap`). Abaixo disso ele volta a ser um carrossel normal, com encaixe.
+
 ## Deploy — o que derruba o site
 
 `main` guarda o código, `gh-pages` guarda só o build estático.
@@ -72,6 +94,33 @@ nunca aplicam e o componente sai claro.
 
 O deploy é por branch e não por GitHub Actions porque o token `gh` do Erick não tem escopo
 `workflow` — commitar `.github/workflows/*` falha no push. Para mudar: `gh auth refresh -s workflow`.
+
+## Armadilhas de responsividade (já custaram caro uma vez)
+
+- **`gsap.from({ x: … })` em card de largura cheia estoura a página na horizontal.** O `from`
+  aplica o deslocamento inicial ANTES do trigger disparar, então todo card abaixo da dobra
+  fica empurrado para fora e a página inteira ganha rolagem lateral. Foi o que aconteceu na
+  Carreira: 20px de estouro em qualquer celular. No desktop não aparecia porque lá o card
+  tem metade da largura. Regra: deslocamento horizontal de entrada só em `(min-width: 1024px)`.
+- **`ch` mede contra a fonte do elemento em que está escrito, não contra a do filho.** O
+  `max-w-[18ch]` do hero valia ~157px (fonte do pai, 16px) para um nome desenhado a 46px —
+  e como cada linha do título é um `.line-mask` com `overflow: hidden`, o sobrenome saía
+  **cortado no meio da letra** em toda tela abaixo de 1024px, sem gerar estouro que
+  denunciasse o problema.
+- Conferir estouro horizontal é barato e pega os dois casos:
+  `document.documentElement.scrollWidth - clientWidth` a 360px e 390px tem que dar **0**.
+  Ao listar os culpados, ignore quem está dentro de um ancestral com `overflow-x`
+  auto/scroll/hidden — os slides do carrossel sempre aparecem e nunca são o problema.
+
+## Verificação com Playwright
+
+`window.scrollTo` **não funciona** nesta página: o Lenis devolve a posição dele no frame
+seguinte. Para levar a página até uma seção, clique num `<a href="#secao">` — o SmoothScroll
+intercepta cliques em âncora no documento inteiro, então serve até um link criado na hora.
+Rodinha (`mouse.wheel`) tem inércia e sempre passa do ponto.
+
+O dev server desta máquina compila devagar (projeto dentro do OneDrive): um primeiro
+`GET /` de 25s é normal, então use `timeout: 120000` no `goto`.
 
 ## Pendências
 

@@ -130,8 +130,15 @@ export default function HeroVideo() {
 
         {/* A personagem do vídeo ocupa a metade direita do quadro, então
             o bloco fica preso à esquerda e não passa de ~58% da largura
-            em telas grandes — senão as letras caem em cima do rosto. */}
-        <div className="max-w-[min(100%,18ch)] lg:max-w-[58%]">
+            em telas grandes — senão as letras caem em cima do rosto.
+
+            No celular a largura é cheia. O `18ch` que estava aqui media
+            contra a fonte do PAI (~16px), não contra a do h1: dava
+            ~157px de caixa para um nome desenhado a 46px, e como cada
+            linha do título é um `.line-mask` com `overflow: hidden`, o
+            "DANTAS" saía cortado no meio do S em qualquer tela abaixo de
+            1024px. A largura de leitura de quem manda aqui é o `.shell`. */}
+        <div className="w-full lg:max-w-[58%]">
           <p className="hero-fade mono-label mb-3">{hero.greeting}</p>
 
           {/* O nome em caixa alta e apertado: é a única coisa nesta tela

@@ -30,7 +30,19 @@ export default function Career() {
     () => {
       const mm = gsap.matchMedia();
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      /* Duas condições: a de movimento e a de largura. A segunda existe
+         por causa da entrada dos cards — ver o comentário lá embaixo. */
+      mm.add(
+        {
+          anima: "(prefers-reduced-motion: no-preference)",
+          largo: "(min-width: 1024px)",
+        },
+        (ctx) => {
+          const { anima, largo } = ctx.conditions as {
+            anima: boolean;
+            largo: boolean;
+          };
+          if (!anima) return;
         /* O traço acompanha o scroll. `scaleY` a partir do topo em vez de
            animar `height`: escala é composta na GPU, altura força o
            layout a ser recalculado a cada frame. */
@@ -52,12 +64,20 @@ export default function Career() {
 
         /* Cada etapa entra pelo lado em que está: as da esquerda vêm da
            esquerda, as da direita vêm da direita. O movimento reforça a
-           alternância em vez de brigar com ela. */
+           alternância em vez de brigar com ela.
+
+           SÓ NO DESKTOP. No celular não há alternância — os cards são de
+           largura cheia — e o `x: 40` do estado inicial fazia o card
+           nascer 40px fora da tela. Como o `gsap.from` já aplica esse
+           deslocamento ANTES do trigger disparar, todos os cards abaixo
+           da dobra ficavam empurrados para fora, e a página inteira
+           ganhava 20px de rolagem horizontal. Aqui embaixo a entrada é
+           vertical, que não tem para onde vazar. */
         const cards = gsap.utils
           .toArray<HTMLElement>(".career-item")
           .map((item, i) =>
             gsap.from(item, {
-              x: i % 2 === 0 ? -40 : 40,
+              ...(largo ? { x: i % 2 === 0 ? -40 : 40 } : { y: 28 }),
               opacity: 0,
               duration: 0.9,
               ease: "expo.out",
@@ -76,12 +96,13 @@ export default function Career() {
             })
           );
 
-        return () => {
-          linha.kill();
-          cards.forEach((t) => t.kill());
-          pontos.forEach((t) => t.kill());
-        };
-      });
+          return () => {
+            linha.kill();
+            cards.forEach((t) => t.kill());
+            pontos.forEach((t) => t.kill());
+          };
+        }
+      );
 
       return () => mm.revert();
     },

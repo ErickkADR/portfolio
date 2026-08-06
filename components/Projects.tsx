@@ -35,7 +35,10 @@ export default function Projects() {
           </RevealText>
         </div>
 
-        <Carousel label="Projetos" className="mt-16">
+        {/* `auto`: a pista anda sozinha em loop, como a dos certificados.
+            Pausa no hover, no foco, durante o arrasto e quando a seção
+            sai da tela. */}
+        <Carousel label="Projetos" className="mt-16" auto>
           {projects.map((p) => (
             <li
               key={p.slug}
