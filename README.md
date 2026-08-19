@@ -17,7 +17,8 @@ Nada de cadastrar caminho, editar componente ou mexer no `content.ts`.
 
 | O que | Onde salvar | Formatos |
 | --- | --- | --- |
-| Foto da seção Sobre | `public/sobre/erick.jpg` | imagem |
+| Foto do hero | `public/hero/erick.jpg` | imagem |
+| Versão androide, revelada na onda | `public/hero/erick-ia.jpg` | imagem |
 | Comprovação de um feito | `public/feitos/<slug>/` | imagem, vídeo, PDF |
 | Material de uma etapa da carreira | `public/carreira/<slug>/` | imagem, vídeo, PDF |
 | Imagem de um certificado | `public/certificados/<slug>.jpg` | imagem |
@@ -79,15 +80,20 @@ O hero e o nav continuam com a largura cheia.
 
 ## As peças principais
 
-### 1. Vídeo do hero em loop
+### 1. Hero: a foto que ondula sob o mouse
 
-`components/HeroVideo.tsx` · o arquivo fica em `public/video/hero.mp4`
+`components/Hero.tsx` + `components/RippleDistortion.tsx` (WebGL, ogl) · as imagens
+ficam em `public/hero/`
 
-O vídeo toca sozinho, em loop, mudo (autoplay só é concedido a vídeo mudo). As
-legendas se alternam a cada ~4s.
+A superfície da foto ondula onde o ponteiro passa, e **dentro da onda aparece a versão
+androide** (`erick-ia`). O vídeo que abria a página desceu para a seção Sobre em
+18/08/2026; a foto subiu para cá.
 
-O título é limitado a ~58% da largura em telas grandes: a personagem do vídeo ocupa a
-metade direita do quadro, e sem esse limite as letras caem em cima do rosto.
+A foto tem o sujeito à esquerda e fundo vazio à direita, então o texto ocupa a metade
+direita. Ela entra com `contain` e âncora na esquerda: nada dela é cortado, e a sobra
+do retângulo vai toda para o lado do texto.
+
+As legendas se alternam a cada ~4s.
 
 > A barra de progresso do vídeo e o "role para revelar" saíram. Instrução de
 > scroll é enfeite — quem chega numa página já sabe rolar — e a barra existia para
