@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { career } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
 
 /* ============================================================
@@ -23,6 +23,7 @@ import RevealText from "./RevealText";
    ============================================================ */
 
 export default function Career() {
+  const { career } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const trilhaRef = useRef<HTMLDivElement>(null);
 

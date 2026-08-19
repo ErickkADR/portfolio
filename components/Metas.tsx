@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { globe } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
 
 /* Meta profissional — o globo com os arcos saindo de São Paulo.
@@ -13,12 +14,24 @@ import RevealText from "./RevealText";
    antes do contato.
 
    three + three-globe + fiber + drei somam alguns megabytes, então o
-   globo é carregado sob demanda (dynamic + ssr:false) e só quando a
-   seção se aproxima da viewport. */
-const World = dynamic(
-  () => import("@/components/ui/globe").then((m) => m.World),
-  { ssr: false, loading: () => null }
-);
+   globo é carregado sob demanda (dynamic + ssr:false).
+
+   O CARREGAMENTO ACONTECE EM DOIS TEMPOS, e é o que consertou o "demora
+   demais ou nem carrega":
+
+   1. o BUNDLE é buscado assim que o navegador fica ocioso, ainda com a
+      pessoa lendo o topo da página. Antes ele só começava a baixar
+      quando a seção chegava perto, então os megabytes disputavam banda
+      exatamente no instante em que o globo precisava aparecer;
+   2. o COMPONENTE só monta quando a seção se aproxima, porque é a
+      montagem que constrói a malha e custa CPU.
+
+   Enquanto nada disso terminou, o lugar não fica vazio: o esqueleto
+   abaixo ocupa a área. Um buraco de 38rem sem explicação é o que faz
+   parecer que não carregou. */
+const importaGlobo = () => import("@/components/ui/globe").then((m) => m.World);
+
+const World = dynamic(importaGlobo, { ssr: false, loading: () => null });
 
 const globeConfig = {
   pointSize: 4,
@@ -60,45 +73,83 @@ const arcs = globe.destinations.map((d, i) => ({
 }));
 
 export default function Metas() {
+  /* `globe` (o import de módulo, acima) segue sendo a fonte das
+     coordenadas: latitude não se traduz, e os arcos são montados fora do
+     componente. Daqui sai só o texto. */
+  const { globe: textoGlobo } = useConteudo();
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  /* `montado` é definitivo (uma vez montado, fica). `naTela` acompanha a
+     visibilidade e é o que liga e desliga o laço de render. */
+  const [montado, setMontado] = useState(false);
+  const [naTela, setNaTela] = useState(false);
+
+  /* Busca o bundle na primeira folga do navegador. Só a rede: o
+     componente continua montando pelo observer abaixo. */
+  useEffect(() => {
+    const idle =
+      window.requestIdleCallback ??
+      ((cb: () => void) => window.setTimeout(cb, 1500));
+    const id = idle(() => {
+      importaGlobo().catch(() => {
+        /* Falhou o download: o observer tenta de novo na montagem, e até
+           lá o esqueleto segue no lugar do globo. */
+      });
+    });
+    return () => {
+      if (typeof id === "number") window.clearTimeout(id);
+    };
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const io = new IntersectionObserver(
+    /* Dois observers com margens diferentes de propósito: o de montagem
+       dispara cedo (600px antes) para a malha já estar construída quando
+       a seção chegar; o de atividade usa margem zero, porque render fora
+       da tela é desperdício puro. */
+    const montagem = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
+          setMontado(true);
+          montagem.disconnect();
         }
       },
       { rootMargin: "600px" }
     );
-    io.observe(el);
-    return () => io.disconnect();
+
+    const atividade = new IntersectionObserver(
+      ([entry]) => setNaTela(entry.isIntersecting),
+      { rootMargin: "100px" }
+    );
+
+    montagem.observe(el);
+    atividade.observe(el);
+    return () => {
+      montagem.disconnect();
+      atividade.disconnect();
+    };
   }, []);
 
   return (
     <section id="metas" className="border-t border-bone/10 py-32 sm:py-44">
       <div className="shell shell-narrow flex flex-col items-center gap-14">
         <div className="section-head">
-          <span className="mono-label">{globe.label}</span>
+          <span className="mono-label">{textoGlobo.label}</span>
 
           <RevealText
             as="h2"
             className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
           >
-            {globe.title}
+            {textoGlobo.title}
           </RevealText>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-bone-dim">
-            {globe.body}
+            {textoGlobo.body}
           </p>
 
           <ul className="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2">
-            {globe.destinations.map((d) => (
+            {textoGlobo.destinations.map((d) => (
               <li key={d.label} className="mono-label">
                 {d.label}
               </li>
@@ -117,7 +168,17 @@ export default function Metas() {
                 "radial-gradient(circle, var(--color-plasma) 0%, transparent 70%)",
             }}
           />
-          {visible && <World globeConfig={globeConfig} data={arcs} />}
+          {/* Esqueleto: o meridiano pontilhado gira no lugar do globo
+              enquanto ele não está pronto. Fica ATRÁS do canvas, então
+              não precisa ser removido quando o globo aparece. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-[8%] animate-[globo-espera_18s_linear_infinite] rounded-full border border-dashed border-plasma/20"
+          />
+
+          {montado && (
+            <World globeConfig={globeConfig} data={arcs} active={naTela} />
+          )}
         </div>
       </div>
     </section>

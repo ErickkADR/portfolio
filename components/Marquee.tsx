@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { marquee } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 
 /* Faixa infinita que reage ao scroll: acelera na direção em que a
    pessoa está rolando e inclina de leve com a velocidade. O detalhe
@@ -10,6 +10,7 @@ import { marquee } from "@/lib/content";
    sem isso a faixa dá um tranco a cada parada. */
 
 export default function Marquee() {
+  const { marquee } = useConteudo();
   const ref = useRef<HTMLDivElement>(null);
 
   useGSAP(

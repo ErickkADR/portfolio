@@ -81,6 +81,36 @@ html.lenis body {
   letter-spacing: -0.01em;
 }
 
+/* A palavra de acento dentro de um título `display`, hoje o "juntos" do
+   contato.
+
+   Instrument Serif itálico e Bricolage Black não têm o mesmo tamanho
+   ótico na mesma `font-size`: a serifada tem altura-x e peso bem
+   menores, e a palavra saía franzina ao lado do resto do título, lendo
+   como nota de pé em vez da metade que importa na frase.
+
+   O `1.18em` devolve a altura-x. O tracking volta a zero porque o
+   -0.035em do `.display` é ajuste para uma black estreita e num itálico
+   serifado ele cola as letras. O brilho é o que faz a cor de acento
+   parecer decisão de tipografia, e não link não clicado. */
+.display-accent {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.18em;
+  letter-spacing: 0;
+  color: var(--color-plasma);
+  text-shadow: 0 0 0.45em rgba(168, 85, 247, 0.45);
+}
+
+/* A linha que contém o `.display-accent` precisa de mais fundo que as
+   outras: o `.line-mask` corta no overflow, e a 1.18em a perna do "j"
+   passa do 0.12em que basta para o resto do título. */
+.line-mask-accent {
+  padding-bottom: 0.3em;
+  margin-bottom: -0.3em;
+}
+
 .mono-label {
   font-family: var(--font-body);
   font-size: 0.6875rem;
@@ -113,6 +143,109 @@ html.lenis body {
   transform: none;
 }
 
+/* ---------- Início da foto do hero ----------
+   A margem ESQUERDA da foto tem de ser igual à margem DIREITA do texto,
+   a pedido dele. Medindo, elas eram 0 e 60px (a 1512px de largura) ou 0 e
+   152px (a 1920px), porque a foto sangrava até a borda e o texto vive
+   dentro do `.shell`.
+
+   A conta reproduz exatamente a borda esquerda do conteúdo do `.shell`:
+   metade da tela, menos metade da largura máxima da coluna (ou metade da
+   tela, quando a janela é menor que ela), mais o gutter. Confere nos dois
+   casos: 756 − 756 + 60 = 60, e 960 − 880 + 72 = 152.
+
+   `min()` é o que cobre os dois regimes — janela menor que o `max-width`
+   do shell, e janela maior, quando sobra espaço nas laterais.
+
+   Só a partir de lg: abaixo disso a foto é uma faixa no topo e o texto
+   vem embaixo, então não há margem esquerda e direita para comparar. */
+@media (min-width: 1024px) {
+  .hero-foto {
+    left: calc(50% - min(50%, 55rem) + var(--gutter));
+  }
+}
+
+/* ---------- Ondulação do hero (RippleDistortion) ----------
+   As três regras vinham num RippleDistortion.css à parte no React Bits.
+   Aqui elas moram no globals, como todo o resto: o projeto não usa CSS
+   por componente em nenhum outro lugar. O `background` é `ink` e não
+   preto puro para a moldura do modo `contain` casar com a página. */
+
+.ripple-distortion {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+
+.ripple-distortion canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Baralho da Formação (CardSwap) ----------
+   O CSS do React Bits ancora o container no canto inferior direito com
+   um translate. Aqui ele é um bloco normal: a seção Formação o usa
+   dentro de uma coluna, não sangrando de um canto da tela. Quem
+   posiciona é o Tailwind na própria seção.
+
+   `perspective` no container é o que faz as cartas de trás recuarem de
+   verdade em vez de só ficarem menores. */
+
+.card-swap-container {
+  position: relative;
+  perspective: 900px;
+  overflow: visible;
+  transform-origin: center center;
+}
+
+.swap-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 16px;
+  border: 1px solid var(--color-bone);
+  border-color: color-mix(in srgb, var(--color-bone) 16%, transparent);
+  background: var(--color-ink-2);
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* ---------- Esteira de cards (ver components/ui/card-marquee.tsx) ----------
+   O laço é `translateX(-50%)` sobre a lista duplicada. */
+
+@keyframes esteira {
+  to { transform: translateX(-50%); }
+}
+
+.esteira-trilha {
+  animation: esteira var(--esteira-dur, 34s) linear infinite;
+  will-change: transform;
+}
+
+/* Pausa no hover: o conteúdo é depoimento, e uma esteira que não para
+   impede a leitura justamente de quem se interessou. */
+.esteira:hover .esteira-trilha {
+  animation-play-state: paused;
+}
+
+/* Movimento reduzido: a esteira para e a fileira vira uma faixa que a
+   pessoa arrasta. Sem isso, desligar a animação esconderia para sempre
+   todos os cartões que não couberam na primeira tela. */
+@media (prefers-reduced-motion: reduce) {
+  .esteira {
+    overflow-x: auto;
+  }
+  .esteira-trilha {
+    animation: none;
+    min-width: 0;
+  }
+}
+
 /* ---------- Grão / textura ---------- */
 
 .grain {
@@ -124,6 +257,14 @@ html.lenis body {
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain-shift 0.6s steps(2) infinite;
+}
+
+/* Espera do globo: giro lento do meridiano pontilhado. Lento de
+   propósito, para ler como "carregando" e não como animação decorativa
+   que compete com o que já está na tela. */
+@keyframes globo-espera {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes grain-shift {

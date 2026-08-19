@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { nav, site } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
+import BotaoIdioma from "./BotaoIdioma";
 
 /* Barra que some ao descer e volta ao subir. O gatilho é a direção do
    scroll, não a posição: esconder por posição faz a barra piscar toda
@@ -10,6 +11,7 @@ import { nav, site } from "@/lib/content";
 
 export default function Nav() {
   const ref = useRef<HTMLElement>(null);
+  const { nav, site, ui } = useConteudo();
 
   useGSAP(() => {
     const el = ref.current;
@@ -42,7 +44,7 @@ export default function Nav() {
     <nav
       ref={ref}
       className="fixed inset-x-0 top-0 z-50 hidden md:block"
-      aria-label="Navegação principal"
+      aria-label={ui.navPrincipal}
     >
       {/* Grade de três colunas, com os controles ocupando a terceira: a
           pílula fica no centro da tela, não no centro do espaço que
@@ -73,10 +75,17 @@ export default function Nav() {
           ))}
         </ul>
 
-        {/* Terceira coluna vazia de propósito: ela é o contrapeso da
-            logo. Sem ela, `grid-cols-[1fr_auto_1fr]` viraria duas
-            colunas e a pílula do menu escorregaria para a direita. */}
-        <div aria-hidden="true" />
+        {/* A terceira coluna era vazia, só como contrapeso da logo (sem
+            ela o `grid-cols-[1fr_auto_1fr]` viraria duas colunas e a
+            pílula do menu escorregaria para a direita). Agora ela carrega
+            o botão de idioma, que é o contrapeso e um controle ao mesmo
+            tempo.
+
+            O rótulo mostra o idioma para o qual o clique LEVA, não o
+            atual: é a leitura que a pessoa faz de um botão. */}
+        <div className="justify-self-end">
+          <BotaoIdioma />
+        </div>
       </div>
     </nav>
   );

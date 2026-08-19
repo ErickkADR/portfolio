@@ -1,7 +1,8 @@
 "use client";
 
 import { FloatingDock } from "@/components/ui/floating-dock";
-import { nav, site } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
+import BotaoIdioma from "@/components/BotaoIdioma";
 import {
   IconHome,
   IconUser,
@@ -33,6 +34,7 @@ const icons: Record<string, React.ReactNode> = {
 };
 
 export default function MobileDock() {
+  const { nav, site } = useConteudo();
   const items = [
     ...nav.map((item) => ({
       title: item.label,
@@ -47,10 +49,22 @@ export default function MobileDock() {
   ];
 
   return (
-    /* Canto inferior direito, não centralizado: no centro o botão cai
-       em cima da legenda do hero. O dock abre para cima a partir daqui. */
-    <div className="fixed bottom-6 right-5 z-50 md:hidden">
-      <FloatingDock items={items} />
-    </div>
+    <>
+      {/* O BOTÃO DE IDIOMA NO CELULAR.
+
+          A barra do topo é `hidden md:block`, então abaixo de md não havia
+          controle de idioma nenhum: quem abria no telefone ficava preso no
+          português. Não entrou como item do dock porque o FloatingDock é
+          feito de links (`href`), e isto é uma ação. */}
+      <div className="fixed right-5 top-5 z-50 md:hidden">
+        <BotaoIdioma />
+      </div>
+
+      {/* Canto inferior direito, não centralizado: no centro o botão cai
+          em cima da legenda do hero. O dock abre para cima a partir daqui. */}
+      <div className="fixed bottom-6 right-5 z-50 md:hidden">
+        <FloatingDock items={items} />
+      </div>
+    </>
   );
 }

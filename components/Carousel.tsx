@@ -345,32 +345,20 @@ export default function Carousel({
         {copia}
       </ul>
 
-      <div className="mt-8 flex items-center gap-5">
-        <div className="flex gap-2.5">
-          <button
-            type="button"
-            className={seta}
-            onClick={() => step(-1)}
-            disabled={!canPrev}
-            aria-label="Anterior"
-          >
-            <span aria-hidden="true">←</span>
-          </button>
-          <button
-            type="button"
-            className={seta}
-            onClick={() => step(1)}
-            disabled={!canNext}
-            aria-label="Próximo"
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
+      {/* AS SETAS E O "ARRASTE PARA O LADO" SAÍRAM (19/08/2026).
 
-        <span className="mono-label hidden shrink-0 sm:block">
-          Arraste para o lado
-        </span>
-      </div>
+          Ele reportou que nenhum dos dois botões funcionava e pediu para
+          remover. A pista continua navegável pelos três caminhos que já
+          funcionavam e não dependiam deles: arrastar com o ponteiro
+          (`cursor-grab` no track), a roda do mouse na horizontal e o
+          teclado — o `<ul>` tem `tabIndex={0}`, então Tab foca a pista e
+          as setas do teclado rolam.
+
+          Se um dia voltarem, o problema a investigar é o `step()` contra
+          o modo `derivar`: no modo automático o `scroll-snap` está
+          desligado e a pista é reposicionada por código a cada quadro,
+          então um `scrollBy` disparado por clique era desfeito no quadro
+          seguinte. */}
     </div>
   );
 }

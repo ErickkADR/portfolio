@@ -58,25 +58,95 @@ export default function SmoothScroll() {
     };
   }, []);
 
-  /* ---------- topo a cada troca de rota ----------
+  /* ---------- para onde ir a cada troca de rota ----------
+
      O App Router navega sem recarregar a página, e o Lenis mantém a
-     própria posição de scroll num transform. O resultado era abrir o
-     "próximo projeto" no meio da página, na altura em que o link tinha
-     sido clicado. `immediate` porque animar até o topo de uma página que
-     acabou de trocar mostra o conteúdo errado durante a viagem.
+     própria posição de scroll num transform. Sem isto, abrir o "próximo
+     projeto" caía no meio da página, na altura em que o link tinha sido
+     clicado.
 
-     A âncora na URL é a exceção: chegar em /#carreira tem que ir para a
-     carreira, não para o topo. */
+     SEM ÂNCORA vai para o topo. `immediate` porque animar até o topo de
+     uma página que acabou de trocar mostra o conteúdo errado durante a
+     viagem.
+
+     COM ÂNCORA vai para a seção. Antes este efeito só DESISTIA quando
+     havia âncora (`if (hash) return`) e não rolava para lugar nenhum: o
+     resultado é que voltar de um projeto para /#projetos deixava a página
+     exatamente onde ela estava, que foi o que ele reportou.
+
+     O `requestAnimationFrame` duplo não é superstição: no primeiro quadro
+     a página nova ainda não tem o layout final (fontes, imagens e os
+     `svh` do hero), e medir a posição da seção ali erra o alvo. O
+     `ScrollTrigger.refresh()` vem antes da medida pelo mesmo motivo. */
   useEffect(() => {
-    if (window.location.hash) return;
-
     const lenis = lenisRef.current;
-    if (lenis) lenis.scrollTo(0, { immediate: true });
-    else window.scrollTo(0, 0);
+    const hash = window.location.hash;
 
-    // A página nova tem outra altura; sem remedir, os triggers ficam
-    // presos nas posições da página anterior.
-    ScrollTrigger.refresh();
+    const irParaTopo = () => {
+      if (lenis) lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo(0, 0);
+      ScrollTrigger.refresh();
+    };
+
+    if (!hash) {
+      irParaTopo();
+      return;
+    }
+
+    /* ---------- por que UM alinhamento não basta ----------
+       A primeira versão media a seção depois de dois quadros e rolava uma
+       vez. Errava por milhares de pixels: a home CRESCE depois do
+       primeiro layout (as imagens dos carrosséis, os PNG da parede de
+       logos, o vídeo, as fontes), então o alvo desce e a posição medida
+       antes fica curta. Na medida real: parou em 3361px quando a seção
+       tinha ido para 8415px.
+
+       Então o alinhamento é REPETIDO em marcos de tempo e no `load`,
+       recalculando a posição a cada vez. Converge sozinho, porque cada
+       correção parte da altura atual da página.
+
+       E para quando a PESSOA assume o scroll: corrigir a posição de
+       alguém que já começou a rolar é arrancar a página da mão dela. */
+    const alinhar = () => {
+      ScrollTrigger.refresh();
+      const alvo = document.querySelector<HTMLElement>(hash);
+      if (!alvo) return;
+      if (lenis) lenis.scrollTo(alvo, { immediate: true, offset: 0 });
+      /* Sem Lenis (movimento reduzido) o scroll é o nativo, e `auto`
+         evita a animação que a pessoa pediu para não ter. */
+      else alvo.scrollIntoView({ behavior: "auto", block: "start" });
+    };
+
+    let cancelado = false;
+    const desistir = () => {
+      cancelado = true;
+    };
+    /* `wheel` e `touchstart` chegam antes de qualquer scroll acontecer,
+       então dão para abortar a correção seguinte em tempo. */
+    window.addEventListener("wheel", desistir, { passive: true, once: true });
+    window.addEventListener("touchstart", desistir, { passive: true, once: true });
+    window.addEventListener("keydown", desistir, { once: true });
+
+    const tentar = () => {
+      if (!cancelado) alinhar();
+    };
+
+    const quadro = requestAnimationFrame(() => requestAnimationFrame(tentar));
+    /* Os marcos cobrem os três momentos em que a altura muda: layout
+       inicial, imagens acima da dobra e o resto da página. */
+    const marcos = [120, 400, 900, 1600].map((ms) => window.setTimeout(tentar, ms));
+    if (document.readyState !== "complete") {
+      window.addEventListener("load", tentar, { once: true });
+    }
+
+    return () => {
+      cancelAnimationFrame(quadro);
+      marcos.forEach(window.clearTimeout);
+      window.removeEventListener("wheel", desistir);
+      window.removeEventListener("touchstart", desistir);
+      window.removeEventListener("keydown", desistir);
+      window.removeEventListener("load", tentar);
+    };
   }, [pathname]);
 
   return null;

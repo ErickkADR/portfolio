@@ -59,21 +59,19 @@ const RAIO_MAX = 120;
 
 /* A ÁREA QUE A IMAGEM OCUPA, e que a máscara tem de acompanhar.
 
-   No desktop é o bloco inteiro — a foto é o fundo da seção. No celular
-   é só a FAIXA DE CIMA: lá o texto não fica sobre a imagem, fica abaixo
-   dela, num bloco preto opaco. Esticar a imagem por trás desse bloco
-   parece inofensivo mas destrói o enquadramento: o `object-cover`
-   passaria a preencher uma caixa de 390×2000, e a 11% da largura da
-   foto que sobrariam visíveis na faixa seriam a borda do cabelo, não o
-   rosto. A altura aqui é a mesma do espaçador em Sobre.tsx — mexeu numa,
-   mexe na outra.
+   O padrão é o bloco inteiro: a foto é o fundo da seção que a usa. Hoje
+   quem usa é o hero, e lá o bloco é a primeira tela cheia.
+
+   Quem precisar de outra área (uma faixa só, por exemplo) passa a prop
+   `area`. A classe é aplicada nas DUAS imagens e no `<svg>` da máscara,
+   então mudar por prop mantém os três em cima do mesmo retângulo, que é
+   a condição para a revelação coincidir pixel a pixel.
 
    O ancoramento em esquerda/topo (`object-left-top` no CSS, `xMinYMin`
    no SVG) garante que nenhuma proporção de tela corte a cabeça: as duas
    fotos têm o sujeito no alto à esquerda, então o que sobra do corte é
    sempre fundo. */
-const AREA = "absolute inset-x-0 top-0 h-[56svh] w-full lg:h-full";
-const ENCAIXE = `${AREA} object-cover object-left-top`;
+const AREA_PADRAO = "absolute inset-0 h-full w-full";
 
 type Props = {
   /* Caminhos dentro de public/ — quem monta o prefixo é o asset(). */
@@ -86,6 +84,16 @@ type Props = {
   /* Rótulos do botão no toque: [mostrar, voltar]. */
   tapLabels: [string, string];
   className?: string;
+  /* Retângulo que as imagens e a máscara ocupam. Ver AREA_PADRAO. */
+  area?: string;
+  /* Onde o aviso/botão pousa. O padrão serve para uma seção de tela
+     cheia; quem tem conteúdo no pé do bloco passa outro canto para os
+     dois não se sobreporem. */
+  hintClassName?: string;
+  /* `true` no hero: a foto é a primeira coisa que a pessoa vê, e `lazy`
+     ali só garante que ela chegue depois do resto. Fora da primeira tela
+     o padrão (`lazy`) continua sendo o certo. */
+  priority?: boolean;
   /* O conteúdo que fica POR CIMA das duas imagens — é ele que dá altura
      ao bloco, já que as imagens são absolutas. Precisa estar aqui
      dentro, e não ao lado: assim o `pointermove` dos filhos borbulha
@@ -102,8 +110,15 @@ export default function PhotoReveal({
   hint,
   tapLabels,
   className = "",
+  area = AREA_PADRAO,
+  hintClassName,
+  priority = false,
   children,
 }: Props) {
+  const ENCAIXE = `${area} object-cover object-left-top`;
+  /* A foto de cima é a que a pessoa vê primeiro; a de baixo só aparece
+     dentro da mancha, então ela pode continuar preguiçosa mesmo no hero. */
+  const cargaBase = priority ? "eager" : "lazy";
   const raiz = useRef<HTMLDivElement>(null);
   const gotas = useRef<SVGCircleElement[]>([]);
 
@@ -263,13 +278,14 @@ export default function PhotoReveal({
 
   /* Onde o aviso/botão pousa:
 
-     - celular: alto à direita, sobre o fundo vazio da foto (embaixo é a
-       coluna de texto);
-     - desktop: pé da PRIMEIRA tela, não do bloco. A seção é mais alta
-       que a janela — ancorado em `bottom-8` o aviso caía fora do campo
-       de visão de quem acabou de chegar nela, que é exatamente quem
-       precisa dele. */
+     - celular: alto à direita, sobre o fundo vazio da foto;
+     - desktop: pé da PRIMEIRA tela, não do bloco. Num bloco mais alto que
+       a janela, ancorar em `bottom-8` jogava o aviso fora do campo de
+       visão de quem acabou de chegar, que é exatamente quem precisa dele.
+
+     Quem tem conteúdo próprio nesse canto passa `hintClassName`. */
   const cantoAviso =
+    hintClassName ??
     "absolute right-5 top-5 z-20 lg:left-8 lg:right-auto lg:top-[calc(100svh-5rem)]";
 
   /* ---------- modo simples: fade, sem mancha ---------- */
@@ -288,7 +304,7 @@ export default function PhotoReveal({
         <img
           src={asset(base)}
           alt={alt}
-          loading="lazy"
+          loading={cargaBase}
           decoding="async"
           draggable={false}
           style={aberto ? { opacity: 0 } : undefined}
@@ -319,7 +335,7 @@ export default function PhotoReveal({
       <img
         src={asset(base)}
         alt={alt}
-        loading="lazy"
+        loading={cargaBase}
         decoding="async"
         draggable={false}
         className={ENCAIXE}
@@ -332,7 +348,7 @@ export default function PhotoReveal({
       <svg
         role="img"
         aria-label={revealAlt}
-        className={`pointer-events-none ${AREA}`}
+        className={`pointer-events-none ${area}`}
       >
         <defs>
           <filter

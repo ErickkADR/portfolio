@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { asset } from "@/lib/asset";
+import { useConteudo } from "@/lib/idioma";
 import type { MediaFile } from "@/lib/media";
 import MediaViewer from "./MediaViewer";
 import FadeIn from "./FadeIn";
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export default function CareerMedia({ files, title, emptyLabel }: Props) {
+  const { ui } = useConteudo();
   const [index, setIndex] = useState<number | null>(null);
 
   if (files.length === 0) {
@@ -44,7 +46,7 @@ export default function CareerMedia({ files, title, emptyLabel }: Props) {
               className="group flex items-center justify-between gap-4 rounded-xl border border-bone/12 bg-ink-2 p-7 transition-colors duration-500 hover:border-plasma"
             >
               <span className="min-w-0">
-                <span className="mono-label block">Documento</span>
+                <span className="mono-label block">{ui.documento}</span>
                 <span className="mt-2 block truncate text-lg">{file.name}</span>
               </span>
               <span
@@ -65,7 +67,7 @@ export default function CareerMedia({ files, title, emptyLabel }: Props) {
               {file.kind === "image" ? (
                 <img
                   src={asset(file.src)}
-                  alt={`${title} — ${file.name}`}
+                  alt={`${title}: ${file.name}`}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
@@ -104,6 +106,7 @@ export default function CareerMedia({ files, title, emptyLabel }: Props) {
           title={title}
           onClose={() => setIndex(null)}
           onIndex={setIndex}
+          rotuloFechar={ui.fechar}
         />
       )}
     </>

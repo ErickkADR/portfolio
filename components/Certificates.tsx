@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { certificates } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 import { asset } from "@/lib/asset";
 import Carousel from "./Carousel";
 import RevealText from "./RevealText";
@@ -23,6 +23,7 @@ type Props = {
 };
 
 export default function Certificates({ images }: Props) {
+  const { certificates } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
 
@@ -120,7 +121,7 @@ export default function Certificates({ images }: Props) {
                     image &&
                     setZoom({
                       src: asset(image),
-                      alt: `Certificado: ${cert.title} — ${cert.issuer}`,
+                      alt: `Certificado: ${cert.title}, ${cert.issuer}`,
                     })
                   }
                   className="relative block aspect-[4/3] w-full overflow-hidden bg-ink-3 text-left"
@@ -129,7 +130,7 @@ export default function Certificates({ images }: Props) {
                   {image ? (
                     <img
                       src={asset(image)}
-                      alt={`Certificado: ${cert.title} — ${cert.issuer}`}
+                      alt={`Certificado: ${cert.title}, ${cert.issuer}`}
                       loading="lazy"
                       decoding="async"
                       draggable={false}

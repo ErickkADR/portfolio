@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Color, Scene, Fog, PerspectiveCamera, Vector3, type Object3D } from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend } from "@react-three/fiber";
@@ -152,9 +152,16 @@ export function Globe({ globeConfig, data }: WorldProps) {
         ) === i,
     );
 
+    /* RESOLUÇÃO 2, NÃO 3. Cada passo de resolução do h3 multiplica por
+       ~7 o número de células, e a malha é construída de forma síncrona na
+       thread principal: na 3, os 177 países viravam dezenas de milhares
+       de hexágonos e a página congelava por segundos ao chegar na seção
+       (era o "demora demais para carregar"). Na 2 os continentes ficam
+       com o grão um pouco maior, o que a esta distância de câmera quase
+       não se nota, e a montagem cai para uma fração do tempo. */
     globeRef.current
       .hexPolygonsData(countries.features)
-      .hexPolygonResolution(3)
+      .hexPolygonResolution(2)
       .hexPolygonMargin(0.7)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
@@ -237,23 +244,46 @@ export function Globe({ globeConfig, data }: WorldProps) {
 }
 
 export function WebGLRendererConfig() {
-  const { gl, size } = useThree();
+  const { gl } = useThree();
 
   useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
-    gl.setSize(size.width, size.height);
+    /* TETO DE 1.5 NO PIXEL RATIO. Sem teto, um Mac Retina (dPR 2) faz o
+       renderer desenhar 4x a área de pixels do canvas, e num globo cheio
+       de hexágonos é aí que o quadro cai. A 1.5 a borda continua limpa
+       num alvo deste tamanho e o custo cai pela metade.
+
+       O `setSize` manual que estava aqui saiu: o R3F já dimensiona o
+       canvas pelo container e refaz a conta no resize. Chamar de novo, com
+       o tamanho do primeiro quadro, era brigar com ele. */
+    gl.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    // Fundo transparente: quem pinta atrás é o halo da seção.
     gl.setClearColor(0xffaaff, 0);
-  }, []);
+  }, [gl]);
 
   return null;
 }
 
-export function World(props: WorldProps) {
-  const { globeConfig } = props;
-  const scene = new Scene();
-  scene.fog = new Fog(0xffffff, 400, 2000);
+export function World(props: WorldProps & { active?: boolean }) {
+  const { globeConfig, active = true } = props;
+
+  /* A cena e a câmera eram construídas no corpo do componente, então cada
+     render criava um `Scene` e um `PerspectiveCamera` novos e os entregava
+     ao Canvas. O `useMemo` fixa os dois na vida do componente. */
+  const scene = useMemo(() => {
+    const s = new Scene();
+    s.fog = new Fog(0xffffff, 400, 2000);
+    return s;
+  }, []);
+  const camera = useMemo(
+    () => new PerspectiveCamera(50, aspect, 180, 1800),
+    []
+  );
+
   return (
-    <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 180, 1800)}>
+    /* `frameloop` desligado enquanto a seção está fora da tela: sem isso o
+       globo segue redesenhando a 60fps no rodapé enquanto a pessoa lê o
+       topo da página, competindo com o scroll suave do Lenis. */
+    <Canvas scene={scene} camera={camera} frameloop={active ? "always" : "never"}>
       <WebGLRendererConfig />
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
       <directionalLight

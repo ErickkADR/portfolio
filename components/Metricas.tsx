@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { metricas } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
 
 /* Os números que antes ficavam soltos no fim da seção "Sobre" agora têm
@@ -10,6 +10,7 @@ import RevealText from "./RevealText";
    portfólio é decoração; com a fonte ao lado, é evidência. */
 
 export default function Metricas() {
+  const { metricas } = useConteudo();
   const ref = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -63,28 +64,45 @@ export default function Metricas() {
           </p>
         </div>
 
-        {/* O número sozinho não convence: "209 pares de pergunta e
-            resposta" é volume, não resultado. O `outcome` embaixo diz o
-            que aquele número mudou na operação — é ele que transforma
-            entrega em impacto. */}
+        {/* O número sozinho não convence: "628 blocos de conhecimento" é
+            volume, não resultado. O `outcome` embaixo diz o que aquele
+            número mudou na operação, e é ele que transforma entrega em
+            impacto.
+
+            CARTÃO SEM NÚMERO: `value` é opcional (ver content.ts). Sem
+            ele, o rótulo assume o tamanho do número e o cartão continua
+            com o mesmo peso na grade. É o que mantém no ar um resultado
+            real que ainda não foi medido, sem inventar cifra nem abrir um
+            buraco na composição. */}
         <dl className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2">
           {metricas.items.map((item) => (
             <div
-              key={item.value}
+              key={item.label}
               className="group flex flex-col bg-ink p-9 transition-colors duration-500 hover:bg-ink-2 lg:p-10"
             >
               <dt className="sr-only">{item.label}</dt>
               <dd className="flex flex-1 flex-col">
-                <span
-                  data-count={item.value}
-                  className="display block text-[clamp(2.6rem,7vw,4.5rem)] leading-none text-plasma"
-                >
-                  {item.value}
-                </span>
+                {item.value ? (
+                  <>
+                    <span
+                      data-count={item.value}
+                      className="display block text-[clamp(2.6rem,7vw,4.5rem)] leading-none text-plasma"
+                    >
+                      {item.value}
+                    </span>
 
-                <span className="mt-4 block text-lg leading-snug">
-                  {item.label}
-                </span>
+                    <span className="mt-4 block text-lg leading-snug">
+                      {item.label}
+                    </span>
+                  </>
+                ) : (
+                  /* O rótulo vira o próprio título do cartão. Menor que um
+                     número (é frase, não algarismo) mas na mesma família e
+                     na mesma cor, para a grade não perder o ritmo. */
+                  <span className="display block text-[clamp(1.5rem,2.6vw,2rem)] leading-[1.1] text-plasma">
+                    {item.label}
+                  </span>
+                )}
 
                 <span className="mt-5 flex gap-3 text-sm leading-relaxed text-bone-dim">
                   <span

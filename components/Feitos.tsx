@@ -2,12 +2,14 @@
 
 import { useRef, useState } from "react";
 
-import { feitos } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
+import type { Feito } from "@/lib/content";
 import { asset } from "@/lib/asset";
 import type { MediaFile } from "@/lib/media";
 import RevealText from "./RevealText";
 import MediaViewer from "./MediaViewer";
 import Carousel from "./Carousel";
+import FeitoDetalhe from "./FeitoDetalhe";
 
 /* ============================================================
    CARGO ATUAL — feitos na Bannerjet.
@@ -21,6 +23,19 @@ import Carousel from "./Carousel";
    Feito sem pasta continua na lista, com um rótulo dizendo que o
    material está sendo digitalizado. É mais honesto que sumir com o item
    ou fingir que ele não tem comprovação.
+
+   ---- O card inteiro abre a ficha ----
+   O texto do card é cortado no quarto verso (`line-clamp-4`) e a intro
+   da seção convida a apertar cada item. Antes só a capa e o botão de
+   material eram clicáveis, e como NENHUM feito tem arquivo anexado hoje
+   (as pastas de `public/feitos/` estão vazias), apertar o card não fazia
+   absolutamente nada. Agora o card abre o FeitoDetalhe, com o texto
+   completo, e o material continua a um clique de lá.
+
+   A área de clique é um `::after` sobre o card inteiro, o mesmo recurso
+   que o Projects usa: mantém um só elemento focável por card em vez de
+   aninhar botão dentro de botão. A capa fica acima dele (`z-20`) para
+   continuar abrindo a galeria direto.
    ============================================================ */
 
 type Props = {
@@ -29,12 +44,18 @@ type Props = {
 };
 
 export default function Feitos({ media }: Props) {
+  const { feitos, ui } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const [aberto, setAberto] = useState<{
     slug: string;
     title: string;
     index: number;
   } | null>(null);
+  /* A ficha do feito. Guarda o grupo junto porque ele é o rótulo do topo
+     e não vive dentro do próprio item. */
+  const [ficha, setFicha] = useState<{ item: Feito; grupo: string } | null>(
+    null
+  );
 
   /* Não sobrou animação própria: os cabeçalhos de grupo saíram quando os
      três carrosséis viraram um, e a entrada dos cards é do <Carousel>. */
@@ -77,7 +98,7 @@ export default function Feitos({ media }: Props) {
               return (
                   <li
                     key={item.slug}
-                    className="carousel-slide group flex snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25"
+                    className="carousel-slide group relative flex snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 hover:border-plasma/40"
                   >
                     {capa && (
                       <button
@@ -89,12 +110,12 @@ export default function Feitos({ media }: Props) {
                             index: files.indexOf(capa),
                           })
                         }
-                        className="relative block aspect-[16/9] w-full overflow-hidden bg-ink-3"
-                        aria-label={`Ver o material de ${item.title}`}
+                        className="relative z-20 block aspect-[16/9] w-full overflow-hidden bg-ink-3"
+                        aria-label={`${ui.verMaterialDe} ${item.title}`}
                       >
                         <img
                           src={asset(capa.src)}
-                          alt={`${item.title} — material de comprovação`}
+                          alt={`Material de comprovação de ${item.title}`}
                           loading="lazy"
                           decoding="async"
                           className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
@@ -114,7 +135,17 @@ export default function Feitos({ media }: Props) {
                       </span>
 
                       <h4 className="display mt-3 text-xl leading-tight lg:text-2xl">
-                        {item.title}
+                        {/* O `::after` cobre o card inteiro: é ele que
+                            recebe o clique e o foco por teclado. */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFicha({ item, grupo: grupo.group })
+                          }
+                          className="text-left transition-colors duration-500 after:absolute after:inset-0 after:z-10 after:content-[''] group-hover:text-plasma"
+                        >
+                          {item.title}
+                        </button>
                       </h4>
 
                       <p className="mt-4 line-clamp-4 text-sm leading-relaxed text-bone-dim">
@@ -132,7 +163,7 @@ export default function Feitos({ media }: Props) {
                         ))}
                       </ul>
 
-                      <div className="mt-auto pt-7">
+                      <div className="relative z-20 mt-auto pt-7">
                         {files.length > 0 ? (
                           <button
                             type="button"
@@ -147,7 +178,7 @@ export default function Feitos({ media }: Props) {
                           >
                             {feitos.mediaLabel}
                             <span aria-hidden="true">
-                              {files.length} {files.length === 1 ? "item" : "itens"}
+                              {files.length} {ui.itens[files.length === 1 ? 0 : 1]}
                             </span>
                           </button>
                         ) : (
@@ -164,6 +195,21 @@ export default function Feitos({ media }: Props) {
         </Carousel>
       </div>
 
+      {ficha && (
+        <FeitoDetalhe
+          feito={ficha.item}
+          grupo={ficha.grupo}
+          arquivos={(media[ficha.item.slug] ?? []).length}
+          onClose={() => setFicha(null)}
+          /* Da ficha para a galeria: fecha uma e abre a outra, para não
+             empilhar duas telas cheias uma sobre a outra. */
+          onMaterial={() => {
+            setAberto({ slug: ficha.item.slug, title: ficha.item.title, index: 0 });
+            setFicha(null);
+          }}
+        />
+      )}
+
       {aberto && arquivos.length > 0 && (
         <MediaViewer
           files={arquivos}
@@ -171,6 +217,7 @@ export default function Feitos({ media }: Props) {
           title={aberto.title}
           onClose={() => setAberto(null)}
           onIndex={(i) => setAberto({ ...aberto, index: i })}
+          rotuloFechar={ui.fechar}
         />
       )}
     </section>

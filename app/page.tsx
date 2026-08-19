@@ -1,5 +1,5 @@
 import Nav from "@/components/Nav";
-import HeroVideo from "@/components/HeroVideo";
+import Hero from "@/components/Hero";
 import Sobre from "@/components/Sobre";
 import Feitos from "@/components/Feitos";
 import Metricas from "@/components/Metricas";
@@ -14,7 +14,7 @@ import Marquee from "@/components/Marquee";
 import MobileDock from "@/components/MobileDock";
 import Contact from "@/components/Contact";
 import { arquivoPorSlug, mediaPorSlug, imagemAvulsa } from "@/lib/media";
-import { sobre } from "@/lib/content";
+import { hero } from "@/lib/content";
 
 /* A ordem das seções é a ordem da leitura:
    quem sou → o que faço hoje → o que isso rendeu em número → como
@@ -26,10 +26,11 @@ import { sobre } from "@/lib/content";
    arquivo numa pasta, sem tocar em código. Ver lib/media.ts. */
 
 export default function Home() {
-  const fotoSobre = imagemAvulsa("sobre", sobre.photoName);
-  /* A segunda foto do Sobre: é ela que aparece dentro da mancha líquida
-     no hover. Ausente, o quadro volta a ser uma foto comum. */
-  const fotoSobreIA = imagemAvulsa("sobre", sobre.photoIAName);
+  /* As fotos do hero. A segunda é a versão androide, revelada dentro da
+     onda; ausente, a onda só distorce. Ficavam em public/sobre/ e
+     mudaram para public/hero/ junto com a seção. */
+  const fotoHero = imagemAvulsa("hero", hero.photoName);
+  const fotoHeroIA = imagemAvulsa("hero", hero.photoIAName);
   const midiaFeitos = mediaPorSlug("feitos");
   const imagensCertificados = arquivoPorSlug("certificados");
   /* As logos da parede de ferramentas. Mesma ideia das outras varreduras:
@@ -41,8 +42,11 @@ export default function Home() {
       <Nav />
       <MobileDock />
       <main>
-        <HeroVideo />
-        <Sobre photo={fotoSobre} photoIA={fotoSobreIA} />
+        <Hero photo={fotoHero} photoIA={fotoHeroIA} />
+        {/* O Sobre não recebe mais prop de mídia: o fundo dele é o vídeo,
+            que é um caminho fixo em content.ts e não uma varredura de
+            pasta. */}
+        <Sobre />
         <Feitos media={midiaFeitos} />
         <Metricas />
         <Career />

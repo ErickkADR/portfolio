@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Archivo, Instrument_Serif } from "next/font/google";
 import { site } from "@/lib/content";
 import SmoothScroll from "@/components/SmoothScroll";
+import { ProvedorIdioma } from "@/lib/idioma";
 import Cursor from "@/components/Cursor";
 import "./globals.css";
 
@@ -52,10 +53,14 @@ export default function RootLayout({
       className={`${bricolage.variable} ${archivo.variable} ${instrument.variable}`}
     >
       <body>
-        <SmoothScroll />
-        <Cursor />
-        <div className="grain" aria-hidden="true" />
-        {children}
+        {/* O provedor envolve tudo: é ele que o botão EN/PT do Nav
+            alterna, e quem `useConteudo()` consulta. */}
+        <ProvedorIdioma>
+          <SmoothScroll />
+          <Cursor />
+          <div className="grain" aria-hidden="true" />
+          {children}
+        </ProvedorIdioma>
       </body>
     </html>
   );

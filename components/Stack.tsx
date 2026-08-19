@@ -2,8 +2,8 @@
 
 import { useCallback, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { stack } from "@/lib/content";
-import { monograma, slugify } from "@/lib/logos";
+import { useConteudo } from "@/lib/idioma";
+import { slugify } from "@/lib/logos";
 import { asset } from "@/lib/asset";
 import RevealText from "./RevealText";
 
@@ -25,13 +25,24 @@ import RevealText from "./RevealText";
    os retângulos acerta em qualquer arranjo, e roda uma vez por hover —
    não por frame.
 
+   ---- Uma parede, sem categorias ----
+   Os cinco grupos saíram: obrigavam a percorrer cinco listas para
+   responder "com o que ele trabalha". A ordem do content.ts ainda
+   agrupa por afinidade, o que dá o ritmo sem cabeçalho nenhum. Com uma
+   lista só, a vizinhança do relevo também melhora: antes o efeito
+   parava na borda de cada grupo.
+
    ---- As logos ----
    PNG de verdade, com fundo transparente, lidos de `public/stack/` no
    build (ver lib/media.ts). Ícone de biblioteca é silhueta de uma cor só,
-   e logo de produto tem forma E cor — a cor é metade do reconhecimento.
-   Quem ainda não tem PNG cai no monograma, no mesmo ladrilho, sem
-   quebrar o alinhamento. Para acrescentar: `public/stack/<slug>.png`,
-   onde o slug é o nome do item em minúsculas com hífen.
+   e logo de produto tem forma E cor, e a cor é metade do reconhecimento.
+
+   ITEM SEM PNG NÃO É RENDERIZADO. Antes ele caía num monograma com as
+   iniciais, e numa parede em que todo o resto é logo colorida aquilo lia
+   como ladrilho vazio. Para acrescentar uma ferramenta: largue
+   `public/stack/<slug>.png` (slug = nome em minúsculas com hífen) e
+   ponha o nome na lista do content.ts. Faltando o arquivo, o nome
+   simplesmente não aparece.
    ============================================================ */
 
 type Props = {
@@ -44,6 +55,7 @@ type Props = {
 const ALCANCE = 1.4;
 
 export default function Stack({ logos }: Props) {
+  const { stack } = useConteudo();
   const ref = useRef<HTMLElement>(null);
 
   /* Chave "grupo:índice". Uma só para a seção inteira: só existe um
@@ -84,28 +96,25 @@ export default function Stack({ logos }: Props) {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        /* Um trigger por grupo: a seção é mais alta que a viewport e,
-           com um stagger único, os últimos grupos terminariam a animação
-           antes mesmo de aparecerem na tela. */
-        const grupos = gsap.utils
-          .toArray<HTMLElement>(".stack-group")
-          .map((col) =>
-            gsap.from(col.querySelectorAll(".stack-tile"), {
-              y: 22,
-              scale: 0.85,
-              opacity: 0,
-              duration: 0.6,
-              ease: "back.out(1.7)",
-              stagger: 0.035,
-              /* Devolve o controle ao CSS: o transform do GSAP e o do
-                 hover disputam a mesma propriedade, e sem isso o
-                 primeiro ladrilho a receber o mouse dá um salto. */
-              clearProps: "transform,opacity",
-              scrollTrigger: { trigger: col, start: "top 90%", once: true },
-            })
-          );
+        /* Um trigger só, porque agora é uma parede só. O stagger é curto
+           (0.02) porque são 29 ladrilhos numa fileira contínua: com o
+           0.035 de antes, o último entrava mais de um segundo depois do
+           primeiro e a parede parecia se montar em câmera lenta. */
+        const entrada = gsap.from(".stack-wall .stack-tile", {
+          y: 22,
+          scale: 0.85,
+          opacity: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          stagger: 0.02,
+          /* Devolve o controle ao CSS: o transform do GSAP e o do hover
+             disputam a mesma propriedade, e sem isso o primeiro ladrilho
+             a receber o mouse dá um salto. */
+          clearProps: "transform,opacity",
+          scrollTrigger: { trigger: ".stack-wall", start: "top 88%", once: true },
+        });
 
-        return () => grupos.forEach((t) => t.kill());
+        return () => entrada.kill();
       });
 
       return () => mm.revert();
@@ -135,91 +144,76 @@ export default function Stack({ logos }: Props) {
           </p>
         </div>
 
-        <div className="mt-16 space-y-10">
-          {stack.groups.map((group, gi) => (
-            <div key={group.group} className="stack-group">
-              <h3 className="mono-label text-center text-plasma">
-                {group.group}
-              </h3>
+        {/* `perspective` no container e `translateZ` no ladrilho: é o
+            que faz o que cresce vir na direção de quem olha, em vez de
+            só ficar maior no plano. */}
+        <ul
+          onPointerLeave={sair}
+          className="stack-wall mt-16 flex flex-wrap justify-center gap-2 [perspective:1200px]"
+        >
+          {stack.items.map((item, i) => {
+            const chave = String(i);
+            const logo = logos[slugify(item.name)];
+            /* Sem PNG o item não entra na parede — ver a nota no topo. */
+            if (!logo) return null;
 
-              {/* `perspective` no container e `translateZ` no ladrilho: é
-                  o que faz o que cresce vir na direção de quem olha, em
-                  vez de só ficar maior no plano. */}
-              <ul
-                onPointerLeave={sair}
-                className="mt-5 flex flex-wrap justify-center gap-2 [perspective:1200px]"
+            const grande = ativo === chave;
+            const medio = !grande && vizinhos.has(chave);
+
+            return (
+              <li
+                key={item.name}
+                data-chave={chave}
+                onPointerEnter={(e) => entrar(e, chave)}
+                className={`stack-tile group/tile relative transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] ${
+                  grande
+                    ? "z-30 -translate-x-1.5 -translate-y-1.5 scale-[1.22]"
+                    : medio
+                      ? "z-20 -translate-x-0.5 -translate-y-0.5 scale-[1.07]"
+                      : "z-10"
+                }`}
               >
-                {group.items.map((item, ii) => {
-                  const chave = `${gi}:${ii}`;
-                  const slug = slugify(item.name);
-                  const logo = logos[slug];
+                {/* `button` e não `div`: o nome precisa aparecer também
+                    no foco por teclado, e só um elemento focável recebe
+                    :focus-visible. */}
+                <button
+                  type="button"
+                  aria-label={item.name}
+                  className={`grid h-16 w-16 place-items-center rounded-xl border bg-ink p-3 transition-[border-color,box-shadow] duration-300 sm:h-[4.5rem] sm:w-[4.5rem] ${
+                    grande
+                      ? "border-plasma/60 shadow-[0_0_28px_-6px_var(--color-plasma)]"
+                      : "border-bone/12"
+                  }`}
+                  style={{ color: item.color ?? "var(--color-plasma-soft)" }}
+                >
+                  <img
+                    src={asset(logo)}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    /* `brightness-0 invert` achata o PNG para preto e
+                       depois inverte: sai branco puro, preservando a
+                       silhueta e a transparência. Ver a flag `branco`
+                       no content.ts. */
+                    className={`h-full w-full object-contain transition-opacity duration-300 ${
+                      grande ? "opacity-100" : "opacity-70"
+                    } ${item.branco ? "brightness-0 invert" : ""}`}
+                  />
+                </button>
 
-                  const grande = ativo === chave;
-                  const medio = !grande && vizinhos.has(chave);
-
-                  return (
-                    <li
-                      key={item.name}
-                      data-chave={chave}
-                      onPointerEnter={(e) => entrar(e, chave)}
-                      className={`stack-tile group/tile relative transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] ${
-                        grande
-                          ? "z-30 -translate-x-1.5 -translate-y-1.5 scale-[1.22]"
-                          : medio
-                            ? "z-20 -translate-x-0.5 -translate-y-0.5 scale-[1.07]"
-                            : "z-10"
-                      }`}
-                    >
-                      {/* `button` e não `div`: o nome precisa aparecer
-                          também no foco por teclado, e só um elemento
-                          focável recebe :focus-visible. */}
-                      <button
-                        type="button"
-                        aria-label={item.name}
-                        className={`grid h-16 w-16 place-items-center rounded-xl border bg-ink p-3 transition-[border-color,box-shadow] duration-300 sm:h-[4.5rem] sm:w-[4.5rem] ${
-                          grande
-                            ? "border-plasma/60 shadow-[0_0_28px_-6px_var(--color-plasma)]"
-                            : "border-bone/12"
-                        }`}
-                        style={{ color: item.color ?? "var(--color-plasma-soft)" }}
-                      >
-                        {logo ? (
-                          <img
-                            src={asset(logo)}
-                            alt=""
-                            loading="lazy"
-                            decoding="async"
-                            draggable={false}
-                            className={`h-full w-full object-contain transition-opacity duration-300 ${
-                              grande ? "opacity-100" : "opacity-70"
-                            }`}
-                          />
-                        ) : (
-                          <span
-                            className={`display grid h-full w-full place-items-center text-sm tracking-tight transition-opacity duration-300 ${
-                              grande ? "opacity-100" : "opacity-70"
-                            }`}
-                          >
-                            {monograma(item.name)}
-                          </span>
-                        )}
-                      </button>
-
-                      {/* Tooltip. `pointer-events-none` para ele nunca
-                          roubar o hover do próprio ladrilho e piscar. */}
-                      <span
-                        role="tooltip"
-                        className="pointer-events-none absolute -top-2 left-1/2 z-40 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-bone/15 bg-ink-3 px-2.5 py-1 text-[0.6875rem] tracking-wide opacity-0 shadow-lg transition-all duration-300 group-hover/tile:-translate-y-[calc(100%+0.25rem)] group-hover/tile:opacity-100 group-focus-within/tile:-translate-y-[calc(100%+0.25rem)] group-focus-within/tile:opacity-100"
-                      >
-                        {item.name}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </div>
+                {/* Tooltip. `pointer-events-none` para ele nunca roubar o
+                    hover do próprio ladrilho e piscar. */}
+                <span
+                  role="tooltip"
+                  className="pointer-events-none absolute -top-2 left-1/2 z-40 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md border border-bone/15 bg-ink-3 px-2.5 py-1 text-[0.6875rem] tracking-wide opacity-0 shadow-lg transition-all duration-300 group-hover/tile:-translate-y-[calc(100%+0.25rem)] group-hover/tile:opacity-100 group-focus-within/tile:-translate-y-[calc(100%+0.25rem)] group-focus-within/tile:opacity-100"
+                >
+                  {item.name}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
 
         {/* A barra com a distribuição de linguagens dos repositórios
             públicos saiu daqui: 57% de HTML descreve o peso dos arquivos

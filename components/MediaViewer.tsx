@@ -18,6 +18,8 @@ type Props = {
   onClose: () => void;
   onIndex: (i: number) => void;
   title: string;
+  /* Rótulo do botão de fechar, vem traduzido de quem abriu. */
+  rotuloFechar: string;
 };
 
 export default function MediaViewer({
@@ -26,6 +28,7 @@ export default function MediaViewer({
   onClose,
   onIndex,
   title,
+  rotuloFechar,
 }: Props) {
   const [carregando, setCarregando] = useState(true);
   const file = files[index];
@@ -70,7 +73,7 @@ export default function MediaViewer({
           onClick={onClose}
           className="mono-label shrink-0 rounded-full border border-bone/20 px-4 py-2 transition-colors hover:border-plasma hover:text-plasma"
         >
-          Fechar ✕
+          {rotuloFechar}
         </button>
       </header>
 
@@ -83,7 +86,7 @@ export default function MediaViewer({
         {file.kind === "image" && (
           <img
             src={asset(file.src)}
-            alt={`${title} — ${file.name}`}
+            alt={`${title}: ${file.name}`}
             onLoad={() => setCarregando(false)}
             className="max-h-full max-w-full rounded-lg object-contain"
           />

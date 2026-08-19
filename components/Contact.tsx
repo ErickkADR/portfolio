@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { contact, site } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 
 /* ============================================================
    CONTATO
@@ -71,6 +71,7 @@ function Magnetic({
 }
 
 export default function Contact() {
+  const { contact, site, ui } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const [copiado, setCopiado] = useState(false);
 
@@ -145,18 +146,33 @@ export default function Contact() {
 
           {/* O clamp desceu de 13vw para 8vw: na coluna de 68rem o
               tamanho anterior estourava a largura e quebrava no meio da
-              palavra. */}
+              palavra.
+
+              O "juntos" usa `.display-accent` e não `.editorial` solto:
+              na mesma font-size do Bricolage Black, o Instrument Serif
+              itálico saía com metade da presença e a palavra parecia
+              acidente. Ver a nota em globals.css. A última linha ganha
+              `.line-mask-accent` porque a perna do "j" passa do fundo
+              que o `.line-mask` reserva. */}
           <h2 className="display mt-6 text-[clamp(2.6rem,8vw,6rem)]">
-            {contact.titleLines.map((line, i) => (
-              <span key={line} className="line-mask">
-                <span className="contact-line block">
-                  {line}
-                  {i === contact.titleLines.length - 1 && (
-                    <span className="editorial ml-[0.12em] text-plasma">juntos</span>
-                  )}
+            {contact.titleLines.map((line, i) => {
+              const ultima = i === contact.titleLines.length - 1;
+              return (
+                <span
+                  key={line}
+                  className={`line-mask ${ultima ? "line-mask-accent" : ""}`}
+                >
+                  <span className="contact-line block">
+                    {line}
+                    {ultima && (
+                      <span className="display-accent ml-[0.1em]">
+                        {contact.titleAccent}
+                      </span>
+                    )}
+                  </span>
                 </span>
-              </span>
-            ))}
+              );
+            })}
           </h2>
 
           <p className="contact-fade mx-auto mt-8 max-w-xl leading-relaxed text-bone-dim">
@@ -191,14 +207,14 @@ export default function Contact() {
                 onClick={copiar}
                 className="mono-label rounded-full border border-bone/20 px-5 py-2.5 transition-colors duration-500 hover:border-plasma hover:text-plasma"
               >
-                {copiado ? "Copiado ✓" : "Copiar e-mail"}
+                {copiado ? ui.emailCopiado : ui.copiarEmail}
               </button>
 
               <Magnetic
                 href={`mailto:${site.email}`}
                 className="mono-label rounded-full border border-plasma/40 px-5 py-2.5 text-plasma transition-colors duration-500 hover:border-plasma"
               >
-                Abrir no e-mail →
+                {ui.abrirEmail}
               </Magnetic>
             </div>
           </div>

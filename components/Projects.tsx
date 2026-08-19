@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { projects } from "@/lib/content";
+import { useConteudo } from "@/lib/idioma";
 import { asset } from "@/lib/asset";
 import Carousel from "./Carousel";
 import RevealText from "./RevealText";
@@ -19,26 +19,27 @@ import RevealText from "./RevealText";
    ============================================================ */
 
 export default function Projects() {
+  const { projects, projectsSection, ui } = useConteudo();
   return (
     <section id="projetos" className="border-t border-bone/10 py-32 sm:py-44">
       <div className="shell shell-narrow">
         <div className="section-head">
           <span className="mono-label">
-            {projects.length.toString().padStart(2, "0")} projetos
+            {projects.length.toString().padStart(2, "0")} {projectsSection.countLabel}
           </span>
 
           <RevealText
             as="h2"
             className="display mt-4 text-[clamp(2.1rem,5vw,3.8rem)]"
           >
-            Conheça os meus principais projetos desenvolvidos
+            {projectsSection.title}
           </RevealText>
         </div>
 
         {/* `auto`: a pista anda sozinha em loop, como a dos certificados.
             Pausa no hover, no foco, durante o arrasto e quando a seção
             sai da tela. */}
-        <Carousel label="Projetos" className="mt-16" auto>
+        <Carousel label={projectsSection.carouselLabel} className="mt-16" auto>
           {projects.map((p) => (
             <li
               key={p.slug}

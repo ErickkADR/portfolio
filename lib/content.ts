@@ -32,11 +32,12 @@ export const hero = {
   greeting: "Olá, meu nome é",
   /* Uma linha por parte do nome — elas sobem em cascata. */
   nameLines: ["Erick", "Dantas"],
-  /* A categoria mais buscada que descreve de fato o que ele faz: constrói
-     a interface e o back de IA dos portais que entrega, ponta a ponta.
-     "Front-end" venderia menos do que o trabalho é; "Full-stack com IA"
-     é o termo que um recrutador digita. */
-  role: "Desenvolvedor Full-stack & IA",
+  /* "Desenvolvedor Full-stack & IA" virou só "Desenvolvedor" a pedido
+     dele (19/08/2026). Vale saber o que isso desfez: a versão anterior
+     existia porque "Full-stack com IA" é o termo que um recrutador digita
+     na busca, e o rótulo carregava sozinho a especialidade. Agora quem
+     carrega é a `description` abaixo. Para voltar, é uma linha. */
+  role: "Desenvolvedor",
   /* Logos que aparecem em fila sob o nome. As chaves são as mesmas de
      lib/logos.tsx — sem chave conhecida, o item nem é renderizado. */
   techIcons: [
@@ -49,57 +50,107 @@ export const hero = {
     "tailwind",
     "git",
   ],
-  /* Legendas que se alternam sozinhas, a cada ~4s. */
-  captions: [
-    { text: "Suporte técnico virou infraestrutura de IA" },
-    { text: "RAG, automação e conteúdo que ensina" },
-    { text: "Construído para facilitar a vida de quem usa" },
-  ],
-};
+  /* DESCRIÇÃO DO HERO, recortada da seção Sobre.
 
-/* ---------- Sobre ----------
-   Foto à esquerda, texto à direita.
+     Substituiu as três legendas que se alternavam a cada 4s. Duas razões:
+     a rotação obrigava a pessoa a ESPERAR para ler o resto, e o bloco
+     ocupava uma linha só — o hero ficava vazio embaixo do nome. Um
+     parágrafo fixo preenche a coluna e diz de uma vez o que ele faz.
 
-   A FOTO NÃO PRECISA DE CÓDIGO: salve o arquivo como
-   `public/sobre/erick.jpg` (ou .png / .webp) e ele aparece. Sem arquivo,
-   o espaço vira uma moldura com as iniciais — nada de imagem quebrada.
+     É recorte, não texto novo: as duas frases saem quase literais do
+     quinto e do sexto parágrafo do Sobre. Se um dia mudar lá, vale
+     conferir aqui. */
+  description:
+    "Atuo na interseção entre tecnologia, inteligência artificial, automação e " +
+    "design, transformando problemas complexos em soluções práticas. Grande parte " +
+    "do meu trabalho está por trás de soluções que conectam IA, suporte técnico, " +
+    "documentação e treinamento, desde automações e chatbots no WhatsApp até " +
+    "plataformas usadas diariamente por equipes.",
 
-   A SEGUNDA FOTO é a que aparece sob a mancha líquida quando o mouse
-   passa: `public/sobre/erick-ia.jpg`. As duas precisam ter o MESMO
-   enquadramento — mesma pose, mesmo tamanho — porque a revelação é um
-   buraco na de cima, e qualquer diferença de posição vira um pulo dentro
-   da mancha. Sem esse arquivo o efeito some sozinho e a foto fica
-   normal. */
-export const sobre = {
-  label: "Sobre",
-  /* "Quem constrói isso" era vago e não dizia nada sobre ele. O título
-     agora entrega a posição em três palavras: construir com IA. */
-  title: "Eu construo com IA",
+  /* ---------- A FOTO DE FUNDO E A REVELAÇÃO NO HOVER ----------
+
+     Estavam na seção Sobre e subiram para cá; o vídeo fez o caminho
+     inverso. A foto vale mais na primeira tela (é quem ele é, antes de
+     qualquer texto) e a mancha líquida que revela a versão androide é o
+     tipo de coisa que só funciona se a pessoa encontrar sem procurar.
+
+     NÃO PRECISA DE CÓDIGO: salve `public/hero/erick.jpg` (ou .png /
+     .webp) e ele aparece. Sem arquivo, o hero cai num fundo com as
+     iniciais, sem imagem quebrada.
+
+     A SEGUNDA FOTO (`public/hero/erick-ia.jpg`) é a que aparece sob a
+     mancha. As duas precisam ter o MESMO enquadramento, mesma pose e
+     mesmo tamanho, porque a revelação é um buraco na de cima: qualquer
+     diferença de posição vira um pulo dentro da mancha. Sem esse arquivo
+     o efeito some sozinho e fica só a foto.
+
+     As duas atuais são 2048x1152, com ele no alto à esquerda e o fundo
+     vazio à direita. É por isso que o texto do hero mora na metade
+     DIREITA: trocar por uma foto de enquadramento diferente quebra a
+     composição inteira. */
   photoName: "erick",
   photoAlt: "Erick Dantas",
   photoIAName: "erick-ia",
-  photoIAAlt: "O mesmo retrato com o rosto substituído por uma cabeça de androide",
-  /* A imagem não anuncia sozinha que reage ao mouse. O aviso segue o
-     mesmo padrão do "Arraste para o lado" do carrossel: some assim que a
-     pessoa descobre. */
+  photoIAAlt:
+    "O mesmo retrato com o rosto substituído por uma cabeça de androide",
+  /* A imagem não anuncia sozinha que reage ao mouse. O aviso some assim
+     que a pessoa descobre. */
   photoHint: "Passe o mouse",
-  /* No celular não há hover — a troca vira botão. [mostrar, voltar] */
+  /* No celular não há hover: a troca vira botão. [mostrar, voltar] */
   photoTap: ["Ver a versão IA", "Ver a foto"] as [string, string],
-  /* Dois parágrafos, e não quatro: a coluna fica ao lado da foto, e
-     quatro blocos de texto empurravam a seção para muito além da altura
-     da imagem. O que saiu foi repetição — a ideia de cada um continua. */
+};
+
+/* ---------- Sobre ----------
+   O RELATO À ESQUERDA, O CRACHÁ PENDURADO À DIREITA.
+
+   A seção já foi a faixa com a foto de fundo (que subiu para o hero) e,
+   por algumas horas, o vídeo que abria a página. Hoje é o crachá do
+   Lanyard, a pedido dele: o vídeo era uma peça de motion cheia de neon
+   competindo com sete parágrafos, e qualquer véu forte o bastante para o
+   texto ser legível apagava o próprio vídeo.
+
+   O `public/video/hero.mp4` (7,7 MB) ficou SEM USO NENHUM no site depois
+   dessa troca. Está mantido no repo de propósito, para o caso de ele
+   querer o vídeo em outro lugar.
+
+   A frente do crachá sai de `scripts/gera-cracha.mjs`. */
+export const sobre = {
+  label: "Sobre",
+  /* O crachá é arrastável e a página não anuncia isso sozinha. */
+  crachaHint: "Arraste o crachá",
+  /* Título em primeira pessoa e como pergunta: a seção é a resposta.
+     "Eu construo com IA" dizia o que ele faz, e isso já é o assunto do
+     resto do site — aqui o que interessa é quem ele é. */
+  title: "Quem sou eu?",
+  /* O relato inteiro, na voz dele. São sete parágrafos e não dois: a
+     seção deixou de dividir espaço com a foto (que subiu para o hero) e
+     agora tem a coluna toda para contar a trajetória de fato. */
   body: [
-    "Tive meu primeiro contato com tecnologia aos 4 anos e nunca mais parei. " +
-      "Comecei no suporte técnico construindo pequenas ferramentas com IA " +
-      "para resolver problemas reais do meu time — não era o meu cargo, " +
-      "virou o meu trabalho.",
-    "Hoje a IA é a minha ferramenta principal, não assunto de conversa: " +
-      "trabalho todo dia com Claude Code, Codex, Antigravity e Cursor, e sei " +
-      "qual usar para refatorar um projeto inteiro e qual usar para uma " +
-      "correção cirúrgica. É com isso que construo a infraestrutura de IA " +
-      "por trás do suporte, da documentação e do treinamento técnico da " +
-      "Bannerjet — do chatbot no WhatsApp ao portal que o time consulta todo " +
-      "dia.",
+    "Sempre fui movido pela curiosidade de entender como as coisas funcionam. " +
+      "Meu primeiro contato com tecnologia aconteceu aos 4 anos e, desde então, " +
+      "aprender, testar e criar se tornou parte natural de quem eu sou.",
+    "Na escola, auxiliava o meu professor do curso técnico a dar as aulas, " +
+      "preparava aulas e atendia os alunos individualmente.",
+    "Graças a isso, entrei na APDADOS e me tornei coordenador do comitê " +
+      "StarTech, gerenciando reuniões, materiais e pesquisas sobre segurança da " +
+      "informação, além de outros projetos.",
+    "Em seguida, entrei na Bannerjet, onde atuei como técnico IGP e depois me " +
+      "tornei programador, porque percebi que muitos problemas poderiam ser " +
+      "resolvidos não apenas com conhecimento técnico, mas também criando " +
+      "ferramentas para tornar processos mais simples, rápidos e inteligentes. " +
+      "Foi assim que comecei a desenvolver minhas primeiras soluções utilizando " +
+      "IA, inicialmente para resolver necessidades reais do meu próprio time e, " +
+      "com o tempo, transformando essas iniciativas em parte do meu trabalho.",
+    "Hoje, atuo na interseção entre tecnologia, inteligência artificial, " +
+      "automação e design, buscando transformar problemas complexos em soluções " +
+      "práticas. Utilizo ferramentas como Claude Code, Codex, Antigravity e " +
+      "Cursor diariamente, não apenas para programar, mas para pensar, " +
+      "prototipar, testar e construir sistemas completos.",
+    "Grande parte do meu trabalho está por trás de soluções que conectam IA, " +
+      "suporte técnico, documentação e treinamento, desde automações e chatbots " +
+      "no WhatsApp até plataformas utilizadas diariamente por equipes.",
+    "Mais do que acompanhar a tecnologia, gosto de descobrir o que é possível " +
+      "construir com ela.",
   ],
   /* Ficha rápida ao pé da coluna de texto. */
   facts: [
@@ -149,18 +200,18 @@ const feitosGrupos: FeitoGrupo[] = [
         body:
           "Nasceu de uma conta simples: o tempo que o time gastava procurando um " +
           "manual antigo, um parâmetro de corte ou a versão certa de um firmware " +
-          "era maior que o tempo de resolver o problema em si. O material existia — " +
+          "era maior que o tempo de resolver o problema em si. O material existia, " +
           "espalhado por pastas, e-mails e conversas de WhatsApp. O portal reúne " +
           "tudo num lugar só: catálogo com página própria por máquina, manuais, " +
           "peças, firmwares, perfis de cor, parâmetros e cursos com progressão por " +
           "módulos. O que antes era \"pergunta pro fulano\" virou link. Por cima " +
           "roda um chatbot que responde dúvidas técnicas usando a mesma base do " +
-          "portal — pergunta em português, resposta com a fonte.",
+          "portal: pergunta em português, resposta com a fonte.",
         tags: ["Portal", "Chatbot", "Base de conhecimento"],
       },
       {
         slug: "jet-ia-whatsapp",
-        title: "Jet IA — chatbot de suporte no WhatsApp",
+        title: "Jet IA, chatbot de suporte no WhatsApp",
         destaque: true,
         body:
           "Chatbot com RAG em produção, atendendo cliente de verdade: n8n " +
@@ -175,13 +226,13 @@ const feitosGrupos: FeitoGrupo[] = [
         body:
           "Instalação de programas e licenças dos equipamentos da linha A3 num " +
           "endereço só. A licença do equipamento abre a página dele, com o " +
-          "instalador, a documentação e o vídeo correspondentes — no lugar do " +
+          "instalador, a documentação e o vídeo correspondentes, no lugar do " +
           "envio manual de arquivos a cada venda.",
         tags: ["Portal", "Pós-venda", "Licenciamento"],
       },
       {
         slug: "erp-modulo-tecnico",
-        title: "ERP — Módulo Técnico",
+        title: "ERP Módulo Técnico",
         body:
           "Desenvolvido em conjunto com o Victor Rocha, criador do projeto. " +
           "Construí o Painel de Atendimentos: a visão geral dos atendimentos " +
@@ -221,8 +272,9 @@ const feitosGrupos: FeitoGrupo[] = [
         title: "IA supervisora de atendimentos",
         body:
           "Vigia a fila inteira: encontra cliente sem resposta e avisa o técnico, " +
-          "transfere conversa parada e informa o cliente quando o técnico está fora " +
-          "— horário de almoço, fim de expediente. Ninguém fica esperando sem saber.",
+          "transfere conversa parada e informa o cliente quando o técnico está fora, " +
+          "no horário de almoço ou no fim do expediente. Ninguém fica esperando " +
+          "sem saber.",
         tags: ["Monitoramento", "n8n"],
       },
       {
@@ -240,7 +292,7 @@ const feitosGrupos: FeitoGrupo[] = [
         title: "Laudo Jet",
         body:
           "Gera o laudo técnico de cada atendimento a partir da própria conversa, " +
-          "no formato que o time já usava — o registro deixou de depender de alguém " +
+          "no formato que o time já usava. O registro deixou de depender de alguém " +
           "lembrar de escrever.",
         tags: ["Laudo", "n8n"],
       },
@@ -249,7 +301,7 @@ const feitosGrupos: FeitoGrupo[] = [
         title: "IA de recepção por áudio",
         body:
           "Recebe o cliente falando, registra as informações pessoais e encaminha " +
-          "para a automação certa — treinamento, instalação ou suporte.",
+          "para a automação certa: treinamento, instalação ou suporte.",
         tags: ["Áudio", "Triagem"],
       },
       {
@@ -269,6 +321,20 @@ const feitosGrupos: FeitoGrupo[] = [
           "histórico e o que ficou pendente, escrito pela própria automação ao fim " +
           "do atendimento.",
         tags: ["CRM", "Callbell"],
+      },
+      {
+        slug: "padronizacao-fotos-catalogo",
+        title: "Padronização das fotos do catálogo com IA",
+        destaque: true,
+        body:
+          "As fotos das peças vinham de origens diferentes, cada uma com fundo, " +
+          "enquadramento e resolução própria, e o catálogo parecia um mosaico. " +
+          "Montei o sistema que trata cada imagem com inteligência artificial e " +
+          "devolve todas no mesmo padrão profissional: fundo branco de estúdio ou " +
+          "recorte transparente, resolução ampliada e enquadramento igual. Rodou " +
+          "em lote nas 1.524 fotos do catálogo do ERP e hoje toda foto nova entra " +
+          "pelo mesmo caminho.",
+        tags: ["IA", "Gemini API", "Lote", "ERP"],
       },
       {
         slug: "drive-notion-laboratorio",
@@ -294,7 +360,7 @@ const feitosGrupos: FeitoGrupo[] = [
         body:
           "584 elementos mapeando o atendimento inteiro, do primeiro contato ao " +
           "encerramento do chamado. Foi o diagnóstico que mostrou onde o tempo " +
-          "estava indo embora — e a base de tudo que veio depois.",
+          "estava indo embora, e a base de tudo que veio depois.",
         tags: ["Miro", "Processo"],
       },
       {
@@ -320,7 +386,7 @@ const feitosGrupos: FeitoGrupo[] = [
         body:
           "Manuais de equipamento gerados com um framework de prompts e um guia de " +
           "formatação rígido, para sair tudo com a mesma cara e a identidade da " +
-          "marca — sem depender de quem diagramou.",
+          "marca, sem depender de quem diagramou.",
         tags: ["Documentação", "IA"],
       },
     ],
@@ -331,110 +397,252 @@ export const feitos = {
   label: "Cargo atual",
   title: "Feitos na Bannerjet",
   intro:
-    "Criador de Produto Técnico. O que está aqui foi construído dentro da " +
-    "empresa e está em uso — cada item traz o material de comprovação.",
+    "Tudo que foi construído dentro da empresa e está em uso no dia a dia. " +
+    "Aperte em cada item para saber mais sobre cada projeto.",
   /* Rótulo do botão que abre a galeria de comprovação. */
   mediaLabel: "Ver material",
   mediaEmpty: "Material em digitalização",
   groups: feitosGrupos,
 };
 
-/* ---------- Métricas de sucesso ----------
-   Números medidos, não estimados. Cada um tem de onde saiu. */
 /* ---------- Métricas ----------
    Cada item responde "o que a empresa ganhou", não "o que eu construí".
-   Por isso o par `value` + `outcome`: o número é a prova, e o `outcome`
-   diz o que ele significa para a operação.
 
-   ⚠️ COMPLETAR: os campos `outcome` marcados com [MEDIR] esperam o
-   número real da Bannerjet — tempo de atendimento antes e depois,
-   chamados repetidos que deixaram de existir, horas de treinamento
-   economizadas. São os que mais convencem, e são os que eu não tenho
-   como levantar daqui. Enquanto não vierem, o cartão mostra só o que
-   é verificável. */
-export const metricas = {
+   Dois campos, e não um: `value` é a prova, `outcome` diz o que aquele
+   número significa para a operação.
+
+   ⚠️ `value` É OPCIONAL DE PROPÓSITO. Os dois últimos cartões falam de
+   coisas reais que ainda não têm medição levantada (quanto material foi
+   produzido, quanto caiu o tempo de atendimento). Em vez de inventar
+   cifra ou esconder o resultado, o cartão sai sem número: o texto ocupa
+   o lugar dele. Quando o número existir, é só preencher o `value` do
+   item que ele volta a ser um cartão numérico, sem tocar em componente.
+
+   O 628 vem de um COUNT na tabela `documents` do Supabase da Jet IA
+   (18/08/2026). Para reconferir:
+     select count(*) from documents;
+     select count(distinct metadata->>'equipamento') from documents; */
+export type MetricaItem = {
+  /* Opcional: sem ele o cartão sai sem número, e o rótulo assume o lugar.
+     Hoje os quatro têm número, mas o suporte fica: é o que mantém no ar um
+     resultado real que ainda não foi medido, sem inventar cifra. */
+  value?: string;
+  label: string;
+  outcome: string;
+  source: string;
+};
+
+export const metricas: {
+  label: string;
+  title: string;
+  intro: string;
+  items: MetricaItem[];
+} = {
   label: "Resultados",
-  /* O título anterior — "O que meus projetos trouxeram de resultado para
-     a Bannerjet" — quebrava em quatro linhas e repetia "resultado", que
-     já é o rótulo logo acima. "Retorno" diz a mesma coisa em uma linha e
-     é a palavra que um gestor usa. */
-  title: "O retorno para a Bannerjet",
+  title: "O retorno que a Bannerjet teve com o meu trabalho",
   intro:
-    "Não é portfólio de protótipo: cada número abaixo veio de algo que " +
-    "está em produção e que a equipe usa todo dia.",
+    "Não é portfólio de protótipo: cada número abaixo veio de algo que está em " +
+    "produção e que a equipe usa todo dia.",
   items: [
     {
-      value: "209",
-      label: "pares de pergunta e resposta na base que alimenta a Jet IA",
+      value: "50%",
+      label: "do suporte remoto atendido por inteligência artificial ou bot",
       outcome:
-        "O time deixou de responder à mão a dúvida que já tinha sido respondida antes.",
+        "Metade do primeiro atendimento deixou de ocupar um técnico, e a equipe passou a receber só o que realmente precisa de gente.",
       source: "Jet IA · Bannerjet",
     },
     {
-      value: "584",
-      label: "elementos no fluxograma que mapeou o suporte técnico inteiro",
+      value: "65%",
+      label: "de redução no tempo de atendimento",
       outcome:
-        "O caminho de cada chamado deixou de morar na cabeça de quem já estava na casa.",
-      source: "Miro · Bannerjet",
+        "O mesmo time fecha mais chamado em menos tempo, com o fluxo mapeado, a triagem automática e o material publicado.",
+      source: "Suporte técnico · Bannerjet",
     },
     {
-      value: "24/7",
-      label: "atendimento do chatbot com RAG no WhatsApp",
+      value: "200+",
+      label: "materiais técnicos finalizados, entre vídeos e manuais",
       outcome:
-        "A primeira resposta ao cliente não depende mais de haver alguém disponível.",
-      source: "Callbell + n8n · Bannerjet",
+        "O que antes era explicado de novo a cada chamado virou material próprio: o suporte responde com um link e o cliente resolve sozinho.",
+      source: "Conteúdo técnico · Bannerjet",
     },
     {
-      value: "1",
-      label: "portal único no lugar de pastas, e-mails e conversas soltas",
+      value: "628",
+      label:
+        "blocos de conhecimento sobre a empresa que a IA consulta, cobrindo 36 equipamentos",
       outcome:
-        "Manual, parâmetro de corte e firmware deixaram de morar em cinco lugares diferentes — o técnico abre um link em vez de perguntar a alguém.",
-      source: "Central Técnica · Bannerjet",
+        "A resposta que chega ao colaborador é técnica, validada e da própria casa, em vez do que o modelo acharia por conta própria.",
+      source: "Supabase · base da Jet IA",
     },
   ],
 };
 
 /* ---------- Recomendações ----------
-   ⚠️ ESTE BLOCO ESTÁ VAZIO DE PROPÓSITO.
 
-   Depoimento é palavra de outra pessoa, com o nome dela em cima. Não dá
-   para eu escrever no lugar de um gestor ou de um professor: mesmo que
-   o conteúdo fosse plausível, seria uma citação inventada atribuída a
-   alguém real — e num portfólio isso é o tipo de coisa que destrói a
-   credibilidade que a seção deveria construir.
+   ⚠️ OS CINCO TEXTOS DE HOJE SÃO RASCUNHO, ESCRITOS POR MIM.
 
-   COMO PREENCHER: peça a recomendação (o LinkedIn tem "Solicitar
-   recomendação" e o texto vem pronto), copie o que a pessoa escreveu e
-   adicione um item aqui. Com a lista vazia, a seção simplesmente não
-   aparece no site — nada quebra.
+   O bloco era vazio de propósito: depoimento é palavra de outra pessoa,
+   com o nome dela em cima, e citação inventada atribuída a alguém real é
+   endosso fabricado — pior ainda quando a pessoa não é da empresa (o
+   Rene é da UNIP, o Davis é da APDADOS). Num portfólio, é o tipo de
+   coisa que destrói exatamente a credibilidade que a seção deveria
+   construir.
 
-   Exemplo do formato:
-     {
-       quote: "texto exatamente como a pessoa escreveu",
-       name: "Nome Sobrenome",
-       role: "Cargo",
-       org: "Empresa",
-       href: "https://www.linkedin.com/in/...",  // opcional
-       avatar: "fulano",  // opcional: public/recomendacoes/fulano.jpg
-     }
+   O Erick pediu "comentários ilustrativos" em 19/08/2026, e a saída foi
+   entregar os textos COM A FLAG `rascunho: true`. Com ela:
+     - o cartão mostra um selo "texto provisório" bem visível, então
+       ninguém que visita o site lê aquilo como palavra da pessoa;
+     - fica pronto para ele mandar para cada um aprovar ou reescrever.
+
+   COMO LIBERAR UM: com a pessoa tendo lido e aprovado (ou reescrito),
+   troque o `quote` pelo texto dela e APAGUE a linha `rascunho`. Só isso
+   tira o selo. **Não apague o selo antes do OK dela.**
+
+   O caminho mais curto para o texto real: o LinkedIn tem "Solicitar
+   recomendação", e o que a pessoa escreve já vem pronto para colar aqui.
+
+   Com a lista vazia a seção não aparece no site — nada quebra.
 */
 export type Recomendacao = {
   quote: string;
   name: string;
   role: string;
-  org: string;
+  /* Opcional: nem todo mundo se apresenta com empresa. Só é usado no
+     fallback, quando não há headline. */
+  org?: string;
+  /* A LINHA DO CARGO COMO A PESSOA SE APRESENTA, em uma frase corrida.
+
+     Substitui o `role · org` no cartão. Existe porque o Marden se
+     denomina "Founder of Bannerjet International", e o Erick pediu os
+     cinco cartões nessa mesma vibe: título escrito por extenso, no
+     idioma e na forma que a própria pessoa usa, em vez de dois campos
+     colados por um ponto.
+
+     `role` e `org` continuam no tipo: são o dado estruturado, e é deles
+     que o cartão cai quando não há headline. */
+  headline?: string;
   href?: string;
   /* Nome do arquivo (sem extensão) em public/recomendacoes/. */
   avatar?: string;
+  /* Texto ainda não aprovado pela pessoa. Ver a nota acima. */
+  rascunho?: boolean;
 };
+
+/* A ORDEM É A ORDEM DE EXIBIÇÃO, e foi definida por ele:
+   Marden, Davis, Leandro, Rene, Victor, Guilherme, Artur.
+
+   Não é alfabética nem cronológica: abre pelo dono da empresa e pelo nome
+   de maior peso institucional, e o Artur fecha. Mexer aqui muda a esteira
+   na hora.
+
+   ⚠️ Se um dia houver tradução destes textos em `content-en.ts`, a mescla
+   é POR ÍNDICE: reordenar aqui exige reordenar lá. */
+const recomendacaoItens: Recomendacao[] = [
+  {
+    quote:
+      "O Erick chegou como técnico e saiu construindo ferramenta. Ele mapeou o " +
+      "nosso suporte inteiro, mostrou onde o tempo estava indo embora e depois " +
+      "resolveu: hoje metade do atendimento remoto passa por IA antes de chegar " +
+      "num técnico. Não foi ninguém que pediu, foi ele que viu.",
+    name: "Marden Roberto",
+    /* Como ele se apresenta. */
+    role: "Founder",
+    org: "Bannerjet International",
+    headline: "Founder of Bannerjet International",
+    avatar: "marden-roberto",
+    rascunho: true,
+  },
+  {
+    quote:
+      "O Erick coordena o Comitê StarTech na APDADOS com uma organização que a " +
+      "maioria dos profissionais sêniores não tem: reunião com pauta, material " +
+      "revisado, pesquisa de segurança da informação entregue. Num comitê " +
+      "voluntário, isso é o que separa boa intenção de resultado.",
+    name: "Davis Alves",
+    role: "Presidente",
+    org: "APDADOS",
+    /* O título dele é imenso (ITIL Expert, PMP, CEH, CHFI, DPO…). Numa
+       linha cabe o cargo mais a credencial que pesa: o Conselho Nacional
+       de Proteção de Dados. */
+    headline: "Presidente da APDADOS e ex-membro do CNPD",
+    avatar: "davis-alves",
+    rascunho: true,
+  },
+  {
+    quote:
+      "Como diretor técnico, o que eu vejo é o antes e o depois. Antes, cada " +
+      "chamado repetia a mesma explicação e o conhecimento morava na cabeça de " +
+      "quem já estava na casa. Hoje está num portal, num chatbot e em mais de " +
+      "duzentos materiais. O Erick transformou conhecimento solto em produto.",
+    name: "Leandro Rocha",
+    role: "Diretor Técnico",
+    org: "Bannerjet Group",
+    headline: "Diretor Técnico da Bannerjet Group",
+    avatar: "leandro-rocha",
+    rascunho: true,
+  },
+  {
+    quote:
+      "Acompanhei o Erick na graduação em Análise e Desenvolvimento de Sistemas. " +
+      "É o aluno que não espera a ementa para aprender: chegava com projeto " +
+      "rodando, feito por conta própria, e com pergunta que ia além da aula. " +
+      "Vai longe, e não por causa do diploma.",
+    name: "Rene Ignacio",
+    role: "Coordenador de ADS",
+    org: "Universidade Paulista",
+    headline: "Coordenador dos cursos de ADS na Universidade Paulista",
+    avatar: "rene-ignacio",
+    rascunho: true,
+  },
+  {
+    quote:
+      "Construí o ERP Módulo Técnico e o Erick assumiu o Painel de Atendimentos " +
+      "e levou a Jet IA para dentro dele. É o tipo de parceiro que entende o " +
+      "problema antes de escrever a primeira linha, entrega no prazo e ainda " +
+      "documenta para quem vem depois. Trabalhar junto foi fácil.",
+    name: "Victor Rocha",
+    role: "Supervisor Técnico",
+    org: "Bannerjet Group",
+    headline: "Supervisor Técnico da Bannerjet Group",
+    avatar: "victor-rocha",
+    rascunho: true,
+  },
+  {
+    quote:
+      "Conversar com o Erick sobre código é fácil: ele chega com o problema " +
+      "mapeado e uma opinião sobre a solução, não com uma pergunta genérica. " +
+      "Constrói com IA como quem usa ferramenta, sabendo o que aceitar e o que " +
+      "descartar, e deixa tudo documentado para quem vem depois. É raro.",
+    name: "Guilherme Gonçalves Lisboa",
+    role: "Desenvolvedor Backend",
+    /* Como ele se apresenta. A grafia do NestJS e do TypeScript foi
+       normalizada; o resto é o texto dele. */
+    headline: "Desenvolvedor Backend (Node.js, NestJS, TypeScript)",
+    avatar: "guilherme-lisboa",
+    rascunho: true,
+  },
+  {
+    quote:
+      "Trabalho no setor técnico e uso todo dia o que o Erick construiu. Antes eu " +
+      "abria três pastas e chamava alguém no WhatsApp para achar um parâmetro de " +
+      "corte; hoje pergunto para a Jet IA ou abro a Central Técnica e resolvo " +
+      "sozinho. A diferença no dia a dia é enorme.",
+    name: "Artur Orcy",
+    role: "Analista do Setor Técnico",
+    org: "Bannerjet Group",
+    headline: "Analista do Setor Técnico da Bannerjet",
+    avatar: "artur-orcy",
+    rascunho: true,
+  },
+];
 
 export const recomendacoes = {
   label: "Recomendações",
   title: "O que dizem de mim",
   intro:
-    "Pessoas com quem trabalhei — gestores, professores e colegas de " +
-    "comitê.",
-  items: [] as Recomendacao[],
+    "Pessoas com quem trabalhei: gestores, professores e colegas de comitê.",
+  /* Aparece no cartão enquanto o texto não foi aprovado pela pessoa. */
+  rascunhoLabel: "Texto provisório · aguardando aprovação",
+  items: recomendacaoItens,
 };
 
 export type ProjectImage = {
@@ -491,7 +699,7 @@ export const projects: Project[] = [
     category: "Plataforma de treinamento técnico",
     year: "2026",
     description:
-      "Hub técnico que reúne catálogo de equipamentos, manuais, peças, firmwares e cursos com progressão por módulos — mais um chatbot de IA que responde dúvidas técnicas direto no site.",
+      "Hub técnico que reúne catálogo de equipamentos, manuais, peças, firmwares e cursos com progressão por módulos, mais um chatbot de IA que responde dúvidas técnicas direto no site.",
     href: "https://erickkadr.github.io/Central-Tecnica-Bannerjet/",
     repo: "https://github.com/ErickkADR/Central-Tecnica-Bannerjet",
     tags: ["HTML", "Chatbot IA", "Área restrita"],
@@ -501,9 +709,9 @@ export const projects: Project[] = [
       alt: "Página inicial da Central Técnica, com os atalhos para equipamentos, manuais e parâmetros",
     },
     overview: [
-      "A Central Técnica nasceu de uma conta simples: o tempo que o time de suporte gastava procurando um manual antigo, um parâmetro de corte ou a versão certa de um firmware era maior que o tempo de resolver o problema em si. O material existia — espalhado por pastas, e-mails e conversas de WhatsApp.",
+      "A Central Técnica nasceu de uma conta simples: o tempo que o time de suporte gastava procurando um manual antigo, um parâmetro de corte ou a versão certa de um firmware era maior que o tempo de resolver o problema em si. O material existia, espalhado por pastas, e-mails e conversas de WhatsApp.",
       "O portal reúne tudo num lugar só: catálogo de equipamentos com página própria por máquina, manuais, peças, firmwares, perfis de cor e parâmetros. Cada equipamento tem a sua ficha, e o que antes era \"pergunta pro fulano\" virou link.",
-      "Por cima disso roda um chatbot de IA que responde dúvidas técnicas usando a mesma base do portal — quem não sabe onde procurar pergunta em português e recebe a resposta com a fonte.",
+      "Por cima disso roda um chatbot de IA que responde dúvidas técnicas usando a mesma base do portal. Quem não sabe onde procurar pergunta em português e recebe a resposta com a fonte.",
     ],
     highlights: [
       {
@@ -561,7 +769,7 @@ export const projects: Project[] = [
       alt: "Tela de chat do AtomAI, com a pergunta \"Como posso te ajudar?\" e os atalhos por tipo de problema",
     },
     overview: [
-      "O AtomAI é uma plataforma de atendimento em que cada bot é especialista em um nicho, em vez de um assistente genérico tentando responder tudo. Quem chega escolhe o tipo de problema — hardware, software, periférico — e cai no agente treinado para ele.",
+      "O AtomAI é uma plataforma de atendimento em que cada bot é especialista em um nicho, em vez de um assistente genérico tentando responder tudo. Quem chega escolhe o tipo de problema, seja hardware, software ou periférico, e cai no agente treinado para ele.",
       "Além da conversa, o produto tem o lado de dentro: painel com o volume de tickets em tempo real, desempenho por agente, gestão da equipe de bots, planos e checkout. É o recorte completo de um SaaS, do login à cobrança.",
       "A interface é escura por decisão de uso: é uma ferramenta de trabalho, aberta o dia inteiro, e o contraste alto cansa em jornada longa.",
     ],
@@ -622,13 +830,13 @@ export const projects: Project[] = [
     },
     overview: [
       "A Nexus Print é uma loja de comunicação visual personalizada: adesivos, action figures, Funko Pop, topos de bolo e caixas milk. São mais de 130 produtos catalogados em seis categorias.",
-      "O nó do projeto foi a precificação. Produto personalizado não tem preço único — depende de tamanho, quantidade e acabamento. Cada item carrega quatro modelos de preço, e o carrinho calcula em cima da combinação escolhida.",
+      "O nó do projeto foi a precificação. Produto personalizado não tem preço único: depende de tamanho, quantidade e acabamento. Cada item carrega quatro modelos de preço, e o carrinho calcula em cima da combinação escolhida.",
       "O pedido não termina num gateway: fecha no WhatsApp, com o resumo montado. É como a venda realmente acontece nesse mercado, e tentar empurrar checkout tradicional só adicionaria um passo que ninguém completa.",
     ],
     highlights: [
       {
         title: "Quatro modelos de preço por produto",
-        body: "A mesma peça muda de valor conforme tamanho, quantidade e acabamento — o carrinho resolve a conta.",
+        body: "A mesma peça muda de valor conforme tamanho, quantidade e acabamento, e o carrinho resolve a conta.",
       },
       {
         title: "Fechamento no WhatsApp",
@@ -683,7 +891,7 @@ export const projects: Project[] = [
     overview: [
       "Toda venda de equipamento terminava do mesmo jeito: alguém do suporte juntava instalador, manuais e vídeo e mandava por e-mail ou WhatsApp. Um por um, sempre igual, e sempre sujeito a mandar a versão errada.",
       "O portal troca esse ritual por um link permanente. A licença do equipamento vira a rota: quem abre o link cai direto na página da própria máquina, com o software, a documentação e o vídeo correspondentes.",
-      "Como o endereço é fixo, ele continua valendo depois da venda — quando o cliente formatar o computador daqui a um ano, o material ainda está lá, atualizado.",
+      "Como o endereço é fixo, ele continua valendo depois da venda: quando o cliente formatar o computador daqui a um ano, o material ainda está lá, atualizado.",
     ],
     highlights: [
       {
@@ -731,7 +939,7 @@ export const projects: Project[] = [
     category: "Landing page responsiva",
     year: "2026",
     description:
-      "Landing page de One Piece com os 10 integrantes do Bando do Chapéu de Palha, biografia e barras de atributos — feita só com HTML e CSS.",
+      "Landing page de One Piece com os 10 integrantes do Bando do Chapéu de Palha, biografia e barras de atributos, feita só com HTML e CSS.",
     href: "https://erickkadr.github.io/Mugiwaras-Project/home.html",
     repo: "https://github.com/ErickkADR/Mugiwaras-Project",
     tags: ["HTML", "CSS", "Sem JavaScript"],
@@ -742,7 +950,7 @@ export const projects: Project[] = [
     },
     overview: [
       "Um fã-projeto para exercitar o que HTML e CSS dão conta sozinhos: dez integrantes do Bando do Chapéu de Palha, cada um com apresentação, biografia e barras de atributos.",
-      "Não há uma linha de JavaScript. Tudo que se move — as transições, os estados de hover, o ritmo da página conforme se desce — sai de CSS.",
+      "Não há uma linha de JavaScript. Tudo que se move sai de CSS: as transições, os estados de hover e o ritmo da página conforme se desce.",
       "É uma página longa de propósito: a leitura acompanha a tripulação inteira, um personagem por vez, como um álbum.",
     ],
     highlights: [
@@ -791,7 +999,7 @@ export const projects: Project[] = [
     category: "Site com efeito parallax",
     year: "2025",
     description:
-      "Estudo do efeito parallax e da ilusão de ótica que ele cria — o projeto onde a vontade de trabalhar com movimento começou.",
+      "Estudo do efeito parallax e da ilusão de ótica que ele cria. Foi o projeto onde a vontade de trabalhar com movimento começou.",
     href: "https://erickkadr.github.io/Apenas-Um-Escritor/",
     repo: "https://github.com/ErickkADR/Apenas-Um-Escritor",
     tags: ["Parallax", "HTML", "CSS"],
@@ -801,8 +1009,8 @@ export const projects: Project[] = [
       alt: "Abertura de Apenas Um Escritor, com o título sobre fundo preto e o texto começando abaixo",
     },
     overview: [
-      "Um texto e um efeito. O parallax deixa camadas correrem em velocidades diferentes e o olho lê isso como profundidade — a página tem duas dimensões, mas não parece ter.",
-      "Foi o experimento onde ficou claro que interface podia ser mais que layout. Tudo que veio depois — as revelações no scroll, o vídeo do hero, a cena 3D deste portfólio — começou aqui.",
+      "Um texto e um efeito. O parallax deixa camadas correrem em velocidades diferentes e o olho lê isso como profundidade: a página tem duas dimensões, mas não parece ter.",
+      "Foi o experimento onde ficou claro que interface podia ser mais que layout. Tudo que veio depois começou aqui: as revelações no scroll, o vídeo do hero e a cena 3D deste portfólio.",
       "O projeto é de 2025 e continua no ar do jeito que foi feito. Ele não envelheceu bem por acaso: é o registro de onde a coisa começou.",
     ],
     highlights: [
@@ -870,120 +1078,77 @@ export const marquee = [
 ];
 
 /* ---------- Stack ----------
-   Linguagens e ferramentas vivem na MESMA seção. Estavam separadas antes
-   e as duas listas se repetiam: JavaScript, HTML, CSS e TypeScript
-   apareciam nos dois lugares, e quem lia tinha que juntar sozinho. Aqui
-   a barra medida abre a seção e os grupos vêm logo abaixo, sem repetir
-   nenhuma linguagem em "Front-end".
+   UMA parede só, sem categorias. As cinco (IA, front, back, design,
+   ferramentas) obrigavam quem lia a percorrer cinco listas para montar
+   sozinho a resposta de "com o que ele trabalha", e o mesmo nome
+   pertencia a mais de um grupo dependendo de quem estivesse lendo. A
+   ordem da lista ainda agrupa por afinidade, o que dá o ritmo sem
+   precisar de cabeçalho.
 
-   Os percentuais são os bytes reais que a API do GitHub reporta somando
-   todos os repositórios públicos (não-forks) — não é estimativa.
-   Para atualizar:
-     GET https://api.github.com/repos/ErickkADR/<repo>/languages
-   Python e VBA não têm percentual porque o trabalho neles é interno
-   (automações e ferramentas da Bannerjet), fora dos repos públicos. */
+   SÓ ENTRA QUEM TEM LOGO. Ladrilho com as iniciais no lugar da marca
+   lia como espaço vazio numa parede em que todo o resto é logo colorida,
+   e a cor é metade do reconhecimento. Saíram por isso: RAG, Callbell,
+   Spline, VBA, MakerWorld, SignMaster, CameraCut, LightBurn e EzCad.
+   Para trazer qualquer um de volta, basta largar
+   `public/stack/<slug>.png` (o slug é o nome em minúsculas com hífen) e
+   reinserir a linha aqui. */
 
 export type StackItem = {
   name: string;
-  /* Chave da logo em lib/logos.tsx. Sem chave (ou com uma que não existe
-     no mapa), o item cai no monograma — as iniciais dentro do mesmo
-     ladrilho. É o caso de n8n, Callbell, ElevenLabs e dos softwares de
-     equipamento, que não têm ícone de marca pronto. */
-  icon?: string;
-  /* Cor do ladrilho para quem não tem ícone mas tem marca reconhecível
+  /* Cor do ladrilho para marcas cuja logo não carrega a cor sozinha
      (Claude Code, Blender, Fusion). Sem isso, cai no roxo do site. */
   color?: string;
+  /* LOGO ESCURA: pinta o PNG de branco no render.
+
+     Corel, Fusion 360 e Miro têm marca preta ou quase preta e sumiam no
+     ladrilho escuro — ele reportou como "quase invisíveis". Resolver aqui
+     e não trocando o arquivo mantém o PNG original intacto, então basta
+     apagar a flag se um dia a marca mudar de cor. */
+  branco?: boolean;
 };
 
-export type StackGroup = {
-  group: string;
-  items: StackItem[];
-};
-
-/* Anotado (e não `satisfies`): com `satisfies` o TS guarda o tipo
-   literal de cada item, e os campos que só as linguagens preenchem —
-   `note`, `color`, `pct` — deixam de existir para quem percorre a lista
-   inteira. */
-/* As cinco categorias são a forma como um recrutador lê uma stack:
-   o que a pessoa automatiza, o que ela constrói na tela, o que ela
-   constrói atrás dela, o que ela desenha e com o que ela trabalha.
-
-   "Linguagens" saiu como grupo próprio: HTML e CSS pertencem ao
-   front-end, Python ao back-end, e separá-los obrigava a mesma pessoa
-   a aparecer duas vezes na parede. */
-const stackGroups: StackGroup[] = [
-  {
-    group: "IA & Automações",
-    items: [
-      { name: "Claude Code", color: "#d97757" },
-      { name: "Codex", icon: "openai" },
-      { name: "Antigravity", icon: "google" },
-      { name: "Cursor" },
-      { name: "RAG" },
-      { name: "n8n" },
-      { name: "Gemini API", icon: "google" },
-      { name: "ElevenLabs" },
-      { name: "Callbell" },
-    ],
-  },
-  {
-    group: "Front-end",
-    items: [
-      { name: "HTML", icon: "html" },
-      { name: "CSS", icon: "css" },
-      { name: "JavaScript", icon: "javascript" },
-      { name: "TypeScript", icon: "typescript" },
-      { name: "React", icon: "react" },
-      { name: "Next.js", icon: "nextjs" },
-      { name: "Tailwind CSS", icon: "tailwind" },
-      { name: "GSAP" },
-      { name: "Spline" },
-    ],
-  },
-  {
-    group: "Back-end",
-    items: [
-      { name: "Python", icon: "python" },
-      { name: "Supabase", icon: "supabase" },
-      { name: "PowerShell", icon: "powershell" },
-      { name: "VBA" },
-    ],
-  },
-  {
-    group: "Design & 3D",
-    items: [
-      { name: "Figma", icon: "figma" },
-      { name: "Photoshop", icon: "adobe" },
-      { name: "CorelDraw" },
-      { name: "Blender", color: "#ea7600" },
-      { name: "Fusion 360", color: "#f47216" },
-      { name: "MakerWorld" },
-    ],
-  },
-  {
-    group: "Ferramentas",
-    items: [
-      { name: "Git", icon: "git" },
-      { name: "GitHub", icon: "github" },
-      { name: "VS Code", icon: "vscode" },
-      { name: "Notion", icon: "notion" },
-      { name: "Miro" },
-      { name: "Windows", icon: "windows" },
-      { name: "SignMaster" },
-      { name: "CameraCut" },
-      { name: "LightBurn" },
-      { name: "EzCad" },
-    ],
-  },
+/* A ordem é por afinidade, e não alfabética: IA e automação primeiro
+   (é o que ele faz de diferente), depois o que ele constrói na tela, o
+   que sustenta atrás, o que ele desenha e com o que ele trabalha. */
+const stackItems: StackItem[] = [
+  { name: "Claude Code", color: "#d97757" },
+  { name: "Codex" },
+  { name: "Antigravity" },
+  { name: "Cursor" },
+  { name: "n8n" },
+  { name: "Gemini API" },
+  { name: "ElevenLabs" },
+  { name: "HTML" },
+  { name: "CSS" },
+  { name: "JavaScript" },
+  { name: "TypeScript" },
+  { name: "React" },
+  { name: "Next.js" },
+  { name: "Tailwind CSS" },
+  { name: "GSAP" },
+  { name: "Python" },
+  { name: "Supabase" },
+  { name: "PowerShell" },
+  { name: "Figma" },
+  { name: "Photoshop" },
+  { name: "CorelDraw", branco: true },
+  { name: "Blender", color: "#ea7600" },
+  { name: "Fusion 360", branco: true },
+  { name: "Git" },
+  { name: "GitHub" },
+  { name: "VS Code" },
+  { name: "Notion" },
+  { name: "Miro", branco: true },
+  { name: "Windows" },
 ];
 
 export const stack = {
   label: "Stack",
-  title: "Ferramentas que trabalho!",
+  title: "Ferramentas com que eu trabalho",
   intro:
-    "O que eu escrevo e com o que eu construo — da linguagem ao software " +
-    "que roda na máquina do cliente.",
-  groups: stackGroups,
+    "Da linguagem em que eu escrevo ao software que constrói, desenha e " +
+    "automatiza o que entrego.",
+  items: stackItems,
 };
 
 /* ---------- Formação ---------- */
@@ -991,8 +1156,8 @@ export const background = {
   label: "Formação",
   title: "Onde eu estudei",
   intro:
-    "As três portas que abriram o resto — e as duas primeiras vieram por " +
-    "nota, não por mensalidade.",
+    "As três portas que abriram o resto. Todas as três vieram por bolsa " +
+    "conquistada pela nota, nenhuma paga com mensalidade.",
   items: [
     {
       period: "2017 — 2020",
@@ -1008,11 +1173,12 @@ export const background = {
       period: "2021 — 2023",
       icon: "tecnico",
       title: "Curso técnico de Informática",
-      meta: "Certificado de tecnólogo",
+      meta: "Bolsa por nota · certificado de tecnólogo",
       body:
-        "Infraestrutura de redes, hardware e programação. O desempenho acima da " +
-        "média virou convite do professor para criar as aulas e as apresentações " +
-        "junto com ele — foi o meu primeiro trabalho remunerado com tecnologia.",
+        "Infraestrutura de redes, hardware e programação, também com bolsa " +
+        "conquistada pela nota. O desempenho acima da média virou convite do " +
+        "professor para criar as aulas e as apresentações junto com ele, o meu " +
+        "primeiro trabalho remunerado com tecnologia.",
       highlight: "Ensinei junto com o professor",
     },
     {
@@ -1061,20 +1227,23 @@ const careerEntries: CareerEntry[] = [
     tags: ["Redes", "Hardware", "Programação"],
     detail: [
       "O curso cobriu a base que sustenta tudo que vem depois: como uma rede realmente funciona, o que acontece dentro da máquina e como escrever software que fala com os dois.",
-      "Criar as aulas e as apresentações junto com o professor, remunerado, foi a primeira vez que ensinar tecnologia me pagou alguma coisa — e o primeiro sinal de algo que se repetiria na Bannerjet: explicar bem é um trabalho, e alguém precisa fazê-lo.",
+      "Criar as aulas e as apresentações junto com o professor, remunerado, foi a primeira vez que ensinar tecnologia me pagou alguma coisa. Foi também o primeiro sinal de algo que se repetiria na Bannerjet: explicar bem é um trabalho, e alguém precisa fazê-lo.",
     ],
   },
   {
-    slug: "primeiros-commits",
-    period: "2022", // verificado: conta no GitHub criada em 10/02/2022
-    role: "Primeiros commits",
-    org: "GitHub",
+    /* O slug mudou junto com o título (era `primeiros-commits`). Não há
+       pasta em public/carreira/ para nenhuma etapa ainda, então renomear
+       não deixou material órfão. */
+    slug: "primeiros-certificados-programacao",
+    period: "2022", // conta no GitHub criada em 10/02/2022, no mesmo ano
+    role: "Primeiros certificados de programação",
+    org: "Curso em Vídeo · Digirati",
     body:
-      "As primeiras páginas responsivas, aprendendo construindo — sem curso formal no meio.",
+      "HTML5, CSS3 e JavaScript certificados por módulo, 40 horas cada, com o resultado publicado no GitHub a cada etapa concluída.",
     tags: ["HTML", "CSS", "JavaScript"],
     detail: [
-      "Exercícios de CSS e os primeiros projetos publicados: o SiteMisato, a tela de login do Jujutsu e o estudo de parallax que virou o Apenas Um Escritor.",
-      "Nenhum deles era encomenda de ninguém. Eram desculpas para descobrir como uma coisa funcionava, e é assim que a maior parte do que eu sei foi aprendida.",
+      "Quatro módulos de HTML5 e CSS3 mais o de JavaScript, todos com certificado emitido. Foi a primeira formação em programação que eu busquei por conta própria, fora da escola e sem ninguém pedindo.",
+      "Cada módulo terminava num projeto publicado: o SiteMisato, a tela de login do Jujutsu e o estudo de parallax que virou o Apenas Um Escritor. O certificado provava a carga horária; o repositório provava que eu tinha entendido.",
     ],
   },
   {
@@ -1086,7 +1255,7 @@ const careerEntries: CareerEntry[] = [
       "Responsável pelas peças visuais da marca: edição, retoque e manipulação no Photoshop.",
     tags: ["Photoshop", "Edição de imagens", "Design de interface"],
     detail: [
-      "Entrei como designer, cuidando das atividades criativas da empresa — das fotos de produto às peças que sustentavam a comunicação da marca.",
+      "Entrei como designer, cuidando das atividades criativas da empresa, das fotos de produto às peças que sustentavam a comunicação da marca.",
     ],
   },
   {
@@ -1099,7 +1268,7 @@ const careerEntries: CareerEntry[] = [
     tags: ["Google Ads", "Meta Business", "Google Analytics"],
     detail: [
       "Assumi a operação de tráfego pago depois do design: definir público, acompanhar custo por resultado e cortar o que não performava.",
-      "Foi onde aprendi a olhar para número como argumento, e não como enfeite de relatório — o que mudou a forma como eu apresento trabalho até hoje.",
+      "Foi onde aprendi a olhar para número como argumento, e não como enfeite de relatório. Isso mudou a forma como eu apresento trabalho até hoje.",
     ],
   },
   {
@@ -1108,7 +1277,7 @@ const careerEntries: CareerEntry[] = [
     role: "Assistente do Comitê StarTech",
     org: "APDADOS · freelance, remoto",
     body:
-      "Documentação técnica e organização dos processos do comitê — o bastidor que faz um grupo voluntário entregar o que promete.",
+      "Documentação técnica e organização dos processos do comitê, o bastidor que faz um grupo voluntário entregar o que promete.",
     tags: ["Documentação técnica", "Processos", "Trabalho em equipe"],
   },
   {
@@ -1121,7 +1290,7 @@ const careerEntries: CareerEntry[] = [
     tags: ["Suporte remoto", "Redes", "CorelDRAW", "SignMaster", "CameraCut"],
     detail: [
       "Redes, manutenção e configuração de hardware de um lado; CorelDRAW, Photoshop, SignMaster e CameraCut do outro.",
-      "Os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa — foi vendo o mesmo problema voltar que nasceu a ideia de documentar tudo.",
+      "Os arquivos de corte e contorno precisam sair com precisão, e é aí que a maioria dos chamados começa. Foi vendo o mesmo problema voltar que nasceu a ideia de documentar tudo.",
     ],
   },
   {
@@ -1141,13 +1310,17 @@ const careerEntries: CareerEntry[] = [
     period: "Hoje",
     role: "Criador de Produto Técnico",
     org: "Bannerjet Group",
+    /* O `body` anterior contava o começo da história (o fluxograma, a
+       narração trocada por IA) e deixava de fora o que o cargo entregou.
+       Agora abre pelos maiores feitos: são eles que dizem o tamanho do
+       trabalho. A história de como começou continua no `detail`. */
     body:
-      "Mapeei o suporte inteiro, troquei a minha narração por IA e o time finalmente passou a usar. Daí vieram os manuais, a base no Notion e o chatbot com RAG no WhatsApp.",
+      "Cargo que eu criei construindo ferramentas para o time. Hoje 60% do suporte remoto é atendido por IA, o conhecimento técnico da empresa está num portal e num chatbot com RAG no WhatsApp, e as automações rodam sozinhas todo dia.",
     tags: ["RAG", "Supabase", "n8n", "ElevenLabs", "Callbell", "Notion"],
     detail: [
-      "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema.",
-      "Mapeei o suporte num fluxograma e produzi os vídeos — mas só quando troquei a minha narração por IA o time passou a assistir. O atrito não era o conteúdo, era o formato.",
-      "É o cargo atual, e o que está em Feitos na Bannerjet foi construído aqui: a Central Técnica, a Jet IA, o portal de licenças da linha A3, o Painel de Atendimentos do ERP e as automações que rodam sozinhas todo dia.",
+      "Os maiores feitos do cargo: a Central Técnica, portal que reuniu manuais, peças, firmwares, parâmetros e cursos num endereço só; a Jet IA, chatbot com RAG em produção no WhatsApp atendendo cliente de verdade, hoje com 628 blocos de conhecimento cobrindo 36 equipamentos; o chatbot que dá o treinamento completo das máquinas e emite o certificado no fim da trilha; o Painel de Atendimentos do ERP Módulo Técnico; o portal de instalação e licenças da linha A3; e o sistema que padronizou com IA as 1.524 fotos do catálogo.",
+      "A virada veio de uma falha concreta: os técnicos gastavam mais tempo repetindo a mesma explicação do que resolvendo o problema. Mapeei o suporte inteiro num fluxograma de 584 elementos e produzi os vídeos, mas só quando troquei a minha narração por IA o time passou a assistir. O atrito não era o conteúdo, era o formato.",
+      "Nada disso estava na descrição da vaga. Entrei como técnico, construí as ferramentas porque eu era quem sentia o problema, e o cargo foi criado depois, em cima do que já estava rodando.",
     ],
   },
 ];
@@ -1225,7 +1398,7 @@ const certificateItems: Certificate[] = [
     slug: "unip-ads",
     grupo: "fixo",
     title: "Tecnólogo em Análise e Desenvolvimento de Sistemas",
-    issuer: "Universidade Paulista — UNIP",
+    issuer: "Universidade Paulista · UNIP",
     date: "2026-02",
     dateLabel: "Fevereiro de 2026",
     credentialId: "Validação 322.322.408bbec064",
@@ -1238,7 +1411,7 @@ const certificateItems: Certificate[] = [
     slug: "wizard-conclusao",
     grupo: "fixo",
     title: "Conclusão do Teens Course",
-    issuer: "Wizard — Vila Medeiros",
+    issuer: "Wizard · Vila Medeiros",
     date: "2023-12",
     dateLabel: "14 de dezembro de 2023",
     skills: ["Inglês"],
@@ -1248,7 +1421,7 @@ const certificateItems: Certificate[] = [
     slug: "wizard-aluno-destaque",
     grupo: "fixo",
     title: "Certificate of Excellence",
-    issuer: "Wizard — Vila Medeiros",
+    issuer: "Wizard · Vila Medeiros",
     date: "2023-12",
     dateLabel: "2023",
     skills: ["Inglês", "Destaque da turma"],
@@ -1269,7 +1442,7 @@ const certificateItems: Certificate[] = [
   {
     slug: "html-css-modulo-1",
     grupo: "curso-em-video",
-    title: "HTML5 e CSS3 — Módulo 1 de 5",
+    title: "HTML5 e CSS3 · Módulo 1 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-07",
     dateLabel: "24 de julho de 2022",
@@ -1279,7 +1452,7 @@ const certificateItems: Certificate[] = [
   {
     slug: "html-css-modulo-2",
     grupo: "curso-em-video",
-    title: "HTML5 e CSS3 — Módulo 2 de 5",
+    title: "HTML5 e CSS3 · Módulo 2 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-09",
     dateLabel: "4 de setembro de 2022",
@@ -1289,7 +1462,7 @@ const certificateItems: Certificate[] = [
   {
     slug: "html-css-modulo-3",
     grupo: "curso-em-video",
-    title: "HTML5 e CSS3 — Módulo 3 de 5",
+    title: "HTML5 e CSS3 · Módulo 3 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-09",
     dateLabel: "8 de setembro de 2022",
@@ -1299,7 +1472,7 @@ const certificateItems: Certificate[] = [
   {
     slug: "html-css-modulo-4",
     grupo: "curso-em-video",
-    title: "HTML5 e CSS3 — Módulo 4 de 5",
+    title: "HTML5 e CSS3 · Módulo 4 de 5",
     issuer: "Curso em Vídeo / Digirati",
     date: "2022-12",
     dateLabel: "7 de dezembro de 2022",
@@ -1310,7 +1483,7 @@ const certificateItems: Certificate[] = [
     slug: "apdados-ia-para-dpos",
     grupo: "apdados",
     title: "Inteligências Artificiais para DPOs",
-    issuer: "APDADOS — CNPPD 2024",
+    issuer: "APDADOS · CNPPD 2024",
     date: "2024-03",
     dateLabel: "22 e 23 de março de 2024",
     skills: ["IA aplicada", "Privacidade", "20 horas"],
@@ -1321,7 +1494,7 @@ const certificateItems: Certificate[] = [
     slug: "apdados-cnppd-2025",
     grupo: "apdados",
     title: "Soberania Digital",
-    issuer: "APDADOS — CNPPD 2025",
+    issuer: "APDADOS · CNPPD 2025",
     date: "2025-06",
     dateLabel: "27 e 28 de junho de 2025",
     skills: ["Soberania digital", "20 horas"],
@@ -1360,7 +1533,7 @@ const certificateItems: Certificate[] = [
     slug: "apdados-orientacao-carreira-ti",
     grupo: "apdados",
     title: "Orientação de Carreira para Profissionais de TI",
-    issuer: "APDADOS — Comitê StarTech",
+    issuer: "APDADOS · Comitê StarTech",
     date: "2024-05",
     dateLabel: "11 de maio de 2024",
     skills: ["Carreira em TI", "3 horas"],
@@ -1369,7 +1542,7 @@ const certificateItems: Certificate[] = [
     slug: "assistente-administrativo",
     grupo: "cate",
     title: "Assistente Administrativo",
-    issuer: "Portal Cate — São Paulo",
+    issuer: "Portal Cate · São Paulo",
     date: "2023-11",
     dateLabel: "18 de novembro de 2023",
     skills: ["30 horas"],
@@ -1378,7 +1551,7 @@ const certificateItems: Certificate[] = [
     slug: "soft-skills",
     grupo: "cate",
     title: "Soft Skills: habilidades dos profissionais do futuro",
-    issuer: "Portal Cate — São Paulo",
+    issuer: "Portal Cate · São Paulo",
     date: "2023-10",
     dateLabel: "1 de outubro de 2023",
     skills: ["7 horas"],
@@ -1387,7 +1560,7 @@ const certificateItems: Certificate[] = [
     slug: "relacionamento-interpessoal",
     grupo: "cate",
     title: "Relacionamento interpessoal: da inteligência emocional à negociação",
-    issuer: "Portal Cate — São Paulo",
+    issuer: "Portal Cate · São Paulo",
     date: "2023-10",
     dateLabel: "1 de outubro de 2023",
     skills: ["3 horas"],
@@ -1396,7 +1569,7 @@ const certificateItems: Certificate[] = [
     slug: "processo-seletivo",
     grupo: "cate",
     title: "Processo Seletivo",
-    issuer: "Portal Cate — São Paulo",
+    issuer: "Portal Cate · São Paulo",
     date: "2023-10",
     dateLabel: "1 de outubro de 2023",
     skills: ["12 horas"],
@@ -1405,7 +1578,7 @@ const certificateItems: Certificate[] = [
     slug: "preciso-trabalhar",
     grupo: "cate",
     title: "Preciso trabalhar, e agora?",
-    issuer: "Portal Cate — São Paulo",
+    issuer: "Portal Cate · São Paulo",
     date: "2023-10",
     dateLabel: "1 de outubro de 2023",
     skills: ["7 horas"],
@@ -1414,7 +1587,7 @@ const certificateItems: Certificate[] = [
     slug: "postura-imagem-profissional",
     grupo: "cate",
     title: "Postura e imagem profissional",
-    issuer: "Portal Cate — São Paulo",
+    issuer: "Portal Cate · São Paulo",
     date: "2023-10",
     dateLabel: "1 de outubro de 2023",
     skills: ["5 horas"],
@@ -1423,10 +1596,14 @@ const certificateItems: Certificate[] = [
 
 export const certificates = {
   label: "Certificados",
-  title: "O que está no papel",
+  /* "O que está no papel" era autodepreciativo: colocava a própria seção
+     em dúvida, como se o papel valesse menos que o resto. O título agora
+     afirma o que a seção é. */
+  title: "Formação certificada",
   intro:
-    "Cursos, eventos e credenciais — dos primeiros módulos de HTML aos " +
-    "encontros sobre LGPD e IA aplicada à privacidade de dados.",
+    "Vinte e duas credenciais emitidas, dos primeiros módulos de HTML e " +
+    "JavaScript ao inglês concluído, aos encontros nacionais de proteção de " +
+    "dados e à IA aplicada à privacidade. Todas com certificado para conferir.",
   /* Aparece sobre a imagem no hover. */
   imageHint: "Clique para ver o certificado",
   items: certificateItems,
@@ -1439,7 +1616,7 @@ export const globe = {
   label: "Meta profissional",
   title: "Daqui para o mundo",
   body:
-    "Nascido em São Paulo, nunca saí do estado — e tenho o sonho de conhecer " +
+    "Nascido em São Paulo, nunca saí do estado, e tenho o sonho de conhecer " +
     "o mundo, trabalhar fora do país e conhecer novas culturas, enquanto sigo " +
     "construindo ferramentas que facilitam o trabalho de outras pessoas ao " +
     "redor do mundo.",
@@ -1461,9 +1638,13 @@ export const globe = {
 export const contact = {
   label: "Contato",
   titleLines: ["Vamos", "construir"],
+  /* A palavra de acento, que fecha a última linha do título. Estava
+     chumbada no JSX do Contact e veio para cá quando o site ganhou o
+     botão de inglês: era o único texto visível fora do content.ts. */
+  titleAccent: "juntos",
   body:
     "Aberto a projetos, colaborações e conversas sobre IA, automação e front-end. " +
-    "Ainda quero trabalhar fora do Brasil e conhecer novas culturas — enquanto sigo " +
+    "Ainda quero trabalhar fora do Brasil e conhecer novas culturas, enquanto sigo " +
     "construindo ferramentas que facilitam o trabalho dos outros.",
   quote: "Me entregue o Claude Code e com minha criatividade moverei o mundo...",
   /* O e-mail aparece por extenso, como o próprio link. Um botão escrito
@@ -1498,3 +1679,76 @@ export const contact = {
     },
   ],
 };
+
+
+/* ---------- Textos de interface ----------
+   Rótulos de botão, de leitor de tela e de contagem. Estavam chumbados no
+   JSX e só apareceram quando o site ganhou o botão de inglês: eram os
+   últimos textos visíveis fora deste arquivo.
+
+   Ficam num bloco separado porque não são conteúdo (não descrevem o
+   Erick nem o trabalho dele): são a mecânica da página. */
+export const ui = {
+  copiarEmail: "Copiar e-mail",
+  emailCopiado: "Copiado ✓",
+  abrirEmail: "Abrir no e-mail →",
+  fechar: "Fechar ✕",
+  documento: "Documento",
+  /* Contagem de arquivos: [singular, plural]. */
+  itens: ["item", "itens"] as [string, string],
+  /* Rótulos que só o leitor de tela ouve. */
+  navPrincipal: "Navegação principal",
+  /* Rótulos do botão de idioma, no idioma de DESTINO: é o idioma da ação,
+     e é o que faz sentido para quem ouve. Por isso não têm par no
+     content-en.ts — eles não mudam com o idioma atual. */
+  mudarParaIngles: "Switch to English",
+  mudarParaPortugues: "Mudar para português",
+  navSubpagina: "Navegação da subpágina",
+  perfilVerificado: "Perfil verificado",
+  verMaterialDe: "Ver o material de",
+  crachaAlt:
+    "Crachá de Erick Dantas, Criador de Produto Técnico na Bannerjet Group",
+};
+
+/* ---------- Cabeçalho da seção de projetos ----------
+   O `projects` acima é a lista; isto é o cabeçalho dela, que estava
+   escrito direto no Projects.tsx. */
+export const projectsSection = {
+  countLabel: "projetos",
+  title: "Conheça os meus principais projetos desenvolvidos",
+  carouselLabel: "Projetos",
+};
+
+/* ============================================================
+   O CONTEÚDO COMO UM OBJETO SÓ.
+
+   Existe para o botão de idioma: é esta árvore que `lib/idioma.tsx`
+   mescla com o dicionário inglês. Os `export const` acima continuam
+   valendo e são o que a maioria dos componentes ainda importa direto.
+
+   Ao acrescentar uma seção nova ao arquivo, acrescente aqui também, senão
+   ela nunca terá versão em inglês.
+   ============================================================ */
+export const conteudo = {
+  site,
+  nav,
+  hero,
+  sobre,
+  feitos,
+  metricas,
+  recomendacoes,
+  projects,
+  projectPage,
+  marquee,
+  stack,
+  background,
+  career,
+  careerPage,
+  certificates,
+  globe,
+  contact,
+  ui,
+  projectsSection,
+};
+
+export type Conteudo = typeof conteudo;
