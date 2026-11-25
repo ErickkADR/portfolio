@@ -107,6 +107,23 @@ export default function ProjetoView({ slug }: { slug: string }) {
           </figure>
         </div>
 
+        {/* ---------- vídeo de demonstração (quando o projeto tem) ---------- */}
+        {project.video && (
+          <div className="shell mt-8">
+            <figure className="relative mx-auto max-w-[80rem] overflow-hidden rounded-2xl border border-bone/12 bg-ink-2">
+              <video
+                src={asset(project.video)}
+                poster={asset(project.cover.src)}
+                controls
+                muted
+                playsInline
+                preload="metadata"
+                className="w-full"
+              />
+            </figure>
+          </div>
+        )}
+
         {/* ---------- descrição completa ---------- */}
         <section className="shell shell-narrow py-24 sm:py-32">
           <h2 className="mono-label text-center text-plasma">

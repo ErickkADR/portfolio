@@ -722,6 +722,9 @@ export type Project = {
   /* Quatro telas reais. Quatro é o número: preenche a grade 2×2 sem
      sobrar buraco. */
   gallery: ProjectImage[];
+  /* Vídeo de demonstração (opcional), em public/projetos/<slug>/. Aparece
+     logo abaixo da capa, com a capa como pôster. */
+  video?: string;
 };
 
 /* ⚠️ As imagens em public/projetos/ são capturas reais, feitas em
@@ -1091,6 +1094,86 @@ export const projects: Project[] = [
         src: "/projetos/apenas-um-escritor/shot-4.webp",
         alt: "Encerramento do texto, na última camada da página",
       },
+    ],
+  },
+  {
+    slug: "copos-laser",
+    index: "07",
+    title: "Gravura · Copos Laser",
+    category: "Visualizador 3D de gravação a laser",
+    year: "2026",
+    description:
+      "Copo térmico em 3D com a gravação a fibra laser simulada no navegador: a arte vira máscara de inox escovado sobre pintura fosca, dá a volta de 360° e sai como PNG pronto para o laser.",
+    href: "https://copos-laser.vercel.app",
+    repo: "https://github.com/ErickkADR/copos-laser",
+    tags: ["Three.js", "model-viewer", "Fibra laser"],
+    tint: "#9ca3af",
+    cover: {
+      src: "/projetos/copos-laser/cover.webp",
+      alt: "Copo térmico preto em 3D com uma arte gravada a laser, ao lado da grade de artes",
+    },
+    video: "/projetos/copos-laser/demo.mp4",
+    overview: [
+      "Quem compra um copo gravado a laser quer ver o resultado antes de a máquina ligar. A gravação a fibra tira a tinta e deixa o inox aparecer, e isso é difícil de imaginar olhando só para a arte em preto e branco.",
+      "O site resolve isso em 3D: a arte vira uma máscara que decide, ponto a ponto, onde fica a pintura fosca e onde aparece o aço escovado, com brilho e rugosidade diferentes. A gravação dá a volta inteira no copo, e dá para girar com o dedo ou o mouse.",
+      "O visitante também pode mandar a própria arte, escrever um texto e baixar o arquivo do laser em PNG a 400 dpi, já na medida real do copo.",
+    ],
+    highlights: [
+      { title: "Inox e tinta de verdade", body: "Três mapas gerados num canvas (cor, metal e rugosidade, relevo) fazem o laser parecer laser, sem foto pronta." },
+      { title: "Volta de 360°", body: "A arte é medida em milímetros na volta real do copo e gira junto com o modelo." },
+      { title: "Arquivo pronto para a máquina", body: "O download sai em preto e branco, a 400 dpi e no tamanho físico da área gravada." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, 3D e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/copos-laser/shot-1.webp", alt: "Troca de arte: a nova gravação aparece no copo 3D" },
+      { src: "/projetos/copos-laser/shot-2.webp", alt: "O segundo modelo, o copo quencher, com a mesma arte" },
+      { src: "/projetos/copos-laser/shot-3.webp", alt: "Estúdio com a arte enviada pelo visitante e o texto gravado" },
+      { src: "/projetos/copos-laser/shot-4.webp", alt: "Copo girando com a arte nova, antes do download para o laser" },
+    ],
+  },
+  {
+    slug: "latinhas-3d",
+    index: "08",
+    title: "Latinha 3D",
+    category: "Visualizador 3D de rótulos de lata",
+    year: "2026",
+    description:
+      "Lata de alumínio em 3D com rótulos panorâmicos que dão a volta inteira, gotas de condensação e um estúdio para aplicar o próprio rótulo e baixar o arquivo de impressão.",
+    href: "https://latinhas-3d.vercel.app",
+    repo: "https://github.com/ErickkADR/latinhas-3d",
+    tags: ["Three.js", "Canvas", "Rótulos"],
+    tint: "#f97316",
+    cover: {
+      src: "/projetos/latinhas-3d/cover.webp",
+      alt: "Lata 3D com um rótulo ilustrado e a grade de temas ao lado",
+    },
+    video: "/projetos/latinhas-3d/demo.mp4",
+    overview: [
+      "Um rótulo de lata é uma imagem panorâmica: ele só faz sentido quando dá a volta. Ver o arquivo plano não mostra onde a arte quebra, onde o texto some na curva nem como a lata fica na prateleira.",
+      "A Latinha 3D monta a lata na hora, com o rótulo gerado num canvas, metal nas bordas e gotas de condensação por cima. Cada tema é um rótulo de volta inteira, e a lata gira para mostrar o lado de trás.",
+      "No estúdio, quem visita aplica o próprio rótulo, ajusta na lata e baixa o PNG da volta inteira para imprimir.",
+    ],
+    highlights: [
+      { title: "Rótulo de volta inteira", body: "Cada tema é um panorama 2:1 aplicado em 360°, como o rótulo de verdade." },
+      { title: "Acabamento de lata gelada", body: "Alumínio nas bordas e gotas de condensação deixam a lata com cara de produto." },
+      { title: "Do 3D para a gráfica", body: "O estúdio devolve o rótulo em PNG na medida da lata, pronto para imprimir." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, 3D e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Vite · JavaScript · model-viewer" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/latinhas-3d/shot-1.webp", alt: "Troca de tema: o rótulo novo aparece na lata 3D" },
+      { src: "/projetos/latinhas-3d/shot-2.webp", alt: "Outro tema, com a lata girada" },
+      { src: "/projetos/latinhas-3d/shot-3.webp", alt: "Estúdio com o rótulo enviado pelo visitante" },
+      { src: "/projetos/latinhas-3d/shot-4.webp", alt: "A lata com o rótulo novo, antes do download para impressão" },
     ],
   },
 ];

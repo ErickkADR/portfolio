@@ -559,6 +559,50 @@ export const conteudoEn: Profundo<Conteudo> = {
         { label: "Status", value: "Finished, live" },
       ],
     },
+    {
+      category: "3D laser engraving viewer",
+      description:
+        "A 3D thermal tumbler with fiber laser engraving simulated in the browser: the artwork becomes a " +
+        "brushed-steel mask over matte paint, wraps 360° around the cup and exports a laser-ready PNG.",
+      overview: [
+        "Anyone buying a laser-engraved tumbler wants to see the result before the machine starts. Fiber engraving removes the paint and reveals the steel, and that is hard to picture from black-and-white artwork alone.",
+        "The site solves it in 3D: the artwork becomes a mask that decides, point by point, where the matte paint stays and where brushed steel shows, each with its own shine and roughness. The engraving wraps all the way around the cup, which you can spin with a finger or the mouse.",
+        "Visitors can also upload their own artwork, add a line of text and download the laser file as a 400 dpi PNG, already at the cup's real size.",
+      ],
+      highlights: [
+        { title: "Real steel and paint", body: "Three canvas-generated maps (color, metal/roughness, relief) make the engraving read as laser, with no stock photo." },
+        { title: "Full 360° wrap", body: "The artwork is measured in millimetres around the real cup and spins with the model." },
+        { title: "Machine-ready file", body: "The download comes out black and white, at 400 dpi and at the physical size of the engraved area." },
+      ],
+      facts: [
+        { label: "Role", value: "Product, 3D and build" },
+        { label: "Context", value: "Personal project" },
+        { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
+        { label: "Status", value: "Live" },
+      ],
+    },
+    {
+      category: "3D can label viewer",
+      description:
+        "A 3D aluminium can with panoramic labels that wrap all the way around, condensation drops and a " +
+        "studio to apply your own label and download the print file.",
+      overview: [
+        "A can label is a panoramic image: it only makes sense once it wraps. The flat file does not show where the artwork breaks, where text disappears into the curve or how the can looks on a shelf.",
+        "Latinha 3D builds the can on the fly, with the label generated in a canvas, metal rims and condensation drops on top. Each theme is a full-wrap label, and the can spins to show the back.",
+        "In the studio, visitors apply their own label, adjust it on the can and download the full-wrap PNG for printing.",
+      ],
+      highlights: [
+        { title: "Full-wrap labels", body: "Each theme is a 2:1 panorama applied over 360°, like the real label." },
+        { title: "Cold-can finish", body: "Aluminium rims and condensation drops make it look like a product." },
+        { title: "From 3D to print", body: "The studio returns the label as a PNG at the can's size, ready to print." },
+      ],
+      facts: [
+        { label: "Role", value: "Product, 3D and build" },
+        { label: "Context", value: "Personal project" },
+        { label: "Stack", value: "Vite · JavaScript · model-viewer" },
+        { label: "Status", value: "Live" },
+      ],
+    },
   ],
 
   stack: {
