@@ -250,6 +250,17 @@ const feitosGrupos: FeitoGrupo[] = [
           "exato sem depender de foto de tela tremida.",
         tags: ["Protótipo", "Treinamento"],
       },
+      {
+        slug: "bannerjet-academy",
+        title: "Bannerjet Academy",
+        body:
+          "A plataforma de cursos da Bannerjet: módulos em vídeo por linha de " +
+          "equipamento, prova no fim de cada módulo e certificado no fim do curso. " +
+          "As perguntas das provas saíram da base de conhecimento da Jet IA e " +
+          "passaram por revisão humana antes de ir ao ar. O mesmo conhecimento que " +
+          "responde cliente no WhatsApp agora treina gente.",
+        tags: ["Cursos", "Provas", "Certificado", "Supabase"],
+      },
     ],
   },
   {
@@ -344,6 +355,36 @@ const feitosGrupos: FeitoGrupo[] = [
           "manutenção e mantém o status em sincronia com o Kanban do Notion do " +
           "laboratório técnico.",
         tags: ["Google Drive", "Notion", "n8n"],
+      },
+      {
+        slug: "assistencia-tecnica",
+        title: "Etapas da assistência técnica no WhatsApp",
+        body:
+          "Cada vez que o equipamento muda de etapa no laboratório, o cliente " +
+          "recebe o aviso no WhatsApp e acompanha a ordem de serviço pelo app da " +
+          "Bannerjet, da chegada à entrega. Ninguém precisa ligar para perguntar " +
+          "como está a máquina.",
+        tags: ["WhatsApp", "Callbell", "ERP"],
+      },
+      {
+        slug: "bots-callbell",
+        title: "Fluxos de atendimento na Callbell",
+        body:
+          "O fluxograma virou atendimento de verdade: 15 fluxos na Callbell, um " +
+          "por linha de equipamento, com triagem, cadastro, instalação passo a " +
+          "passo e transferência para o técnico certo. São mais de 3 mil blocos " +
+          "rodando antes de qualquer pessoa precisar entrar na conversa.",
+        tags: ["Callbell", "Bot", "Processo"],
+      },
+      {
+        slug: "ia-aprende-tecnicos",
+        title: "IA que aprende com os técnicos",
+        body:
+          "Lê os laudos dos atendimentos feitos pelos técnicos, transforma cada um " +
+          "em um caso resolvido e, depois da minha revisão, coloca na base da Jet " +
+          "IA. Já são 123 casos de 50 equipamentos que a IA não sabia responder e " +
+          "agora responde.",
+        tags: ["IA", "Supabase", "ERP"],
       },
     ],
   },

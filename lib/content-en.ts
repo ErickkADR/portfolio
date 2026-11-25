@@ -115,7 +115,7 @@ export const conteudoEn: Profundo<Conteudo> = {
   },
   /* ---------- Cargo atual / feitos ----------
      A ordem dos grupos e dos itens é a MESMA do content.ts (Produtos com
-     5, Automações com 9, Conteúdo técnico com 4). As `tags` ficaram em
+     6, Automações com 12, Conteúdo técnico com 4). As `tags` ficaram em
      português de propósito: a maioria já é nome próprio ou sigla e o
      custo de traduzir não se pagava. */
   feitos: {
@@ -176,6 +176,15 @@ export const conteudoEn: Profundo<Conteudo> = {
               "Navigable replicas of the machine interfaces. The technician practises " +
               "the menu path before touching the equipment, and the customer sees the " +
               "exact step without depending on a shaky photo of a screen.",
+          },
+          {
+            title: "Bannerjet Academy",
+            body:
+              "Bannerjet's course platform: video modules for each equipment line, " +
+              "a test at the end of every module and a certificate at the end of the " +
+              "course. The test questions came from Jet IA's knowledge base and were " +
+              "reviewed by a person before going live. The same knowledge that " +
+              "answers customers on WhatsApp now trains people.",
           },
         ],
       },
@@ -252,6 +261,30 @@ export const conteudoEn: Profundo<Conteudo> = {
               "It creates the Google Drive folder for each piece of equipment that " +
               "comes in for maintenance and keeps the status in sync with the " +
               "technical lab's Notion Kanban.",
+          },
+          {
+            title: "Repair stages on WhatsApp",
+            body:
+              "Every time a machine moves to a new stage in the lab, the customer " +
+              "gets a WhatsApp message and follows the service order in the " +
+              "Bannerjet app, from arrival to delivery. Nobody has to call to ask " +
+              "how the machine is doing.",
+          },
+          {
+            title: "Callbell service flows",
+            body:
+              "The flowchart became real service: 15 flows in Callbell, one per " +
+              "equipment line, with triage, registration, step-by-step installation " +
+              "and hand-off to the right technician. Over 3,000 blocks running before " +
+              "anyone needs to join the conversation.",
+          },
+          {
+            title: "AI that learns from the technicians",
+            body:
+              "It reads the reports of the calls handled by the technicians, turns " +
+              "each one into a solved case and, after my review, adds it to Jet IA's " +
+              "knowledge base. That's already 123 cases across 50 machines the AI " +
+              "couldn't answer before and now can.",
           },
         ],
       },
