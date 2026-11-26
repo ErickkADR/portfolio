@@ -1516,7 +1516,7 @@ export const background = {
          public/formacao/curso-tecnico.png já coloca no ar. */
       logo: "curso-tecnico",
       title: "Curso técnico de Informática",
-      meta: "Bolsa por nota · certificado de tecnólogo",
+      meta: "EMEFM Prof. Derville Allegretti · bolsa por nota",
       body:
         "Infraestrutura de redes, hardware e programação, também com bolsa " +
         "conquistada pela nota. O desempenho acima da média virou convite do " +
@@ -1565,7 +1565,7 @@ const careerEntries: CareerEntry[] = [
     slug: "curso-tecnico-informatica",
     period: "2021 — 2023",
     role: "Curso técnico de Informática",
-    org: "Formação técnica",
+    org: "EMEFM Prof. Derville Allegretti",
     body:
       "Redes, hardware e programação, com certificado de tecnólogo. O desempenho rendeu um convite do próprio professor para produzir as aulas junto com ele.",
     tags: ["Redes", "Hardware", "Programação"],

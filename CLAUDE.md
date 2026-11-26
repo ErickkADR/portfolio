@@ -163,7 +163,7 @@ nunca aplicam e o componente sai claro.
   altura do card cai em janela baixa (`max-height: 820px`) para a seção caber presa na tela.
 - **Formação: cartão QUADRADO BRANCO com a logo e, embaixo, período, título e texto** (pedido dele,
   26/11/2026; o baralho CardSwap saiu, o componente continua no repo sem uso). Logo em
-  `public/formacao/<logo>.png`. O curso técnico ainda não tem logo (falta saber a escola): largar
+  `public/formacao/<logo>.png`. O curso técnico foi na EMEFM Prof. Derville Allegretti (escola municipal, Santana); a logo ainda não veio: largar
   `curso-tecnico.png` resolve.
 - **Projetos: Arise e Print Your Toy entraram** (26/11/2026). Telas do Arise tiradas com o login desviado
   só no dev (permissão dele) e o `proxy.ts` revertido; sem Início/Notas (finanças e notas pessoais).

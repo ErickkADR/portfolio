@@ -801,7 +801,7 @@ export const conteudoEn: Profundo<Conteudo> = {
       },
       {
         title: "Technical course in Information Technology",
-        meta: "Scholarship on grades · technologist certificate",
+        meta: "EMEFM Prof. Derville Allegretti · scholarship on grades",
         body:
           "Network infrastructure, hardware and programming, also on a scholarship " +
           "earned on grades. Performing above average turned into an invitation from " +
@@ -869,7 +869,7 @@ export const conteudoEn: Profundo<Conteudo> = {
       {
         period: "2021 — 2023",
         role: "Technical course in Information Technology",
-        org: "Technical education",
+        org: "EMEFM Prof. Derville Allegretti",
         body:
           "Networks, hardware and programming, with a technologist certificate. My " +
           "performance earned an invitation from the teacher himself to produce the " +
