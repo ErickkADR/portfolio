@@ -20,10 +20,14 @@ export default function Metricas() {
       const counters = gsap.utils.toArray<HTMLElement>("[data-count]");
       const tweens = counters.map((el) => {
         const raw = el.dataset.count ?? "";
-        const match = raw.match(/^(\d+)(.*)$/);
+        /* Aceita o ponto de milhar ("19.188"): conta até o inteiro e
+           devolve com o ponto no lugar. */
+        const match = raw.match(/^([\d.]+)(.*)$/);
         if (!match) return null;
         const [, digits, suffix] = match;
-        const end = parseInt(digits, 10);
+        const end = parseInt(digits.replace(/\./g, ""), 10);
+        const fmt = (n: number) =>
+          digits.includes(".") ? n.toLocaleString("pt-BR") : String(n);
         const obj = { v: 0 };
 
         return gsap.to(obj, {
@@ -32,7 +36,7 @@ export default function Metricas() {
           ease: "power2.out",
           scrollTrigger: { trigger: el, start: "top 88%", once: true },
           onUpdate: () => {
-            el.textContent = `${Math.round(obj.v)}${suffix}`;
+            el.textContent = `${fmt(Math.round(obj.v))}${suffix}`;
           },
         });
       });
@@ -48,7 +52,7 @@ export default function Metricas() {
       id="metricas"
       className="border-t border-bone/10 py-32 sm:py-44"
     >
-      <div className="shell shell-narrow">
+      <div className="shell">
         <div className="section-head">
           <span className="mono-label">{metricas.label}</span>
 
@@ -74,7 +78,7 @@ export default function Metricas() {
             com o mesmo peso na grade. É o que mantém no ar um resultado
             real que ainda não foi medido, sem inventar cifra nem abrir um
             buraco na composição. */}
-        <dl className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2">
+        <dl className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2 lg:grid-cols-3">
           {metricas.items.map((item) => (
             <div
               key={item.label}

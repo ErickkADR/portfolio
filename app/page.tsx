@@ -9,7 +9,6 @@ import Stack from "@/components/Stack";
 import Recomendacoes from "@/components/Recomendacoes";
 import Certificates from "@/components/Certificates";
 import Formacao from "@/components/Formacao";
-import Metas from "@/components/Metas";
 import Marquee from "@/components/Marquee";
 import MobileDock from "@/components/MobileDock";
 import Contact from "@/components/Contact";
@@ -32,10 +31,17 @@ export default function Home() {
   const fotoHero = imagemAvulsa("hero", hero.photoName);
   const fotoHeroIA = imagemAvulsa("hero", hero.photoIAName);
   const midiaFeitos = mediaPorSlug("feitos");
+  const capasFeitos = arquivoPorSlug("feitos-capas");
   const imagensCertificados = arquivoPorSlug("certificados");
   /* As logos da parede de ferramentas. Mesma ideia das outras varreduras:
      largar `public/stack/<slug>.png` já coloca a logo no ar. */
   const logosStack = arquivoPorSlug("stack");
+  const logosFormacao = arquivoPorSlug("formacao");
+  const capasCarreira = arquivoPorSlug("carreira-capas");
+  /* Fotos do Sobre, em ordem de nome (01-, 02-, 03-). */
+  const fotosSobre = Object.entries(arquivoPorSlug("sobre"))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, src]) => src);
 
   return (
     <>
@@ -46,10 +52,10 @@ export default function Home() {
         {/* O Sobre não recebe mais prop de mídia: o fundo dele é o vídeo,
             que é um caminho fixo em content.ts e não uma varredura de
             pasta. */}
-        <Sobre />
-        <Feitos media={midiaFeitos} />
+        <Sobre fotos={fotosSobre} />
+        <Feitos media={midiaFeitos} capas={capasFeitos} />
         <Metricas />
-        <Career />
+        <Career capas={capasCarreira} />
         <Projects />
         {/* A recomendação vem logo depois dos projetos: é a validação de
             terceiro para o que a pessoa acabou de ver. Some sozinha
@@ -57,8 +63,7 @@ export default function Home() {
         <Recomendacoes />
         <Stack logos={logosStack} />
         <Certificates images={imagensCertificados} />
-        <Formacao />
-        <Metas />
+        <Formacao logos={logosFormacao} />
         {/* A faixa de termos fecha a página. Ela estava no meio, entre o
             "sobre" e os projetos, cortando a leitura no ponto em que ela
             estava engrenando — aqui ela é o respiro antes do contato. */}

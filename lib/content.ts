@@ -24,7 +24,6 @@ export const nav = [
   { label: "Projetos", href: "#projetos" },
   { label: "Stack", href: "#stack" },
   { label: "Certificados", href: "#certificados" },
-  { label: "Metas", href: "#metas" },
   { label: "Contato", href: "#contato" },
 ];
 
@@ -50,22 +49,9 @@ export const hero = {
     "tailwind",
     "git",
   ],
-  /* DESCRIÇÃO DO HERO, recortada da seção Sobre.
-
-     Substituiu as três legendas que se alternavam a cada 4s. Duas razões:
-     a rotação obrigava a pessoa a ESPERAR para ler o resto, e o bloco
-     ocupava uma linha só — o hero ficava vazio embaixo do nome. Um
-     parágrafo fixo preenche a coluna e diz de uma vez o que ele faz.
-
-     É recorte, não texto novo: as duas frases saem quase literais do
-     quinto e do sexto parágrafo do Sobre. Se um dia mudar lá, vale
-     conferir aqui. */
-  description:
-    "Atuo na interseção entre tecnologia, inteligência artificial, automação e " +
-    "design, transformando problemas complexos em soluções práticas. Grande parte " +
-    "do meu trabalho está por trás de soluções que conectam IA, suporte técnico, " +
-    "documentação e treinamento, desde automações e chatbots no WhatsApp até " +
-    "plataformas usadas diariamente por equipes.",
+  /* Sem descrição desde 26/11/2026: o parágrafo desceu para abrir o
+     "Quem sou eu?", a pedido dele. O hero ficou só com nome, cargo e as
+     logos. Para voltar, crie `description` aqui e no content-en. */
 
   /* ---------- A FOTO DE FUNDO E A REVELAÇÃO NO HOVER ----------
 
@@ -116,8 +102,7 @@ export const hero = {
    A frente do crachá sai de `scripts/gera-cracha.mjs`. */
 export const sobre = {
   label: "Sobre",
-  /* O crachá é arrastável e a página não anuncia isso sozinha. */
-  crachaHint: "Arraste o crachá",
+  photoAlt: "Erick Dantas",
   /* Título em primeira pessoa e como pergunta: a seção é a resposta.
      "Eu construo com IA" dizia o que ele faz, e isso já é o assunto do
      resto do site — aqui o que interessa é quem ele é. */
@@ -125,32 +110,27 @@ export const sobre = {
   /* O relato inteiro, na voz dele. São sete parágrafos e não dois: a
      seção deixou de dividir espaço com a foto (que subiu para o hero) e
      agora tem a coluna toda para contar a trajetória de fato. */
+  /* REESCRITO EM 26/11/2026, a pedido dele: menor, profissional, sem
+     a história de origem (4 anos, escola, APDADOS: isso está na
+     Carreira). Abre com o parágrafo que era a descrição do hero e segue
+     com o que ele entrega hoje e o que o diferencia: ciclo inteiro, do
+     problema na operação ao resultado medido, com IA como ferramenta de
+     engenharia, e não como enfeite. */
   body: [
-    "Sempre fui movido pela curiosidade de entender como as coisas funcionam. " +
-      "Meu primeiro contato com tecnologia aconteceu aos 4 anos e, desde então, " +
-      "aprender, testar e criar se tornou parte natural de quem eu sou.",
-    "Na escola, auxiliava o meu professor do curso técnico a dar as aulas, " +
-      "preparava aulas e atendia os alunos individualmente.",
-    "Graças a isso, entrei na APDADOS e me tornei coordenador do comitê " +
-      "StarTech, gerenciando reuniões, materiais e pesquisas sobre segurança da " +
-      "informação, além de outros projetos.",
-    "Em seguida, entrei na Bannerjet, onde atuei como técnico IGP e depois me " +
-      "tornei programador, porque percebi que muitos problemas poderiam ser " +
-      "resolvidos não apenas com conhecimento técnico, mas também criando " +
-      "ferramentas para tornar processos mais simples, rápidos e inteligentes. " +
-      "Foi assim que comecei a desenvolver minhas primeiras soluções utilizando " +
-      "IA, inicialmente para resolver necessidades reais do meu próprio time e, " +
-      "com o tempo, transformando essas iniciativas em parte do meu trabalho.",
-    "Hoje, atuo na interseção entre tecnologia, inteligência artificial, " +
-      "automação e design, buscando transformar problemas complexos em soluções " +
-      "práticas. Utilizo ferramentas como Claude Code, Codex, Antigravity e " +
-      "Cursor diariamente, não apenas para programar, mas para pensar, " +
-      "prototipar, testar e construir sistemas completos.",
-    "Grande parte do meu trabalho está por trás de soluções que conectam IA, " +
-      "suporte técnico, documentação e treinamento, desde automações e chatbots " +
-      "no WhatsApp até plataformas utilizadas diariamente por equipes.",
-    "Mais do que acompanhar a tecnologia, gosto de descobrir o que é possível " +
-      "construir com ela.",
+    "Atuo na interseção entre tecnologia, inteligência artificial, automação e " +
+      "design, transformando problemas complexos em soluções práticas. Grande " +
+      "parte do meu trabalho está por trás de soluções que conectam IA, suporte " +
+      "técnico, documentação e treinamento, desde automações e chatbots no " +
+      "WhatsApp até plataformas usadas diariamente por equipes.",
+    "Na Bannerjet Group, desenho e coloco em produção os sistemas que sustentam " +
+      "o suporte técnico da empresa: o chatbot com RAG que atende clientes no " +
+      "WhatsApp, o portal que reúne todo o conhecimento técnico, os painéis do " +
+      "ERP e as automações em n8n que rodam sozinhas todos os dias.",
+    "O que eu entrego é o ciclo inteiro: entender o problema na operação, " +
+      "mapear o processo, construir a solução, integrar com o que a empresa já " +
+      "usa e medir o resultado. Uso IA como ferramenta de engenharia, com Claude " +
+      "Code, Codex e Cursor no dia a dia, para colocar sistemas completos no ar " +
+      "em semanas, não em meses.",
   ],
   /* Ficha rápida ao pé da coluna de texto. */
   facts: [
@@ -482,37 +462,61 @@ export const metricas: {
   label: "Resultados",
   title: "O retorno que a Bannerjet teve com o meu trabalho",
   intro:
-    "Não é portfólio de protótipo: cada número abaixo veio de algo que está em " +
-    "produção e que a equipe usa todo dia.",
+    "Não é portfólio de protótipo: cada número abaixo saiu do banco de dados " +
+    "de sistemas que estão em produção e que a equipe usa todo dia.",
+  /* ATUALIZADO EM 26/11/2026 com o banco da Central Técnica + ERP Módulo
+     Técnico (Supabase phovbcapjwxgolomxjih) e o da Jet IA
+     (xfajhckpdzwoarijyywk). Cada `source` diz a tabela. Para reconferir:
+       select count(*), count(distinct usuario) from atividade_usuarios;
+       select origem, count(*) from jetia_interacoes group by 1;
+       select count(*) from documents;            -- banco da Jet IA
+       select count(*) from garantias_bjcontrol;
+       select count(*) from erp_produtos;
+       select count(*) from laudos_gerados;
+     Os antigos 50% / 65% / 200+ eram estimativa dele; saíram para dar
+     lugar ao que dá para provar com uma consulta. */
   items: [
     {
-      value: "50%",
-      label: "do suporte remoto atendido por inteligência artificial ou bot",
+      value: "19.188",
+      label: "acessos ao ERP e à Central Técnica em 6 semanas, por 36 pessoas",
       outcome:
-        "Metade do primeiro atendimento deixou de ocupar um técnico, e a equipe passou a receber só o que realmente precisa de gente.",
-      source: "Jet IA · Bannerjet",
+        "Os sistemas que eu construí viraram a ferramenta de trabalho da equipe: abrem todo dia, várias vezes por dia, por técnicos, comercial e gestão.",
+      source: "ERP Módulo Técnico · log de atividade",
     },
     {
-      value: "65%",
-      label: "de redução no tempo de atendimento",
+      value: "4.889",
+      label: "perguntas respondidas pela Jet IA, para 1.181 pessoas diferentes",
       outcome:
-        "O mesmo time fecha mais chamado em menos tempo, com o fluxo mapeado, a triagem automática e o material publicado.",
-      source: "Suporte técnico · Bannerjet",
+        "Clientes no WhatsApp e colaboradores dentro do ERP recebem resposta técnica na hora, sem esperar um técnico ficar livre.",
+      source: "Jet IA · WhatsApp + ERP",
     },
     {
-      value: "200+",
-      label: "materiais técnicos finalizados, entre vídeos e manuais",
+      value: "3.169",
+      label: "garantias migradas do sistema antigo para o ERP",
       outcome:
-        "O que antes era explicado de novo a cada chamado virou material próprio: o suporte responde com um link e o cliente resolve sozinho.",
-      source: "Conteúdo técnico · Bannerjet",
+        "O histórico de garantia de cada equipamento saiu de um sistema legado e passou a estar a um clique de quem atende o cliente.",
+      source: "ERP Módulo Técnico · garantias",
     },
     {
-      value: "628",
-      label:
-        "blocos de conhecimento sobre a empresa que a IA consulta, cobrindo 36 equipamentos",
+      value: "2.409",
+      label: "blocos de conhecimento técnico que a IA consulta antes de responder",
       outcome:
-        "A resposta que chega ao colaborador é técnica, validada e da própria casa, em vez do que o modelo acharia por conta própria.",
+        "A resposta é da própria empresa, validada e com fonte, e não o que o modelo acharia por conta própria. Cresce a cada laudo e a cada manual novo.",
       source: "Supabase · base da Jet IA",
+    },
+    {
+      value: "1.545",
+      label: "produtos no catálogo do ERP, com fotos padronizadas por IA",
+      outcome:
+        "Catálogo inteiro com o mesmo padrão de foto profissional, tratado em lote, sem estúdio e sem semanas de edição manual.",
+      source: "ERP Módulo Técnico · catálogo",
+    },
+    {
+      value: "147",
+      label: "laudos técnicos gerados automaticamente a partir do atendimento",
+      outcome:
+        "O registro de cada atendimento deixou de depender de alguém lembrar de escrever, e cada laudo ainda ensina a IA um caso novo.",
+      source: "ERP Módulo Técnico · laudos",
     },
   ],
 };
@@ -733,72 +737,88 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "central-tecnica",
+    slug: "copos-laser",
     index: "01",
-    title: "Central Técnica",
-    /* As categorias são escritas como o termo que alguém digitaria numa
-       busca — "plataforma de treinamento técnico", e não "portal
-       interno". O nome da marca já está no título; a categoria serve
-       para dizer que tipo de produto é. */
-    category: "Plataforma de treinamento técnico",
+    title: "Gravura · Copos Laser",
+    category: "Visualizador 3D de gravação a laser",
     year: "2026",
     description:
-      "Hub técnico que reúne catálogo de equipamentos, manuais, peças, firmwares e cursos com progressão por módulos, mais um chatbot de IA que responde dúvidas técnicas direto no site.",
-    href: "https://erickkadr.github.io/Central-Tecnica-Bannerjet/",
-    repo: "https://github.com/ErickkADR/Central-Tecnica-Bannerjet",
-    tags: ["HTML", "Chatbot IA", "Área restrita"],
-    tint: "#a855f7",
+      "Copo térmico em 3D com a gravação a fibra laser simulada no navegador: a arte vira máscara de inox escovado sobre pintura fosca, dá a volta de 360° e sai como PNG pronto para o laser.",
+    href: "https://copos-laser.vercel.app",
+    repo: "https://github.com/ErickkADR/copos-laser",
+    tags: ["Three.js", "model-viewer", "Fibra laser"],
+    tint: "#9ca3af",
     cover: {
-      src: "/projetos/central-tecnica/cover.webp",
-      alt: "Página inicial da Central Técnica, com os atalhos para equipamentos, manuais e parâmetros",
+      src: "/projetos/copos-laser/cover.webp",
+      alt: "Copo térmico preto em 3D com uma arte gravada a laser, ao lado da grade de artes",
     },
+    video: "/projetos/copos-laser/demo.mp4",
     overview: [
-      "A Central Técnica nasceu de uma conta simples: o tempo que o time de suporte gastava procurando um manual antigo, um parâmetro de corte ou a versão certa de um firmware era maior que o tempo de resolver o problema em si. O material existia, espalhado por pastas, e-mails e conversas de WhatsApp.",
-      "O portal reúne tudo num lugar só: catálogo de equipamentos com página própria por máquina, manuais, peças, firmwares, perfis de cor e parâmetros. Cada equipamento tem a sua ficha, e o que antes era \"pergunta pro fulano\" virou link.",
-      "Por cima disso roda um chatbot de IA que responde dúvidas técnicas usando a mesma base do portal. Quem não sabe onde procurar pergunta em português e recebe a resposta com a fonte.",
+      "Quem compra um copo gravado a laser quer ver o resultado antes de a máquina ligar. A gravação a fibra tira a tinta e deixa o inox aparecer, e isso é difícil de imaginar olhando só para a arte em preto e branco.",
+      "O site resolve isso em 3D: a arte vira uma máscara que decide, ponto a ponto, onde fica a pintura fosca e onde aparece o aço escovado, com brilho e rugosidade diferentes. A gravação dá a volta inteira no copo, e dá para girar com o dedo ou o mouse.",
+      "O visitante também pode mandar a própria arte, escrever um texto e baixar o arquivo do laser em PNG a 400 dpi, já na medida real do copo.",
     ],
     highlights: [
-      {
-        title: "Uma página por equipamento",
-        body: "Plotters, laminadoras, impressoras UV, laser e guilhotinas: cada máquina tem ficha, parâmetros e os arquivos que pertencem a ela.",
-      },
-      {
-        title: "Chatbot sobre a base do portal",
-        body: "As respostas saem do mesmo material publicado no site, então documentação e chatbot nunca divergem.",
-      },
-      {
-        title: "Área restrita",
-        body: "O conteúdo é interno da Bannerjet: o acesso passa por login, e o portal público mostra apenas a tela de entrada.",
-      },
+      { title: "Inox e tinta de verdade", body: "Três mapas gerados num canvas (cor, metal e rugosidade, relevo) fazem o laser parecer laser, sem foto pronta." },
+      { title: "Volta de 360°", body: "A arte é medida em milímetros na volta real do copo e gira junto com o modelo." },
+      { title: "Arquivo pronto para a máquina", body: "O download sai em preto e branco, a 400 dpi e no tamanho físico da área gravada." },
     ],
     facts: [
-      { label: "Papel", value: "Projeto, conteúdo e implementação" },
-      { label: "Contexto", value: "Ferramenta interna, em uso no dia a dia" },
-      { label: "Stack", value: "HTML · CSS · JavaScript" },
-      { label: "Estado", value: "No ar, em evolução" },
+      { label: "Papel", value: "Produto, 3D e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
+      { label: "Estado", value: "No ar" },
     ],
     gallery: [
-      {
-        src: "/projetos/central-tecnica/shot-1.webp",
-        alt: "Seção de categorias da Central Técnica, com os grupos de equipamentos",
-      },
-      {
-        src: "/projetos/central-tecnica/shot-2.webp",
-        alt: "Página de manuais técnicos, com os documentos organizados por equipamento",
-      },
-      {
-        src: "/projetos/central-tecnica/shot-3.webp",
-        alt: "Ficha de um equipamento, com especificações e arquivos correspondentes",
-      },
-      {
-        src: "/projetos/central-tecnica/shot-4.webp",
-        alt: "Página de parâmetros, com os valores de corte e impressão por material",
-      },
+      { src: "/projetos/copos-laser/shot-1.webp", alt: "Troca de arte: a nova gravação aparece no copo 3D" },
+      { src: "/projetos/copos-laser/shot-2.webp", alt: "O segundo modelo, o copo quencher, com a mesma arte" },
+      { src: "/projetos/copos-laser/shot-3.webp", alt: "Estúdio com a arte enviada pelo visitante e o texto gravado" },
+      { src: "/projetos/copos-laser/shot-4.webp", alt: "Copo girando com a arte nova, antes do download para o laser" },
+    ],
+  },
+  {
+    slug: "latinhas-3d",
+    index: "02",
+    title: "Latinha 3D",
+    category: "Visualizador 3D de rótulos de lata",
+    year: "2026",
+    description:
+      "Lata de alumínio em 3D com rótulos panorâmicos que dão a volta inteira, gotas de condensação e um estúdio para aplicar o próprio rótulo e baixar o arquivo de impressão.",
+    href: "https://latinhas-3d.vercel.app",
+    repo: "https://github.com/ErickkADR/latinhas-3d",
+    tags: ["Three.js", "Canvas", "Rótulos"],
+    tint: "#f97316",
+    cover: {
+      src: "/projetos/latinhas-3d/cover.webp",
+      alt: "Lata 3D com um rótulo ilustrado e a grade de temas ao lado",
+    },
+    video: "/projetos/latinhas-3d/demo.mp4",
+    overview: [
+      "Um rótulo de lata é uma imagem panorâmica: ele só faz sentido quando dá a volta. Ver o arquivo plano não mostra onde a arte quebra, onde o texto some na curva nem como a lata fica na prateleira.",
+      "A Latinha 3D monta a lata na hora, com o rótulo gerado num canvas, metal nas bordas e gotas de condensação por cima. Cada tema é um rótulo de volta inteira, e a lata gira para mostrar o lado de trás.",
+      "No estúdio, quem visita aplica o próprio rótulo, ajusta na lata e baixa o PNG da volta inteira para imprimir.",
+    ],
+    highlights: [
+      { title: "Rótulo de volta inteira", body: "Cada tema é um panorama 2:1 aplicado em 360°, como o rótulo de verdade." },
+      { title: "Acabamento de lata gelada", body: "Alumínio nas bordas e gotas de condensação deixam a lata com cara de produto." },
+      { title: "Do 3D para a gráfica", body: "O estúdio devolve o rótulo em PNG na medida da lata, pronto para imprimir." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, 3D e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Vite · JavaScript · model-viewer" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/latinhas-3d/shot-1.webp", alt: "Troca de tema: o rótulo novo aparece na lata 3D" },
+      { src: "/projetos/latinhas-3d/shot-2.webp", alt: "Outro tema, com a lata girada" },
+      { src: "/projetos/latinhas-3d/shot-3.webp", alt: "Estúdio com o rótulo enviado pelo visitante" },
+      { src: "/projetos/latinhas-3d/shot-4.webp", alt: "A lata com o rótulo novo, antes do download para impressão" },
     ],
   },
   {
     slug: "atomai",
-    index: "02",
+    index: "03",
     title: "Atomai",
     category: "Plataforma SaaS de chatbot com IA",
     year: "2026",
@@ -858,14 +878,13 @@ export const projects: Project[] = [
   },
   {
     slug: "nexus-print",
-    index: "03",
+    index: "04",
     title: "Nexus Print",
     category: "Marketplace de produtos personalizados",
     year: "2026",
     description:
       "Loja virtual com mais de 130 produtos em 6 categorias, quatro modelos de precificação por produto, carrinho completo e fechamento de pedido direto no WhatsApp.",
-    href: "https://erickkadr.github.io/NexusPrint/",
-    repo: "https://github.com/ErickkADR/NexusPrint",
+    href: "https://nexusprint.vercel.app",
     tags: ["JavaScript", "Carrinho", "Modo escuro"],
     tint: "#d16bff",
     cover: {
@@ -917,68 +936,276 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "campro-a3-pro",
-    index: "04",
-    title: "Campro A3 Pro",
-    category: "Portal de pós-venda e licenciamento",
+    slug: "hortifacil",
+    index: "05",
+    title: "HortiFácil",
+    category: "E-commerce de hortifruti",
     year: "2026",
     description:
-      "Cada equipamento vendido ganha um link permanente pela sua licença, com instalador, manuais e vídeo. Substituiu o envio manual de arquivos a cada venda.",
-    href: "https://erickkadr.github.io/campro-a3-pro/",
-    repo: "https://github.com/ErickkADR/campro-a3-pro",
-    tags: ["React 18", "TypeScript", "Roteamento por licença"],
-    tint: "#8b5cf6",
+      "Loja de hortifruti com catálogo animado em parallax, carrinho, pedidos e um painel de administração para cadastrar e editar produtos.",
+    href: "https://hortifacil.vercel.app",
+    repo: "https://github.com/ErickkADR/hortifacil",
+    tags: ["Next.js", "Supabase", "GSAP"],
+    tint: "#4d9a4a",
     cover: {
-      src: "/projetos/campro-a3-pro/cover.webp",
-      alt: "Portal da Campro A3 Pro Híbrida mostrando a licença 1981 e os acessos a software e manuais",
+      src: "/projetos/hortifacil/cover.webp",
+      alt: "Home do HortiFácil com folhas em camadas e o catálogo de frutas e verduras",
     },
     overview: [
-      "Toda venda de equipamento terminava do mesmo jeito: alguém do suporte juntava instalador, manuais e vídeo e mandava por e-mail ou WhatsApp. Um por um, sempre igual, e sempre sujeito a mandar a versão errada.",
-      "O portal troca esse ritual por um link permanente. A licença do equipamento vira a rota: quem abre o link cai direto na página da própria máquina, com o software, a documentação e o vídeo correspondentes.",
-      "Como o endereço é fixo, ele continua valendo depois da venda: quando o cliente formatar o computador daqui a um ano, o material ainda está lá, atualizado.",
+      "Vender produto fresco online pede uma vitrine que passe frescor e um fluxo de compra curto. Um catálogo genérico em lista não conta nada do que o cliente vai receber.",
+      "O HortiFácil abre com uma home de folhas em camadas que se movem com a rolagem e o mouse, e leva o visitante direto ao catálogo, ao carrinho e ao pedido. Os dados vêm do Supabase, e sem o banco configurado o sistema roda em modo demonstração.",
+      "Do lado do dono da loja, um painel de administração permite criar, editar e remover produtos sem mexer em código.",
     ],
     highlights: [
-      {
-        title: "A licença é a rota",
-        body: "Cada equipamento tem seu endereço, e o conteúdo vem da licença que abriu a página.",
-      },
-      {
-        title: "Um link no lugar do envio manual",
-        body: "Instalador, manuais e vídeo no mesmo lugar, sempre na versão corrente.",
-      },
-      {
-        title: "Vale depois da venda",
-        body: "O link é permanente: serve para a instalação e para toda reinstalação que vier depois.",
-      },
+      { title: "Vitrine com profundidade", body: "Três camadas de folhas reagem à rolagem e ao mouse e dão personalidade à primeira tela." },
+      { title: "Painel de administração", body: "Cadastro, edição e exclusão de produtos por uma área protegida por login." },
+      { title: "Roda mesmo sem banco", body: "Sem o Supabase configurado, o catálogo usa dados de exemplo e o fluxo de compra é simulado." },
     ],
     facts: [
-      { label: "Papel", value: "Projeto e implementação" },
-      { label: "Contexto", value: "Pós-venda da Bannerjet" },
-      { label: "Stack", value: "React 18 · TypeScript" },
-      { label: "Estado", value: "Concluído, no ar" },
+      { label: "Papel", value: "Produto, design e implementação" },
+      { label: "Contexto", value: "Projeto pessoal, loja fictícia" },
+      { label: "Stack", value: "Next.js · TypeScript · Tailwind · GSAP · Supabase" },
+      { label: "Estado", value: "No ar" },
     ],
     gallery: [
-      {
-        src: "/projetos/campro-a3-pro/shot-1.webp",
-        alt: "Cartões de download do software, manuais e vídeo do equipamento",
-      },
-      {
-        src: "/projetos/campro-a3-pro/shot-2.webp",
-        alt: "Seção de documentação da Campro A3 Pro",
-      },
-      {
-        src: "/projetos/campro-a3-pro/shot-3.webp",
-        alt: "Instruções de instalação no portal da licença",
-      },
-      {
-        src: "/projetos/campro-a3-pro/shot-4.webp",
-        alt: "Rodapé do portal, com o contato do suporte técnico",
-      },
+      { src: "/projetos/hortifacil/shot-1.webp", alt: "Home com as folhas em parallax" },
+      { src: "/projetos/hortifacil/shot-2.webp", alt: "Catálogo de produtos com filtro por categoria" },
+      { src: "/projetos/hortifacil/shot-3.webp", alt: "Carrinho com itens adicionados" },
+      { src: "/projetos/hortifacil/shot-4.webp", alt: "Tela de entrada que dá acesso ao painel de administração" },
+    ],
+  },
+  {
+    slug: "granafy",
+    index: "06",
+    title: "Granafy",
+    category: "Finanças pessoais para a família",
+    year: "2026",
+    description:
+      "Controle financeiro para a família, com contas, parcelamentos, orçamentos por categoria, metas e relatórios anuais, cada pessoa vendo só os próprios dados.",
+    href: "https://granafy.vercel.app",
+    tags: ["Next.js", "Supabase", "Recharts"],
+    tint: "#10b981",
+    cover: {
+      src: "/projetos/granafy/cover.webp",
+      alt: "Dashboard do Granafy com saldo, gráfico dos últimos meses e gastos por categoria",
+    },
+    overview: [
+      "Planilha de gastos funciona até a segunda semana. Para a família usar de verdade, o controle precisa ser rápido de lançar e deixar claro para onde o dinheiro vai.",
+      "O Granafy reúne dashboard, transações com parcelamento e transferência entre contas, contas fixas, orçamentos com alerta, metas com aporte mensal calculado e relatórios do ano. Cada pessoa tem a própria conta, e o banco isola os dados de cada uma.",
+      "O cadastro é limitado aos e-mails liberados, então o app fica restrito à família.",
+    ],
+    highlights: [
+      { title: "Dados isolados por pessoa", body: "Autenticação e regras no banco garantem que cada usuário veja só o que é dele." },
+      { title: "Do lançamento ao relatório", body: "Parcelamento, contas fixas e transferências alimentam o dashboard e o relatório anual." },
+      { title: "Alertas de orçamento", body: "O limite mensal por categoria mostra se está no controle, em atenção ou estourado." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto e implementação" },
+      { label: "Contexto", value: "Projeto pessoal, uso da família" },
+      { label: "Stack", value: "Next.js · TypeScript · Tailwind · Supabase · Recharts" },
+      { label: "Estado", value: "Em uso, acesso restrito" },
+    ],
+    gallery: [
+      { src: "/projetos/granafy/shot-1.webp", alt: "Dashboard com saldo e gráfico dos últimos seis meses" },
+      { src: "/projetos/granafy/shot-2.webp", alt: "Lista de transações com filtros e um lançamento parcelado" },
+      { src: "/projetos/granafy/shot-3.webp", alt: "Orçamentos por categoria com os alertas" },
+      { src: "/projetos/granafy/shot-4.webp", alt: "Relatório anual com receitas e despesas por mês" },
+    ],
+  },
+  {
+    slug: "otaku-mind",
+    index: "07",
+    title: "Otaku Mind",
+    category: "Agentes de IA para produção de vídeos curtos",
+    year: "2026",
+    description:
+      "Time de cinco agentes do Claude Code que leva um tema de anime até o Short pronto: tendência, roteiro, revisão, título e edição em Remotion.",
+    href: "https://www.youtube.com/@OtakuMindBR",
+    tags: ["Claude Code", "Remotion", "Agentes de IA"],
+    tint: "#8b5cf6",
+    cover: {
+      src: "/projetos/otaku-mind/cover.webp",
+      alt: "Canal Otaku Mind com os Shorts de anime produzidos pelo time de agentes",
+    },
+    overview: [
+      "Manter um canal de Shorts exige o mesmo ciclo toda semana: achar o tema, escrever, revisar, nomear e editar. Feito à mão, o gargalo vira a edição.",
+      "O projeto divide o ciclo entre cinco agentes. O trend-scout acha o tema em alta, o script-writer escreve e o script-reviewer revisa, o viral-titles gera título, descrição e tags, e o video-editor monta o vídeo no Remotion. Dois comandos, /generate-short e /edit-short, amarram as etapas.",
+      "A voz continua sendo minha: eu gravo o áudio, e o editor cuida do resto, com um registro dos erros que não podem se repetir.",
+    ],
+    highlights: [
+      { title: "Um agente por etapa", body: "Pesquisa, roteiro, revisão, título e edição ficam separados, cada um com suas regras." },
+      { title: "Edição em código", body: "O vídeo é montado em Remotion a partir do áudio gravado, com render e conferência." },
+      { title: "Memória do que deu errado", body: "Receitas aprovadas e uma lista de erros para nunca repetir guiam cada lote novo." },
+    ],
+    facts: [
+      { label: "Papel", value: "Desenho do fluxo, agentes e edição" },
+      { label: "Contexto", value: "Projeto pessoal, canal no YouTube" },
+      { label: "Stack", value: "Claude Code · Remotion · React · Node" },
+      { label: "Estado", value: "Em produção, evoluindo" },
+    ],
+    gallery: [
+      { src: "/projetos/otaku-mind/shot-1.webp", alt: "Página de Shorts do canal Otaku Mind, com os vídeos produzidos pelos agentes" },
+    ],
+  },
+  {
+    slug: "hardware-showcase",
+    index: "08",
+    title: "Hardware Showcase",
+    category: "Inventário de hardware interativo",
+    year: "2026",
+    description:
+      "Página que apresenta o meu PC com dados lidos da própria máquina, um diagnóstico de upgrade e um teste que diz se um jogo roda nesse hardware.",
+    href: "https://hardware-showcase-delta.vercel.app",
+    repo: "https://github.com/ErickkADR/hardware-showcase",
+    tags: ["React", "TypeScript", "Vite"],
+    tint: "#ef4444",
+    cover: {
+      src: "/projetos/hardware-showcase/cover.webp",
+      alt: "Página do inventário de hardware com os componentes do PC e suas especificações",
+    },
+    overview: [
+      "Lista de especificações copiada de memória costuma errar: o WMI reporta só \"RTX 3050\" e o monitor aparece só com o nome do painel. Quem pergunta se o PC aguenta um jogo merece dado medido, não palpite.",
+      "A página usa dados lidos da máquina por WMI e nvidia-smi e cruza fontes para achar o que um comando sozinho não dá, como o fabricante real da placa de vídeo e o tamanho físico do monitor. Cada componente tem foto, especificações e um diagnóstico do que limita a máquina.",
+      "Na seção \"Este PC roda?\", o visitante digita o nome de um jogo e o site compara os requisitos oficiais da Steam com o hardware medido.",
+    ],
+    highlights: [
+      { title: "Dado medido, não digitado", body: "Um script coleta o inventário da máquina e os valores só entram na página depois de conferidos." },
+      { title: "Diagnóstico de upgrade", body: "Cada componente aponta o que limita o conjunto e onde vale investir." },
+      { title: "Este PC roda?", body: "Um parser lê os requisitos da Steam e compara processador, vídeo, memória e disco com o hardware real." },
+    ],
+    facts: [
+      { label: "Papel", value: "Coleta de dados, produto e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "React · TypeScript · Vite · PowerShell" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/hardware-showcase/shot-1.webp", alt: "Topo da página com o primeiro componente" },
+      { src: "/projetos/hardware-showcase/shot-2.webp", alt: "Card da placa de vídeo com foto e especificações" },
+      { src: "/projetos/hardware-showcase/shot-3.webp", alt: "Diagnóstico de upgrade com o que limita a máquina" },
+      { src: "/projetos/hardware-showcase/shot-4.webp", alt: "Teste Este PC roda? com o resultado de um jogo" },
+    ],
+  },
+  {
+    slug: "meus-jogos-100",
+    index: "09",
+    title: "Meus Jogos 100%",
+    category: "Vitrine de jogos platinados",
+    year: "2026",
+    description:
+      "Vitrine da biblioteca de jogos e outras mídias concluídas, com o visual da Steam, cards dourados para os 100% e filtros por progresso.",
+    href: "https://meus-jogos-100.vercel.app",
+    repo: "https://github.com/ErickkADR/meus-jogos-100",
+    tags: ["React", "TypeScript", "CSS"],
+    tint: "#1a9fff",
+    cover: {
+      src: "/projetos/meus-jogos-100/cover.webp",
+      alt: "Grade de jogos com cards dourados para os platinados, no estilo da Steam",
+    },
+    overview: [
+      "Terminar um jogo com todas as conquistas dá trabalho e quase ninguém vê. Uma lista em planilha não passa a sensação de conquista que o jogo deu.",
+      "A vitrine usa o design system da Steam: paleta, tipografia e a barra azul de conquistas. Os platinados ganham borda e brilho dourado, com o emblema de jogo perfeito refeito em SVG. Tudo é CSS puro, sem biblioteca de animação.",
+      "Dá para filtrar por platinados, em progresso ou todos, buscar pelo nome e navegar pelas outras mídias, como animes, séries, filmes e livros.",
+    ],
+    highlights: [
+      { title: "Cara de Steam", body: "Paleta, tipografia e barra de conquistas fiéis ao design system da plataforma." },
+      { title: "Dourado que significa algo", body: "O brilho dourado marca 100% das conquistas em jogos e item concluído nas outras mídias." },
+      { title: "Leve e acessível", body: "Animações em CSS, sem dependência além do React, e respeito a prefers-reduced-motion." },
+    ],
+    facts: [
+      { label: "Papel", value: "Design e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "React · TypeScript · Vite" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/meus-jogos-100/shot-1.webp", alt: "Aba de jogos filtrada por platinados" },
+      { src: "/projetos/meus-jogos-100/shot-2.webp", alt: "Jogos em progresso com barras de conquistas" },
+      { src: "/projetos/meus-jogos-100/shot-3.webp", alt: "Busca por título na grade" },
+      { src: "/projetos/meus-jogos-100/shot-4.webp", alt: "Outra aba de mídia, com animes concluídos" },
+    ],
+  },
+  {
+    slug: "lummier-studio",
+    index: "10",
+    title: "Lummier Studio",
+    category: "Site para studio de beleza",
+    year: "2026",
+    description:
+      "Site de um studio de beleza com página própria para cada profissional, resultados em destaque e agendamento direto pelo WhatsApp.",
+    href: "https://erickkadr.github.io/flavia-longnails/",
+    repo: "https://github.com/ErickkADR/flavia-longnails",
+    tags: ["React", "TypeScript", "Landing page"],
+    tint: "#d98aa7",
+    cover: {
+      src: "/projetos/lummier-studio/cover.webp",
+      alt: "Home do Lummier Studio com o destaque dos resultados e o botão de agendar",
+    },
+    overview: [
+      "Para um negócio local de beleza, o site precisa vender o serviço pela imagem e tirar o atrito do agendamento. Formulário longo faz o cliente desistir.",
+      "O site mostra os resultados do studio, a equipe com uma página para cada profissional (bio, serviços e preços), avaliações em esteira e o ranking dos serviços mais contratados. O botão de WhatsApp fica fixo na tela, e o cliente marca o horário em um toque.",
+      "Nasceu como portfólio de uma nail designer e evoluiu para representar o studio inteiro.",
+    ],
+    highlights: [
+      { title: "Agendamento sem formulário", body: "O botão fixo de WhatsApp leva direto à conversa, de qualquer ponto da página." },
+      { title: "Uma página por profissional", body: "Cada especialista tem bio, serviços, preços e galeria próprios." },
+      { title: "Prova social em movimento", body: "Avaliações e galerias rolam sozinhas, com pausa quando o visitante passa o mouse." },
+    ],
+    facts: [
+      { label: "Papel", value: "Design, conteúdo e implementação" },
+      { label: "Contexto", value: "Site para cliente, negócio local" },
+      { label: "Stack", value: "React · TypeScript · Vite · CSS" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/lummier-studio/shot-1.webp", alt: "Topo da home com as estatísticas do studio" },
+      { src: "/projetos/lummier-studio/shot-2.webp", alt: "Seção da equipe com um card por profissional" },
+      { src: "/projetos/lummier-studio/shot-3.webp", alt: "Avaliações em esteira e ranking de serviços" },
+      { src: "/projetos/lummier-studio/shot-4.webp", alt: "Página de uma profissional com bio, serviços e preços" },
+    ],
+  },
+  {
+    slug: "achei-montador",
+    index: "11",
+    title: "Achei Montador",
+    category: "Site institucional de serviço de montagem",
+    year: "2026",
+    description:
+      "Site institucional de uma rede de montadores com duas páginas, uma para quem comprou o móvel e outra para lojas, as duas convertendo no WhatsApp.",
+    href: "https://erickkadr.github.io/achei-montador/",
+    repo: "https://github.com/ErickkADR/achei-montador",
+    tags: ["Next.js", "Tailwind", "Motion"],
+    tint: "#f59e0b",
+    cover: {
+      src: "/projetos/achei-montador/cover.webp",
+      alt: "Home do Achei Montador com o banner animado e o botão de WhatsApp",
+    },
+    overview: [
+      "A empresa fala com dois públicos que querem coisas diferentes: o cliente que acabou de comprar um móvel e a loja que quer a rede montando para ela. Uma página só confunde os dois.",
+      "O site separa as conversas. A home é para o consumidor, com banner animado, serviços e passo a passo. A página de parcerias é para o varejo, com o desafio, a solução, a tecnologia e o QR Code na embalagem. Um botão no cabeçalho leva de uma para a outra.",
+      "As duas terminam no mesmo ponto: um contato direto pelo WhatsApp.",
+    ],
+    highlights: [
+      { title: "Dois públicos, duas páginas", body: "Consumidor e varejo recebem mensagens diferentes, sem dividir a mesma tela." },
+      { title: "Conversão no WhatsApp", body: "Todos os chamados levam ao mesmo canal de atendimento." },
+      { title: "Estático e rápido", body: "Next.js exportado como site estático, com todo o texto num único arquivo de conteúdo." },
+    ],
+    facts: [
+      { label: "Papel", value: "Design e implementação" },
+      { label: "Contexto", value: "Site institucional, versão para aprovação" },
+      { label: "Stack", value: "Next.js · React · TypeScript · Tailwind · Motion" },
+      { label: "Estado", value: "No ar, em aprovação" },
+    ],
+    gallery: [
+      { src: "/projetos/achei-montador/shot-1.webp", alt: "Topo da home com o banner animado" },
+      { src: "/projetos/achei-montador/shot-2.webp", alt: "Seção de serviços da página do consumidor" },
+      { src: "/projetos/achei-montador/shot-3.webp", alt: "Topo da página de parcerias para o varejo" },
+      { src: "/projetos/achei-montador/shot-4.webp", alt: "Seção do QR Code na embalagem" },
     ],
   },
   {
     slug: "mugiwaras",
-    index: "05",
+    index: "12",
     title: "Bando dos Mugiwaras",
     category: "Landing page responsiva",
     year: "2026",
@@ -1038,7 +1265,7 @@ export const projects: Project[] = [
   },
   {
     slug: "apenas-um-escritor",
-    index: "06",
+    index: "13",
     title: "Apenas Um Escritor",
     category: "Site com efeito parallax",
     year: "2025",
@@ -1094,86 +1321,6 @@ export const projects: Project[] = [
         src: "/projetos/apenas-um-escritor/shot-4.webp",
         alt: "Encerramento do texto, na última camada da página",
       },
-    ],
-  },
-  {
-    slug: "copos-laser",
-    index: "07",
-    title: "Gravura · Copos Laser",
-    category: "Visualizador 3D de gravação a laser",
-    year: "2026",
-    description:
-      "Copo térmico em 3D com a gravação a fibra laser simulada no navegador: a arte vira máscara de inox escovado sobre pintura fosca, dá a volta de 360° e sai como PNG pronto para o laser.",
-    href: "https://copos-laser.vercel.app",
-    repo: "https://github.com/ErickkADR/copos-laser",
-    tags: ["Three.js", "model-viewer", "Fibra laser"],
-    tint: "#9ca3af",
-    cover: {
-      src: "/projetos/copos-laser/cover.webp",
-      alt: "Copo térmico preto em 3D com uma arte gravada a laser, ao lado da grade de artes",
-    },
-    video: "/projetos/copos-laser/demo.mp4",
-    overview: [
-      "Quem compra um copo gravado a laser quer ver o resultado antes de a máquina ligar. A gravação a fibra tira a tinta e deixa o inox aparecer, e isso é difícil de imaginar olhando só para a arte em preto e branco.",
-      "O site resolve isso em 3D: a arte vira uma máscara que decide, ponto a ponto, onde fica a pintura fosca e onde aparece o aço escovado, com brilho e rugosidade diferentes. A gravação dá a volta inteira no copo, e dá para girar com o dedo ou o mouse.",
-      "O visitante também pode mandar a própria arte, escrever um texto e baixar o arquivo do laser em PNG a 400 dpi, já na medida real do copo.",
-    ],
-    highlights: [
-      { title: "Inox e tinta de verdade", body: "Três mapas gerados num canvas (cor, metal e rugosidade, relevo) fazem o laser parecer laser, sem foto pronta." },
-      { title: "Volta de 360°", body: "A arte é medida em milímetros na volta real do copo e gira junto com o modelo." },
-      { title: "Arquivo pronto para a máquina", body: "O download sai em preto e branco, a 400 dpi e no tamanho físico da área gravada." },
-    ],
-    facts: [
-      { label: "Papel", value: "Produto, 3D e implementação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
-      { label: "Estado", value: "No ar" },
-    ],
-    gallery: [
-      { src: "/projetos/copos-laser/shot-1.webp", alt: "Troca de arte: a nova gravação aparece no copo 3D" },
-      { src: "/projetos/copos-laser/shot-2.webp", alt: "O segundo modelo, o copo quencher, com a mesma arte" },
-      { src: "/projetos/copos-laser/shot-3.webp", alt: "Estúdio com a arte enviada pelo visitante e o texto gravado" },
-      { src: "/projetos/copos-laser/shot-4.webp", alt: "Copo girando com a arte nova, antes do download para o laser" },
-    ],
-  },
-  {
-    slug: "latinhas-3d",
-    index: "08",
-    title: "Latinha 3D",
-    category: "Visualizador 3D de rótulos de lata",
-    year: "2026",
-    description:
-      "Lata de alumínio em 3D com rótulos panorâmicos que dão a volta inteira, gotas de condensação e um estúdio para aplicar o próprio rótulo e baixar o arquivo de impressão.",
-    href: "https://latinhas-3d.vercel.app",
-    repo: "https://github.com/ErickkADR/latinhas-3d",
-    tags: ["Three.js", "Canvas", "Rótulos"],
-    tint: "#f97316",
-    cover: {
-      src: "/projetos/latinhas-3d/cover.webp",
-      alt: "Lata 3D com um rótulo ilustrado e a grade de temas ao lado",
-    },
-    video: "/projetos/latinhas-3d/demo.mp4",
-    overview: [
-      "Um rótulo de lata é uma imagem panorâmica: ele só faz sentido quando dá a volta. Ver o arquivo plano não mostra onde a arte quebra, onde o texto some na curva nem como a lata fica na prateleira.",
-      "A Latinha 3D monta a lata na hora, com o rótulo gerado num canvas, metal nas bordas e gotas de condensação por cima. Cada tema é um rótulo de volta inteira, e a lata gira para mostrar o lado de trás.",
-      "No estúdio, quem visita aplica o próprio rótulo, ajusta na lata e baixa o PNG da volta inteira para imprimir.",
-    ],
-    highlights: [
-      { title: "Rótulo de volta inteira", body: "Cada tema é um panorama 2:1 aplicado em 360°, como o rótulo de verdade." },
-      { title: "Acabamento de lata gelada", body: "Alumínio nas bordas e gotas de condensação deixam a lata com cara de produto." },
-      { title: "Do 3D para a gráfica", body: "O estúdio devolve o rótulo em PNG na medida da lata, pronto para imprimir." },
-    ],
-    facts: [
-      { label: "Papel", value: "Produto, 3D e implementação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "Vite · JavaScript · model-viewer" },
-      { label: "Estado", value: "No ar" },
-    ],
-    gallery: [
-      { src: "/projetos/latinhas-3d/shot-1.webp", alt: "Troca de tema: o rótulo novo aparece na lata 3D" },
-      { src: "/projetos/latinhas-3d/shot-2.webp", alt: "Outro tema, com a lata girada" },
-      { src: "/projetos/latinhas-3d/shot-3.webp", alt: "Estúdio com o rótulo enviado pelo visitante" },
-      { src: "/projetos/latinhas-3d/shot-4.webp", alt: "A lata com o rótulo novo, antes do download para impressão" },
     ],
   },
 ];
@@ -1286,6 +1433,8 @@ export const background = {
     {
       period: "2017 — 2020",
       icon: "escola",
+      /* Logo em public/formacao/<logo>.png. Sem arquivo, cai no ícone. */
+      logo: "colegio-monte-sinai",
       title: "Bolsa de estudo · Colégio Monte Sinai",
       meta: "Metodologia Mackenzie",
       body:
@@ -1296,6 +1445,9 @@ export const background = {
     {
       period: "2021 — 2023",
       icon: "tecnico",
+      /* Sem logo ainda: falta saber a escola do curso técnico. Largar
+         public/formacao/curso-tecnico.png já coloca no ar. */
+      logo: "curso-tecnico",
       title: "Curso técnico de Informática",
       meta: "Bolsa por nota · certificado de tecnólogo",
       body:
@@ -1308,6 +1460,7 @@ export const background = {
     {
       period: "2024 — 2025",
       icon: "graduacao",
+      logo: "unip",
       title: "Análise e Desenvolvimento de Sistemas",
       meta: "Universidade Paulista",
       body: "Bolsa de 100% conquistada pela nota do Enem.",
@@ -1761,36 +1914,34 @@ export const globe = {
 
 export const contact = {
   label: "Contato",
-  titleLines: ["Vamos", "construir"],
-  /* A palavra de acento, que fecha a última linha do título. Estava
-     chumbada no JSX do Contact e veio para cá quando o site ganhou o
-     botão de inglês: era o único texto visível fora do content.ts. */
-  titleAccent: "juntos",
+  /* REFEITO EM 26/11/2026: o "Vamos construir juntos" + a citação do
+     Claude Code saíram. O título agora fala do valor (processo que dá
+     trabalho demais → automação), o status diz se ele está disponível e
+     os canais viraram uma lista grande, um por linha. */
+  titleLines: ["Tem um processo", "que pode ser"],
+  titleAccent: "automatizado?",
   body:
-    "Aberto a projetos, colaborações e conversas sobre IA, automação e front-end. " +
-    "Ainda quero trabalhar fora do Brasil e conhecer novas culturas, enquanto sigo " +
-    "construindo ferramentas que facilitam o trabalho dos outros.",
-  quote: "Me entregue o Claude Code e com minha criatividade moverei o mundo...",
-  /* O e-mail aparece por extenso, como o próprio link. Um botão escrito
-     "enviar e-mail" esconde a informação que a pessoa veio buscar — e
-     quem quer copiar o endereço em vez de abrir o cliente de e-mail
-     ficava sem saída. */
+    "Estou aberto a vagas de desenvolvimento, IA e automação, presenciais em São " +
+    "Paulo, remotas ou fora do Brasil, e a projetos em que IA, automação e produto " +
+    "precisam sair do papel e entrar em produção.",
+  status: "Disponível para novas oportunidades",
   emailHint: "Me escreve",
-  /* Linha de disponibilidade: responde a pergunta que vem antes do
-     "como falo com ele" — se vale a pena falar. */
   availability: [
     { label: "Onde", value: "São Paulo, Brasil" },
-    { label: "Formato", value: "Remoto, híbrido ou exterior" },
+    { label: "Formato", value: "Presencial, remoto ou exterior" },
     { label: "Resposta", value: "Em até 1 dia útil" },
   ],
+  channelsLabel: "Canais",
+  backToTop: "Voltar ao topo",
   socialsLabel: "Nas redes",
   socials: [
-    { label: "GitHub", handle: "@ErickkADR", href: "https://github.com/ErickkADR" },
+    /* LinkedIn primeiro: é o canal de quem chega para contratar. */
     {
       label: "LinkedIn",
       handle: "/in/erickkadr",
       href: "https://www.linkedin.com/in/erickkadr/",
     },
+    { label: "GitHub", handle: "@ErickkADR", href: "https://github.com/ErickkADR" },
     {
       label: "Instagram",
       handle: "@erickk.adr",
@@ -1841,6 +1992,15 @@ export const projectsSection = {
   countLabel: "projetos",
   title: "Conheça os meus principais projetos desenvolvidos",
   carouselLabel: "Projetos",
+  /* Linha sob o título e dica de rolagem da faixa horizontal. */
+  intro:
+    "Projetos pessoais, do 3D no navegador a sistemas completos com banco de " +
+    "dados. O que fiz na Bannerjet está em Feitos na Bannerjet.",
+  scrollHint: "Role para ver todos",
+  cta: "Ver projeto",
+  codeLabel: "Código",
+  moreLabel: "Mais no GitHub",
+  moreBody: "Estudos, exercícios e os primeiros projetos estão todos lá.",
 };
 
 /* ============================================================

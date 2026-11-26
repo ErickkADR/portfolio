@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
+import { asset } from "@/lib/asset";
 
 /* ============================================================
    CARREIRA — linha do tempo central, etapas alternando os lados.
@@ -22,7 +23,15 @@ import RevealText from "./RevealText";
    cima para baixo acompanhando a leitura, e não aparece de uma vez.
    ============================================================ */
 
-export default function Career() {
+type Props = {
+  /* slug → imagem do card, de `public/carreira-capas/<slug>.webp`.
+     PROVISÓRIAS desde 26/11/2026: ele pediu imagem em todo card para ver
+     o layout antes de mandar as fotos reais. Para trocar, salve a foto
+     com o MESMO nome (qualquer extensão de imagem) e apague a antiga. */
+  capas: Record<string, string>;
+};
+
+export default function Career({ capas }: Props) {
   const { career } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const trilhaRef = useRef<HTMLDivElement>(null);
@@ -167,12 +176,25 @@ export default function Career() {
 
                   {/* ---------- card ---------- */}
                   <article
-                    className={`career-item group relative rounded-2xl border border-bone/12 bg-ink-2 p-7 transition-colors duration-500 hover:border-plasma/40 lg:row-start-1 lg:my-6 ${
+                    className={`career-item group relative overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 p-7 transition-colors duration-500 hover:border-plasma/40 lg:row-start-1 lg:my-6 ${
                       naEsquerda
                         ? "lg:col-start-1 lg:text-right"
                         : "lg:col-start-3"
                     }`}
                   >
+                    {capas[entry.slug] && (
+                      <div className="-mx-7 -mt-7 mb-6 aspect-[16/9] overflow-hidden border-b border-bone/10 bg-ink-3">
+                        <img
+                          src={asset(capas[entry.slug])}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          draggable={false}
+                          className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                        />
+                      </div>
+                    )}
+
                     <span className="mono-label text-plasma">
                       {entry.period}
                     </span>

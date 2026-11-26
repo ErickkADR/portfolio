@@ -168,17 +168,8 @@ export default function Hero({ photo, photoIA }: Props) {
             Tecnologias: {hero.techIcons.join(", ")}
           </span>
 
-          {/* A DESCRIÇÃO, no lugar das legendas que se alternavam.
-
-              A rotação obrigava a pessoa a esperar para ler o resto e
-              ocupava uma linha só, deixando o hero vazio embaixo do nome.
-              Um parágrafo fixo preenche a coluna e diz de uma vez o que
-              ele faz. O texto é recorte do Sobre — ver a nota no
-              content.ts. */}
-          <p className="hero-fade editorial mx-auto mt-8 max-w-xl text-[clamp(1.05rem,1.5vw,1.3rem)] leading-relaxed text-bone-dim">
-            {hero.description}
-          </p>
-
+          {/* A descrição que morava aqui desceu para abrir o Sobre
+              (26/11/2026). */}
           <p className="mono-label hero-fade mt-10 hidden sm:block">
             {site.location} · {site.year}
           </p>

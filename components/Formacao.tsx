@@ -11,6 +11,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
 import CardSwap, { Card } from "./CardSwap";
+import { asset } from "@/lib/asset";
 
 /* Ícone pequeno por tipo de formação — bolsa, curso técnico, graduação.
    `IconBook2` é o padrão para um tipo que ainda não foi mapeado, para a
@@ -49,9 +50,10 @@ const SKEW = 5;
    assomava exatamente na borda da carta da frente e o ano dela aparecia
    pela metade — lido como corte, não como baralho. */
 const MEDIDAS = {
-  pequeno: { w: 268, h: 350, dx: 26, dy: 44, drop: 400 },
-  medio: { w: 340, h: 410, dx: 40, dy: 60, drop: 470 },
-  grande: { w: 430, h: 480, dx: 52, dy: 76, drop: 560 },
+  /* +90px de altura desde 26/11/2026: a faixa da logo no topo. */
+  pequeno: { w: 268, h: 440, dx: 26, dy: 44, drop: 480 },
+  medio: { w: 340, h: 500, dx: 40, dy: 60, drop: 560 },
+  grande: { w: 430, h: 570, dx: 52, dy: 76, drop: 650 },
 };
 
 function medidaPara(largura: number) {
@@ -60,7 +62,12 @@ function medidaPara(largura: number) {
   return MEDIDAS.grande;
 }
 
-export default function Formacao() {
+type Props = {
+  /* slug → caminho, de public/formacao/, montado no build. */
+  logos: Record<string, string>;
+};
+
+export default function Formacao({ logos }: Props) {
   const { background } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const [largura, setLargura] = useState<number | null>(null);
@@ -214,17 +221,29 @@ export default function Formacao() {
                     />
 
                     <div>
+                      {/* A LOGO DA INSTITUIÇÃO, numa faixa no topo da carta.
+                          Vem de public/formacao/<logo>.png (lista montada no
+                          build); sem arquivo, a faixa mostra o ícone. */}
+                      <div className="-mx-7 -mt-7 mb-6 grid h-24 place-items-center border-b border-bone/10 bg-bone px-7">
+                        {item.logo && logos[item.logo] ? (
+                          <img
+                            src={asset(logos[item.logo])}
+                            alt={item.title}
+                            draggable={false}
+                            className="formacao-icone max-h-16 max-w-[70%] object-contain"
+                          />
+                        ) : (
+                          <span className="formacao-icone text-plasma [&>svg]:h-9 [&>svg]:w-9">
+                            <IconeFormacao tipo={item.icon} />
+                          </span>
+                        )}
+                      </div>
+
                       <div className="flex items-start justify-between gap-4">
                         <span className="display text-[clamp(1.5rem,2.6vw,2rem)] leading-none text-plasma">
                           {item.period}
                         </span>
 
-                        <span
-                          aria-hidden="true"
-                          className="formacao-icone grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-bone/12 bg-ink-3 text-plasma-soft [&>svg]:h-[18px] [&>svg]:w-[18px]"
-                        >
-                          <IconeFormacao tipo={item.icon} />
-                        </span>
                       </div>
 
                       <span className="mono-label mt-5 inline-block rounded-full border border-plasma/30 px-3 py-1 text-plasma-soft">

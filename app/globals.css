@@ -16,8 +16,9 @@
   --color-plasma: #a855f7;
   --color-plasma-soft: #cba6f7;
 
-  --font-display: var(--font-bricolage), "Arial Black", sans-serif;
-  --font-body: var(--font-archivo), system-ui, sans-serif;
+  --font-display: var(--font-display-face), system-ui, sans-serif;
+  --font-body: var(--font-body-face), system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
   --font-editorial: var(--font-instrument), Georgia, serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -68,8 +69,10 @@ html.lenis body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 700;
-  line-height: 0.86;
+  font-weight: 600;
+  /* 0.86 era medida da Bricolage; a Space Grotesk tem ascendente mais
+     alta e cortava no .line-mask. */
+  line-height: 0.96;
   letter-spacing: -0.035em;
   text-wrap: balance;
 }
@@ -112,10 +115,10 @@ html.lenis body {
 }
 
 .mono-label {
-  font-family: var(--font-body);
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-bone-dim);
 }

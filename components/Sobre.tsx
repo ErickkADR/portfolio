@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
 import { asset } from "@/lib/asset";
 import RevealText from "./RevealText";
-import Cracha from "./Cracha";
 
 /* ============================================================
    SOBRE — o relato à esquerda, o crachá pendurado à direita.
@@ -40,11 +39,16 @@ import Cracha from "./Cracha";
    arrasto, sem contexto de GPU para perder. Ver a nota lá.
    ============================================================ */
 
-/* O crachá não é mais WebGL (ver a nota no topo de Cracha.tsx), então
-   não precisa de `dynamic`/`ssr: false` nem de esperar a seção chegar:
-   é transform e uma imagem de 174 KB. */
+type Props = {
+  /* As fotos de `public/sobre/`, em ordem de nome. A PRIMEIRA é a grande
+     (retrato, 4:5); as outras duas, menores e sobrepostas (4:3). Hoje
+     são PROVISÓRIAS (26/11/2026): um recorte da foto do hero e duas
+     telas do trabalho. Para trocar pelas fotos dele trabalhando, basta
+     substituir os arquivos mantendo a ordem dos nomes. */
+  fotos: string[];
+};
 
-export default function Sobre() {
+export default function Sobre({ fotos }: Props) {
   const { sobre } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   useGSAP(
@@ -90,9 +94,19 @@ export default function Sobre() {
           scrollTrigger: { trigger: ".sobre-ficha", start: "top 92%", once: true },
         });
 
+        const fotosAnim = gsap.from(".sobre-foto", {
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          ease: "expo.out",
+          stagger: 0.12,
+          scrollTrigger: { trigger: ".sobre-foto", start: "top 85%", once: true },
+        });
+
         return () => {
           split.revert();
           ficha.kill();
+          fotosAnim.kill();
         };
       });
 
@@ -111,7 +125,7 @@ export default function Sobre() {
           empilhava sete parágrafos num pilar de umas três telas de altura.
           Aqui o texto ocupa a largura e quebra em DUAS colunas, então a
           seção fica larga em vez de alta. */}
-      <div className="shell lg:grid lg:grid-cols-[1fr_24rem] lg:gap-12 xl:grid-cols-[1fr_30rem] xl:gap-16">
+      <div className="shell lg:grid lg:grid-cols-[1fr_24rem] lg:gap-16 xl:grid-cols-[1fr_28rem] xl:gap-24">
         {/* ---------- o relato ---------- */}
         <div>
           <span className="mono-label">{sobre.label}</span>
@@ -152,30 +166,45 @@ export default function Sobre() {
           </dl>
         </div>
 
-        {/* ---------- o crachá ---------- */}
-        <div className="hidden lg:block">
-          {/* `sticky` de altura de janela: a coluna de texto é longa, e
-              preso no topo o crachá sairia de cena no primeiro parágrafo. */}
-          <div className="sticky top-0 h-svh">
-            {/* O halo atrás separa o crachá do preto da página, do mesmo
-                jeito que o globo das Metas. */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-[16%] rounded-full opacity-20 blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(circle, var(--color-plasma) 0%, transparent 70%)",
-              }}
-            />
-
-            <Cracha />
-
-            <span className="mono-label absolute bottom-10 left-0 right-0 text-center">
-              {sobre.crachaHint}
-            </span>
+        {/* ---------- as fotos ----------
+            O crachá saiu em 26/11/2026, a pedido dele: um cartão com nome
+            e cargo repetia o que o texto já dizia. As fotos mostram a
+            pessoa e o trabalho, que é o que o crachá não mostrava. */}
+        {fotos.length > 0 && (
+          <div className="mt-16 lg:mt-0">
+            <div className="relative mx-auto max-w-md lg:sticky lg:top-24">
+              <div className="sobre-foto overflow-hidden rounded-2xl border border-bone/12 bg-ink-3">
+                <img
+                  src={asset(fotos[0])}
+                  alt={sobre.photoAlt}
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                  className="aspect-[4/5] w-full object-cover"
+                />
+              </div>
+              {fotos.slice(1, 3).map((f, i) => (
+                <div
+                  key={f}
+                  className={`sobre-foto absolute w-[58%] overflow-hidden rounded-xl border border-bone/20 bg-ink-3 shadow-2xl shadow-black/60 ${
+                    i === 0
+                      ? "-left-6 bottom-24 -rotate-3 sm:-left-12"
+                      : "-right-4 -bottom-10 rotate-2 sm:-right-10"
+                  }`}
+                >
+                  <img
+                    src={asset(f)}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    className="aspect-[4/3] w-full object-cover object-top"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-
+        )}
       </div>
     </section>
   );

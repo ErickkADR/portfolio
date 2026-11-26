@@ -10,6 +10,7 @@ import RevealText from "./RevealText";
 import MediaViewer from "./MediaViewer";
 import Carousel from "./Carousel";
 import FeitoDetalhe from "./FeitoDetalhe";
+import PreviaFeito from "./PreviaFeito";
 
 /* ============================================================
    CARGO ATUAL — feitos na Bannerjet.
@@ -41,9 +42,13 @@ import FeitoDetalhe from "./FeitoDetalhe";
 type Props = {
   /* slug → arquivos, montado no build. */
   media: Record<string, MediaFile[]>;
+  /* slug → capa, um quadro do meio do primeiro vídeo, gerado com ffmpeg
+     em `public/feitos-capas/<slug>.webp`. Fica FORA de `public/feitos/`
+     de propósito: lá dentro ela viraria mais um item da galeria. */
+  capas: Record<string, string>;
 };
 
-export default function Feitos({ media }: Props) {
+export default function Feitos({ media, capas }: Props) {
   const { feitos, ui } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const [aberto, setAberto] = useState<{
@@ -94,38 +99,19 @@ export default function Feitos({ media }: Props) {
             grupo.items.map((item) => {
               const files = media[item.slug] ?? [];
               const capa = files.find((f) => f.kind === "image");
+              const video = files.find((f) => f.kind === "video");
 
               return (
                   <li
                     key={item.slug}
                     className="carousel-slide group relative flex snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 hover:border-plasma/40"
                   >
-                    {capa && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setAberto({
-                            slug: item.slug,
-                            title: item.title,
-                            index: files.indexOf(capa),
-                          })
-                        }
-                        className="relative z-20 block aspect-[16/9] w-full overflow-hidden bg-ink-3"
-                        aria-label={`${ui.verMaterialDe} ${item.title}`}
-                      >
-                        <img
-                          src={asset(capa.src)}
-                          alt={`Material de comprovação de ${item.title}`}
-                          loading="lazy"
-                          decoding="async"
-                          className="h-full w-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-                        />
-                        <span
-                          aria-hidden="true"
-                          className="absolute inset-0 bg-gradient-to-t from-ink-2 via-transparent to-transparent"
-                        />
-                      </button>
-                    )}
+                    <PreviaFeito
+                      capa={capa?.src ?? capas[item.slug] ?? null}
+                      video={video?.src ?? null}
+                      title={item.title}
+                      onOpen={() => setFicha({ item, grupo: grupo.group })}
+                    />
 
                     <div className="flex flex-1 flex-col p-7 lg:p-8">
                       {/* O grupo virou rótulo do card quando os três
@@ -168,11 +154,7 @@ export default function Feitos({ media }: Props) {
                           <button
                             type="button"
                             onClick={() =>
-                              setAberto({
-                                slug: item.slug,
-                                title: item.title,
-                                index: 0,
-                              })
+                              setFicha({ item, grupo: grupo.group })
                             }
                             className="mono-label inline-flex items-center gap-3 rounded-full border border-bone/20 px-5 py-2.5 transition-colors duration-500 hover:border-plasma hover:text-plasma"
                           >
@@ -199,14 +181,13 @@ export default function Feitos({ media }: Props) {
         <FeitoDetalhe
           feito={ficha.item}
           grupo={ficha.grupo}
-          arquivos={(media[ficha.item.slug] ?? []).length}
+          arquivos={media[ficha.item.slug] ?? []}
           onClose={() => setFicha(null)}
-          /* Da ficha para a galeria: fecha uma e abre a outra, para não
-             empilhar duas telas cheias uma sobre a outra. */
-          onMaterial={() => {
-            setAberto({ slug: ficha.item.slug, title: ficha.item.title, index: 0 });
-            setFicha(null);
-          }}
+          /* Imagem ampliada: abre o visualizador por cima da ficha. Vídeo
+             não passa por ele, toca dentro da própria ficha. */
+          onImagem={(index) =>
+            setAberto({ slug: ficha.item.slug, title: ficha.item.title, index })
+          }
         />
       )}
 

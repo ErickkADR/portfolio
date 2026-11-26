@@ -137,141 +137,140 @@ export default function Contact() {
     <footer
       ref={ref}
       id="contato"
-      className="relative overflow-hidden border-t border-bone/10 pt-28 sm:pt-40"
+      className="relative overflow-hidden border-t border-bone/10 pt-28 sm:pt-36"
     >
-      <div className="shell shell-narrow">
-        {/* ---------- título ---------- */}
-        <div className="text-center">
-          <span className="mono-label">{contact.label}</span>
+      {/* Halo de fundo: dá profundidade sem competir com o texto. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-40 top-10 h-[36rem] w-[36rem] rounded-full opacity-[0.14] blur-3xl"
+        style={{ background: "radial-gradient(circle, var(--color-plasma) 0%, transparent 70%)" }}
+      />
 
-          {/* O clamp desceu de 13vw para 8vw: na coluna de 68rem o
-              tamanho anterior estourava a largura e quebrava no meio da
-              palavra.
+      <div className="shell relative">
+        {/* ---------- DUAS COLUNAS (26/11/2026) ----------
+            À esquerda, o convite: título que fala do valor, o status de
+            disponibilidade, o texto e o e-mail com as duas ações. À
+            direita, os canais, um por linha, grandes, com o @ visível.
+            A versão anterior era tudo centralizado numa coluna só, com
+            uma citação no fim: bonito, mas lia como rodapé, não como o
+            lugar onde a conversa começa. */}
+        <div className="grid gap-16 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+          <div>
+            <span className="mono-label">{contact.label}</span>
 
-              O "juntos" usa `.display-accent` e não `.editorial` solto:
-              na mesma font-size do Bricolage Black, o Instrument Serif
-              itálico saía com metade da presença e a palavra parecia
-              acidente. Ver a nota em globals.css. A última linha ganha
-              `.line-mask-accent` porque a perna do "j" passa do fundo
-              que o `.line-mask` reserva. */}
-          <h2 className="display mt-6 text-[clamp(2.6rem,8vw,6rem)]">
-            {contact.titleLines.map((line, i) => {
-              const ultima = i === contact.titleLines.length - 1;
-              return (
-                <span
-                  key={line}
-                  className={`line-mask ${ultima ? "line-mask-accent" : ""}`}
-                >
-                  <span className="contact-line block">
-                    {line}
-                    {ultima && (
-                      <span className="display-accent ml-[0.1em]">
-                        {contact.titleAccent}
-                      </span>
-                    )}
-                  </span>
+            {/* "automatizado?" usa `.display-accent` (serifada itálica) e a
+                última linha ganha `.line-mask-accent`, porque a descida das
+                letras passa do fundo que o `.line-mask` reserva. */}
+            <h2 className="display mt-6 text-[clamp(2.4rem,6vw,5rem)]">
+              {contact.titleLines.map((line) => (
+                <span key={line} className="line-mask">
+                  <span className="contact-line block">{line}</span>
                 </span>
-              );
-            })}
-          </h2>
+              ))}
+              <span className="line-mask line-mask-accent">
+                <span className="contact-line display-accent block [text-shadow:none]">
+                  {contact.titleAccent}
+                </span>
+              </span>
+            </h2>
 
-          <p className="contact-fade mx-auto mt-8 max-w-xl leading-relaxed text-bone-dim">
-            {contact.body}
-          </p>
-        </div>
+            <p className="contact-fade mt-8 inline-flex items-center gap-3 rounded-full border border-emerald-400/30 bg-emerald-400/5 px-4 py-2 text-sm text-emerald-200">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              {contact.status}
+            </p>
 
-        {/* ---------- e-mail ----------
-            O bloco inteiro era um `mailto:`. O problema: `mailto:` só
-            faz alguma coisa se a máquina tiver um cliente de e-mail
-            registrado — em Windows sem Outlook configurado, ou em quem
-            usa Gmail pelo navegador, o clique não faz absolutamente
-            nada e a pessoa conclui que o site está quebrado.
+            <p className="contact-fade mt-8 max-w-xl text-[clamp(1rem,1.4vw,1.15rem)] leading-relaxed text-bone-dim">
+              {contact.body}
+            </p>
 
-            Agora o endereço fica visível e o botão principal COPIA (que
-            funciona em qualquer máquina). O `mailto:` continua ali, como
-            atalho secundário para quem tem cliente configurado.
-
-            `break-all` porque o e-mail é uma palavra só de 26
-            caracteres: sem isso ele estoura a caixa no celular. */}
-        <div className="contact-fade mt-16 flex justify-center">
-          <div className="inline-flex max-w-full flex-col items-center gap-4 rounded-2xl border border-bone/15 px-8 py-10 text-center transition-colors duration-500 hover:border-plasma sm:px-16">
-            <span className="mono-label">{contact.emailHint}</span>
-
-            <span className="display break-all text-[clamp(1.35rem,4vw,2.5rem)]">
-              {site.email}
-            </span>
-
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={copiar}
-                className="mono-label rounded-full border border-bone/20 px-5 py-2.5 transition-colors duration-500 hover:border-plasma hover:text-plasma"
-              >
-                {copiado ? ui.emailCopiado : ui.copiarEmail}
-              </button>
-
-              <Magnetic
-                href={`mailto:${site.email}`}
-                className="mono-label rounded-full border border-plasma/40 px-5 py-2.5 text-plasma transition-colors duration-500 hover:border-plasma"
-              >
-                {ui.abrirEmail}
-              </Magnetic>
-            </div>
-          </div>
-        </div>
-
-        {/* ---------- disponibilidade ---------- */}
-        <dl className="contact-fade mx-auto mt-16 grid max-w-2xl gap-8 text-center sm:grid-cols-3">
-          {contact.availability.map((item) => (
-            <div key={item.label}>
-              <dt className="mono-label">{item.label}</dt>
-              <dd className="mt-2 leading-snug">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
-
-        {/* ---------- redes ---------- */}
-        <div className="contact-fade mt-20">
-          <p className="mono-label text-center text-plasma">
-            {contact.socialsLabel}
-          </p>
-
-          <ul className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2 lg:grid-cols-4">
-            {contact.socials.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="group relative flex h-full flex-col gap-2 bg-ink p-7 transition-colors duration-500 hover:bg-ink-2"
+            {/* E-mail por extenso + copiar + abrir. Copiar é o principal
+                porque `mailto:` não faz nada em máquina sem cliente de
+                e-mail configurado (Gmail no navegador, Windows sem
+                Outlook). `break-all`: o endereço é uma palavra só. */}
+            <div className="contact-fade mt-10">
+              <span className="mono-label">{contact.emailHint}</span>
+              <p className="display mt-3 break-all text-[clamp(1.3rem,2.6vw,2.1rem)] leading-tight">
+                {site.email}
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button type="button" onClick={copiar} className="btn">
+                  {copiado ? ui.emailCopiado : ui.copiarEmail}
+                </button>
+                <Magnetic
+                  href={`mailto:${site.email}`}
+                  className="mono-label inline-flex items-center rounded-full border border-plasma/40 px-5 py-2.5 text-plasma transition-colors duration-500 hover:border-plasma"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-x-7 top-0 h-px origin-left scale-x-0 bg-plasma transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
-                  />
-                  <span className="flex items-center justify-between">
-                    <span className="text-lg">{s.label}</span>
+                  {ui.abrirEmail}
+                </Magnetic>
+              </div>
+            </div>
+
+            <dl className="contact-fade hairline mt-12 grid gap-6 pt-8 sm:grid-cols-3">
+              {contact.availability.map((item) => (
+                <div key={item.label}>
+                  <dt className="mono-label">{item.label}</dt>
+                  <dd className="mt-2 leading-snug">{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* ---------- canais ---------- */}
+          <div className="contact-fade lg:pt-14">
+            <p className="mono-label text-plasma">{contact.channelsLabel}</p>
+            <ul className="mt-6 border-t border-bone/12">
+              {contact.socials.map((s, i) => (
+                <li key={s.label} className="border-b border-bone/12">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="group relative flex items-center gap-5 overflow-hidden py-6 pr-2 transition-colors duration-500"
+                  >
+                    {/* Preenchimento que sobe no hover. */}
                     <span
                       aria-hidden="true"
-                      className="text-bone-dim transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-plasma"
+                      className="absolute inset-0 origin-bottom scale-y-0 bg-ink-2 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100"
+                    />
+                    <span className="mono-label relative w-8 shrink-0">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="relative flex-1">
+                      <span className="display block text-[clamp(1.6rem,3vw,2.4rem)] leading-none transition-transform duration-500 group-hover:translate-x-2">
+                        {s.label}
+                      </span>
+                      <span className="mono-label mt-2 block">{s.handle}</span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full border border-bone/20 text-lg transition-all duration-500 group-hover:rotate-45 group-hover:border-plasma group-hover:bg-plasma group-hover:text-ink"
                     >
                       ↗
                     </span>
-                  </span>
-                  <span className="mono-label">{s.handle}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* ---------- fecho ---------- */}
-        <blockquote className="contact-fade editorial mx-auto mt-24 max-w-2xl text-center text-[clamp(1.15rem,2.4vw,1.75rem)] leading-snug text-bone-dim">
-          “{contact.quote}”
-        </blockquote>
+        {/* ---------- assinatura ----------
+            O nome em tamanho de tela fecha a página como uma assinatura. */}
+        <p
+          aria-hidden="true"
+          className="display mt-28 select-none whitespace-nowrap text-center text-[clamp(2.6rem,12vw,13rem)] leading-none text-transparent [-webkit-text-stroke:1px_color-mix(in_oklab,var(--color-bone)_22%,transparent)]"
+        >
+          {site.name}
+        </p>
 
-        <div className="hairline mt-20 flex flex-col gap-4 py-8 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+        <div className="hairline mt-10 flex flex-col gap-4 py-8 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
           <p className="mono-label">{site.location}</p>
+          <a href="#hero" className="mono-label transition-colors hover:text-plasma">
+            ↑ {contact.backToTop}
+          </a>
           <p className="mono-label">
             © {site.year} {site.name}
           </p>

@@ -38,7 +38,9 @@ scripts/        deploy.mjs
 
 Paleta **preto e roxo**. Acento `--color-plasma: #a855f7`, pretos puxando para o violeta.
 O token se chamava `magma` quando o site era laranja — o Erick pediu para abandonar o laranja
-em 04/08/2026. Fontes: Bricolage Grotesque (display), Archivo (texto), Instrument Serif (itálico).
+em 04/08/2026. Fontes (desde 26/11/2026, eram Bricolage + Archivo): **Space Grotesk** (display),
+**Geist** (texto), **Geist Mono** (`mono-label`), Instrument Serif (itálico de acento). O
+`line-height` do `.display` subiu para 0.96 porque a Space Grotesk cortava no `.line-mask`.
 
 O site é **sempre escuro** e não usa a classe `dark`. Componentes trazidos do Aceternity via
 `npx shadcn@latest add @aceternity/<nome>` precisam ter as variantes `dark:` removidas — elas
@@ -127,6 +129,41 @@ nunca aplicam e o componente sai claro.
    cabe um card por tela e não há hover para pausar a esteira: a pessoa encarava um card
    que nunca parava e nunca estava inteiro no quadro (o modo automático desliga o
    `scroll-snap`). Abaixo disso ele volta a ser um carrossel normal, com encaixe.
+
+## Rodada de 26/11/2026 — o que mudou e por quê
+
+- **Hero sem descrição.** O parágrafo virou o primeiro do Sobre.
+- **Sobre: 3 parágrafos profissionais + mosaico de fotos.** A história de origem (4 anos, escola,
+  APDADOS) saiu do Sobre: está na Carreira. O **crachá saiu** (o `Cracha.tsx` continua no repo sem
+  uso). As fotos vêm de `public/sobre/` em ordem de nome: a 1ª é o retrato grande (4:5), a 2ª e a
+  3ª ficam sobrepostas (4:3). **Hoje são PROVISÓRIAS** (recorte da foto do hero + duas telas do
+  trabalho): trocar pelos arquivos reais mantendo os prefixos `01-`, `02-`, `03-`.
+- **Feitos: vídeo dentro do site, nunca em player à parte** (pedido explícito). O card mostra a
+  capa `public/feitos-capas/<slug>.webp` (quadro do meio do 1º vídeo, tirado com ffmpeg; fica
+  FORA de `public/feitos/` para não virar item da galeria) e o próprio vídeo toca mudo no hover
+  (`PreviaFeito.tsx`; no toque, quando 60% do card está na tela). A ficha (`FeitoDetalhe`) embute
+  todos os vídeos com controles; o `MediaViewer` só abre imagem ampliada. Vídeo novo num feito
+  sem capa: gerar a capa com ffmpeg (`-ss <metade> -frames:v 1`, 1280px, webp).
+- **Resultados: 6 números do banco**, cada um com a consulta no comentário do `content.ts`
+  (atividade_usuarios, jetia_interacoes, garantias_bjcontrol, documents da Jet IA, erp_produtos,
+  laudos_gerados). Os antigos 50%/65%/200+ eram estimativa e saíram. Tabelas vazias que NÃO servem
+  de número: quiz_attempts, pecas, estoque_pecas, tecnicos, atendimentos. O contador do
+  `Metricas.tsx` aceita ponto de milhar ("19.188").
+- **Carreira: imagem em todo card**, de `public/carreira-capas/<slug>.webp`. **PROVISÓRIAS**
+  (prints de certificado/projeto), a pedido dele, só para ver o layout.
+- **Projetos: só pessoais, em faixa horizontal presa ao scroll** (pin do ScrollTrigger, distância
+  = largura da pista menos a janela). Central Técnica e Campro A3 saíram (são Bannerjet e já estão
+  nos Feitos). Arise e Dispensa ficaram de fora: só têm tela de login / rodam local, sem tela
+  pública para capa. O `projects` do content-en foi reordenado junto (mescla por índice!). A
+  altura do card cai em janela baixa (`max-height: 820px`) para a seção caber presa na tela.
+- **Formação: logo no topo de cada carta**, de `public/formacao/<logo>.png` (faixa clara). O
+  curso técnico ainda não tem logo (falta saber a escola): largar `curso-tecnico.png` resolve.
+- **Meta profissional (globo) removida** da página e do nav. `Metas.tsx` e o `globe` do conteúdo
+  continuam no repo sem uso.
+- **Contato refeito**: duas colunas (convite + status "Disponível" + e-mail | canais grandes, um
+  por linha, LinkedIn primeiro) e o nome em contorno como assinatura. A citação do Claude Code
+  saiu. O `.display-accent` tem `text-shadow`, que é cortado num retângulo dentro de `.line-mask`:
+  ali usa `[text-shadow:none]`.
 
 ## Deploy — o que derruba o site
 
@@ -467,9 +504,6 @@ cabe numa tela de 390px sem o cartão nascer cortado.
   (50% do suporte por IA, 65% de redução no tempo de atendimento, 200+ materiais, 628 blocos).
   O `value` opcional continua suportado no tipo, para o próximo resultado que ainda não tiver
   medição.
-- **`public/feitos/` está vazio.** Nenhum feito tem material de comprovação neste repo, então
-  o botão "Ver material" nunca aparece. O card abre a ficha com o texto completo de qualquer
-  forma (`FeitoDetalhe`), que é o que faz o "aperte em cada item" da intro ser verdade.
 - **Estouro horizontal de ~5px abaixo de 390px de largura.** Vem de uma entrada `gsap.from`
   com deslocamento horizontal (a armadilha documentada acima), não do hero: esconder qualquer
   seção zera o número. Não foi caçado ainda.

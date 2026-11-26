@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import type { Feito } from "@/lib/content";
 import { useConteudo } from "@/lib/idioma";
+import { asset } from "@/lib/asset";
+import type { MediaFile } from "@/lib/media";
 
 /* Ficha de um feito, em tela cheia.
 
@@ -20,10 +22,12 @@ import { useConteudo } from "@/lib/idioma";
 type Props = {
   feito: Feito;
   grupo: string;
-  /* Quantos arquivos de comprovação existem. 0 esconde o botão. */
-  arquivos: number;
+  /* O material de comprovação. Vídeo toca AQUI, embutido na ficha (pedido
+     do Erick, 26/11/2026: nada de player à parte); imagem abre ampliada
+     no MediaViewer; PDF vira botão. */
+  arquivos: MediaFile[];
   onClose: () => void;
-  onMaterial: () => void;
+  onImagem: (index: number) => void;
 };
 
 export default function FeitoDetalhe({
@@ -31,7 +35,7 @@ export default function FeitoDetalhe({
   grupo,
   arquivos,
   onClose,
-  onMaterial,
+  onImagem,
 }: Props) {
   const { feitos, ui } = useConteudo();
   useEffect(() => {
@@ -83,23 +87,69 @@ export default function FeitoDetalhe({
           ))}
         </ul>
 
-        <div className="mt-12">
-          {arquivos > 0 ? (
-            <button
-              type="button"
-              onClick={onMaterial}
-              className="mono-label inline-flex items-center gap-3 rounded-full border border-bone/20 px-5 py-2.5 transition-colors duration-500 hover:border-plasma hover:text-plasma"
-            >
-              {feitos.mediaLabel}
-              <span aria-hidden="true">
-                {arquivos} {ui.itens[arquivos === 1 ? 0 : 1]}
-              </span>
-            </button>
-          ) : (
-            <span className="mono-label opacity-60">{feitos.mediaEmpty}</span>
-          )}
-        </div>
+        {arquivos.length > 0 ? (
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            {arquivos.map((f, i) => (
+              <figure
+                key={f.src}
+                className={`overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 ${
+                  arquivos.length === 1 ? "lg:col-span-2" : ""
+                }`}
+              >
+                {f.kind === "video" && (
+                  <video
+                    /* `#t=0.1`: sem ele o Safari mostra a caixa cinza em vez
+                       do primeiro quadro até a pessoa dar play. */
+                    src={`${asset(f.src)}#t=0.1`}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    autoPlay={i === 0}
+                    muted={i === 0}
+                    className="block aspect-video w-full bg-ink"
+                  />
+                )}
+                {f.kind === "image" && (
+                  <button
+                    type="button"
+                    onClick={() => onImagem(i)}
+                    className="block w-full"
+                  >
+                    <img
+                      src={asset(f.src)}
+                      alt={`${feito.title}: ${legenda(f.name)}`}
+                      loading="lazy"
+                      className="block aspect-video w-full object-cover"
+                    />
+                  </button>
+                )}
+                {f.kind === "pdf" && (
+                  <a
+                    href={asset(f.src)}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="btn m-6"
+                  >
+                    {ui.documento} <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                <figcaption className="mono-label px-5 py-4">
+                  {legenda(f.name)}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <p className="mono-label mt-12 opacity-60">{feitos.mediaEmpty}</p>
+        )}
       </div>
     </div>
   );
+}
+
+/* "02-cortes-em-folhas" → "Cortes em folhas". O nome do arquivo já é a
+   legenda: o prefixo numérico só ordena. */
+function legenda(nome: string) {
+  const t = nome.replace(/^\d+[-_ ]*/, "").replace(/[-_]+/g, " ").trim();
+  return t.charAt(0).toUpperCase() + t.slice(1);
 }
