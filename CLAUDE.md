@@ -8,7 +8,10 @@ Três bibliotecas de WebGL convivem aqui, cada uma por um motivo:
 - **three + @react-three/fiber + drei** — o globo das Metas e o crachá do Sobre.
 - **@react-three/rapier + meshline** — só a física do cordão do crachá.
 
-No ar em **https://erickkadr.github.io/portfolio/** — repo `ErickkADR/portfolio`.
+No ar em **https://erickdantas-portfolio.vercel.app** (produção, Vercel) — repo `ErickkADR/portfolio`.
+**Publicar = `git push` no `main`**: a Vercel está ligada ao GitHub e builda sozinha, na raiz (sem
+basePath). O `npm run deploy` (branch `gh-pages`, https://erickkadr.github.io/portfolio/) é o
+caminho ANTIGO: não é o endereço que o Erick divulga (ele corrigiu em 26/11/2026).
 
 ## Comandos
 
@@ -166,6 +169,9 @@ nunca aplicam e o componente sai claro.
   ali usa `[text-shadow:none]`.
 
 ## Deploy — o que derruba o site
+
+> **Produção é a Vercel** (push no `main` publica). O que segue vale para o espelho antigo do
+> GitHub Pages, que só existe se alguém rodar `npm run deploy`.
 
 `main` guarda o código, `gh-pages` guarda só o build estático.
 
