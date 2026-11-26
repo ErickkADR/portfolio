@@ -161,8 +161,18 @@ nunca aplicam e o componente sai claro.
   nos Feitos). Arise e Dispensa ficaram de fora: só têm tela de login / rodam local, sem tela
   pública para capa. O `projects` do content-en foi reordenado junto (mescla por índice!). A
   altura do card cai em janela baixa (`max-height: 820px`) para a seção caber presa na tela.
-- **Formação: logo no topo de cada carta**, de `public/formacao/<logo>.png` (faixa clara). O
-  curso técnico ainda não tem logo (falta saber a escola): largar `curso-tecnico.png` resolve.
+- **Formação: cartão QUADRADO BRANCO com a logo e, embaixo, período, título e texto** (pedido dele,
+  26/11/2026; o baralho CardSwap saiu, o componente continua no repo sem uso). Logo em
+  `public/formacao/<logo>.png`. O curso técnico ainda não tem logo (falta saber a escola): largar
+  `curso-tecnico.png` resolve.
+- **Projetos: Arise e Print Your Toy entraram** (26/11/2026). Telas do Arise tiradas com o login desviado
+  só no dev (permissão dele) e o `proxy.ts` revertido; sem Início/Notas (finanças e notas pessoais).
+  **Capa do Print Your Toy é PROVISÓRIA** (ícones do jogo + título): a oficial foi gerada no Magnific mas
+  não estava na conta conectada. Trocar `public/projetos/print-your-toy/cover.webp` e pôr o link do jogo
+  no `href` (hoje é a busca do Roblox).
+- **Página de projeto aceita `features`** (título, texto e imagem por função; seção "As ferramentas, uma
+  por uma"). Usada na Nexus Print com as 6 ferramentas (`f-*.webp`, capturadas do site publicado).
+  Galeria vazia não renderiza a seção "Telas".
 - **Meta profissional (globo) removida** da página e do nav. `Metas.tsx` e o `globe` do conteúdo
   continuam no repo sem uso.
 - **Contato refeito**: duas colunas (convite + status "Disponível" + e-mail | canais grandes, um

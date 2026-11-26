@@ -726,6 +726,8 @@ export type Project = {
   /* Quatro telas reais. Quatro é o número: preenche a grade 2×2 sem
      sobrar buraco. */
   gallery: ProjectImage[];
+  /* Funções do produto, uma tela cada (opcional). */
+  features?: { title: string; body: string; image: string }[];
   /* Vídeo de demonstração (opcional), em public/projetos/<slug>/. Aparece
      logo abaixo da capa, com a capa como pôster. */
   video?: string;
@@ -880,64 +882,128 @@ export const projects: Project[] = [
     slug: "nexus-print",
     index: "04",
     title: "Nexus Print",
-    category: "Marketplace de produtos personalizados",
+    category: "Loja de personalizados com ferramentas de criação",
     year: "2026",
     description:
-      "Loja virtual com mais de 130 produtos em 6 categorias, quatro modelos de precificação por produto, carrinho completo e fechamento de pedido direto no WhatsApp.",
+      "Loja de adesivos, Funko Pop, topos de bolo e caixinhas em que o próprio cliente cria o produto no navegador: sobe a imagem, monta a cartela, desenha a caixinha ou o boneco e fecha o pedido no WhatsApp.",
     href: "https://nexusprint.vercel.app",
-    tags: ["JavaScript", "Carrinho", "Modo escuro"],
-    tint: "#d16bff",
+    tags: ["React", "TypeScript", "Canvas"],
+    tint: "#f97316",
     cover: {
       src: "/projetos/nexus-print/cover.webp",
-      alt: "Topo da loja Nexus Print, com o mascote e a chamada \"Sua loja de Comunicação Visual\"",
+      alt: "Topo da loja Nexus Print, com o mascote e a chamada \"Sua loja de Personalizados\"",
     },
     overview: [
-      "A Nexus Print é uma loja de comunicação visual personalizada: adesivos, action figures, Funko Pop, topos de bolo e caixas milk. São mais de 130 produtos catalogados em seis categorias.",
-      "O nó do projeto foi a precificação. Produto personalizado não tem preço único: depende de tamanho, quantidade e acabamento. Cada item carrega quatro modelos de preço, e o carrinho calcula em cima da combinação escolhida.",
-      "O pedido não termina num gateway: fecha no WhatsApp, com o resumo montado. É como a venda realmente acontece nesse mercado, e tentar empurrar checkout tradicional só adicionaria um passo que ninguém completa.",
+      "A Nexus Print vende produto personalizado: adesivos, Funko Pop, bustos e produtos 3D, topos de bolo, caixas milk e etiquetas escolares. Nesse mercado o cliente quase nunca sabe descrever o que quer, e cada pedido virava uma troca longa de mensagens até a arte ficar certa.",
+      "Por isso a loja não é só catálogo: cada linha de produto ganhou uma ferramenta em que o próprio cliente monta o item e vê o resultado na hora. O adesivo sai com contorno e borda a partir de qualquer imagem, a cartela A4 se organiza sozinha, a caixinha aparece planificada com as medidas e o Funko é montado peça por peça.",
+      "No fim, a ferramenta calcula a quantidade e o preço pela tabela do catálogo e manda o pedido pronto para o WhatsApp. A conversa começa com a arte resolvida, em vez de começar do zero.",
     ],
     highlights: [
-      {
-        title: "Quatro modelos de preço por produto",
-        body: "A mesma peça muda de valor conforme tamanho, quantidade e acabamento, e o carrinho resolve a conta.",
-      },
-      {
-        title: "Fechamento no WhatsApp",
-        body: "O pedido sai pronto para a conversa, do jeito que o cliente desse mercado já compra.",
-      },
-      {
-        title: "Claro e escuro",
-        body: "O tema acompanha a preferência de quem navega, sem recarregar a página.",
-      },
+      { title: "O cliente cria, a loja produz", body: "Seis ferramentas no navegador transformam o pedido em arte pronta antes de qualquer mensagem." },
+      { title: "Preço que vem do catálogo", body: "Cartelas, kits e Funkos usam a mesma tabela de preço da loja, sem valor inventado na tela." },
+      { title: "Fechamento no WhatsApp", body: "O resumo do pedido sai montado para a conversa, que é como esse cliente já compra." },
     ],
     facts: [
-      { label: "Papel", value: "Front-end, catálogo e lógica de preço" },
-      { label: "Catálogo", value: "130+ produtos em 6 categorias" },
-      { label: "Stack", value: "HTML · CSS · JavaScript" },
+      { label: "Papel", value: "Produto, front-end e ferramentas" },
+      { label: "Catálogo", value: "Adesivos, 3D, Funko, topos e caixinhas" },
+      { label: "Stack", value: "React · TypeScript · Vite · Canvas" },
       { label: "Estado", value: "No ar" },
     ],
     gallery: [
-      {
-        src: "/projetos/nexus-print/shot-1.webp",
-        alt: "Vitrine de categorias da Nexus Print",
-      },
-      {
-        src: "/projetos/nexus-print/shot-2.webp",
-        alt: "Listagem de produtos com os cartões e as opções de personalização",
-      },
-      {
-        src: "/projetos/nexus-print/shot-3.webp",
-        alt: "Detalhe de produto com os modelos de precificação",
-      },
-      {
-        src: "/projetos/nexus-print/shot-4.webp",
-        alt: "Trecho final da loja, com contato e rodapé",
-      },
+      { src: "/projetos/nexus-print/shot-1.webp", alt: "Categorias da loja na página inicial" },
+      { src: "/projetos/nexus-print/shot-2.webp", alt: "Vitrine de produtos com os banners das ferramentas" },
+      { src: "/projetos/nexus-print/shot-3.webp", alt: "Carrossel de produtos por tema" },
+      { src: "/projetos/nexus-print/shot-4.webp", alt: "Trecho final da loja, com contato e rodapé" },
+    ],
+    /* As ferramentas, uma tela cada (capturadas do site publicado em
+       26/11/2026). */
+    features: [
+      { title: "Gerador de adesivos", body: "O cliente envia qualquer imagem e o adesivo sai na hora com contorno e borda, com fundo branco removido se precisar. Formato, tamanho e cor da borda se escolhem na mesma tela.", image: "/projetos/nexus-print/f-adesivos.webp" },
+      { title: "Montador de cartelas", body: "Os adesivos se organizam sozinhos numa cartela A4, com girar, espelhar, duplicar e travar. A quantidade de cartelas define o preço pela tabela da loja.", image: "/projetos/nexus-print/f-cartelas.webp" },
+      { title: "Etiquetas escolares", body: "Digita o nome da criança, escolhe o tema e vê o kit de etiquetas de material pronto: lancheira, caderno, lápis. Vinil à prova d'água, pedido pelo WhatsApp.", image: "/projetos/nexus-print/f-etiquetas.webp" },
+      { title: "Criador de caixinhas", body: "Escolhe o modelo (clássica, gaveta, maleta e outros), coloca as medidas do produto e a caixinha aparece planificada, com cada aba medida.", image: "/projetos/nexus-print/f-caixinhas.webp" },
+      { title: "Topo de bolo", body: "Vitrine de topos recortados e impressos por tema da festa, com nome e idade, e pedido do modelo personalizado direto pela conversa.", image: "/projetos/nexus-print/f-topo-de-bolo.webp" },
+      { title: "Montador de Funko", body: "O boneco é montado em 3D, etapa por etapa: corpo, cabelo, óculos, barba, roupa e acessório, com a prévia girando na tela e o preço fixo no fim.", image: "/projetos/nexus-print/f-funko.webp" },
+    ],
+  },
+
+  {
+    slug: "arise",
+    index: "05",
+    title: "Arise",
+    category: "Sistema pessoal de produtividade",
+    year: "2026",
+    description:
+      "O sistema que organiza a minha vida inteira num lugar só: tarefas, notas no estilo Notion, finanças, treino com nível e XP, estoque de casa, estudos, jogos e hardware.",
+    href: "https://sistema-liard-two.vercel.app",
+    tags: ["Next.js", "Supabase", "TypeScript"],
+    tint: "#e5e7eb",
+    cover: {
+      src: "/projetos/arise/cover.webp",
+      alt: "Tela de Academia do Arise, com o nível, a agenda da semana e os presets de treino",
+    },
+    overview: [
+      "Eu usava seis aplicativos diferentes para tarefas, notas, gastos, treino e estudos, e nenhum conversava com o outro. O Arise junta tudo num sistema só, feito sob medida para a minha rotina.",
+      "Cada área é um módulo: tarefas por categoria, editor de notas em blocos, finanças com projeção, academia com nível e XP inspirada em Solo Leveling, estoque da casa por código de barras, vocabulário de inglês, jogos platinados e o inventário do PC.",
+      "A tela inicial cruza tudo num resumo do dia. O acesso é trancado só para mim, e o banco fica fechado para o público.",
+    ],
+    highlights: [
+      { title: "Um painel para o dia", body: "Tarefas, agenda, finanças e treino aparecem juntos na tela inicial." },
+      { title: "Treino que vira jogo", body: "A academia sobe de nível com XP, com agenda semanal e presets de exercício." },
+      { title: "Feito para uso real", body: "Uso todo dia, e cada módulo nasceu de uma necessidade que outro app não resolvia." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, design e implementação" },
+      { label: "Contexto", value: "Projeto pessoal, uso diário" },
+      { label: "Stack", value: "Next.js · TypeScript · Supabase" },
+      { label: "Estado", value: "Em uso, acesso restrito" },
+    ],
+    gallery: [
+      { src: "/projetos/arise/shot-1.webp", alt: "Jogos platinados, com filtros e busca" },
+      { src: "/projetos/arise/shot-2.webp", alt: "Hardware do PC e o teste de requisitos de jogos" },
+      { src: "/projetos/arise/shot-3.webp", alt: "Estudos de inglês com vocabulário e frases de exemplo" },
+      { src: "/projetos/arise/shot-4.webp", alt: "Tarefas por categoria com o nível do perfil" },
     ],
   },
   {
+    slug: "print-your-toy",
+    index: "06",
+    title: "Print Your Toy",
+    category: "Jogo no Roblox",
+    year: "2026",
+    description:
+      "Meu jogo no Roblox: o jogador monta a própria fábrica de bonecos, imprime, coleciona e vende no marketplace do jogo.",
+    href: "https://www.roblox.com/discover/?Keyword=Print%20Your%20Toy",
+    tags: ["Roblox Studio", "Luau", "Game design"],
+    tint: "#38bdf8",
+    cover: {
+      src: "/projetos/print-your-toy/cover.webp",
+      alt: "Capa do jogo Print Your Toy",
+    },
+    /* A capa é PROVISÓRIA: o Erick gerou a capa oficial no Magnific e ela
+       não estava nesta conta. Trocar `public/projetos/print-your-toy/cover.webp`
+       e colocar o link do jogo em `href` quando ele mandar. */
+    overview: [
+      "Print Your Toy é o meu jogo no Roblox. A ideia é simples de explicar e divertida de jogar: você começa com uma impressora e um terreno vazio e constrói a sua própria fábrica de bonecos.",
+      "Cada boneco impresso entra no inventário. Dá para colecionar, montar a sua loja e anunciar os bonecos para outros jogadores no marketplace do jogo.",
+      "A interface, os ícones e a arte foram criados com IA e montados no Roblox Studio.",
+    ],
+    highlights: [
+      { title: "Fábrica que cresce", body: "Impressoras, terreno e loja evoluem conforme o jogador vende." },
+      { title: "Coleção e raridade", body: "Bonecos com raridade, inventário e vitrine própria." },
+      { title: "Marketplace entre jogadores", body: "Cada um anuncia e vende os bonecos que já tem." },
+    ],
+    facts: [
+      { label: "Papel", value: "Game design, arte e programação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Roblox Studio · Luau" },
+      { label: "Estado", value: "Em desenvolvimento" },
+    ],
+    gallery: [],
+  },
+  {
     slug: "hortifacil",
-    index: "05",
+    index: "07",
     title: "HortiFácil",
     category: "E-commerce de hortifruti",
     year: "2026",
@@ -976,7 +1042,7 @@ export const projects: Project[] = [
   },
   {
     slug: "granafy",
-    index: "06",
+    index: "08",
     title: "Granafy",
     category: "Finanças pessoais para a família",
     year: "2026",
@@ -1014,7 +1080,7 @@ export const projects: Project[] = [
   },
   {
     slug: "otaku-mind",
-    index: "07",
+    index: "09",
     title: "Otaku Mind",
     category: "Agentes de IA para produção de vídeos curtos",
     year: "2026",
@@ -1049,7 +1115,7 @@ export const projects: Project[] = [
   },
   {
     slug: "hardware-showcase",
-    index: "08",
+    index: "10",
     title: "Hardware Showcase",
     category: "Inventário de hardware interativo",
     year: "2026",
@@ -1088,7 +1154,7 @@ export const projects: Project[] = [
   },
   {
     slug: "meus-jogos-100",
-    index: "09",
+    index: "11",
     title: "Meus Jogos 100%",
     category: "Vitrine de jogos platinados",
     year: "2026",
@@ -1127,7 +1193,7 @@ export const projects: Project[] = [
   },
   {
     slug: "lummier-studio",
-    index: "10",
+    index: "12",
     title: "Lummier Studio",
     category: "Site para studio de beleza",
     year: "2026",
@@ -1166,7 +1232,7 @@ export const projects: Project[] = [
   },
   {
     slug: "achei-montador",
-    index: "11",
+    index: "13",
     title: "Achei Montador",
     category: "Site institucional de serviço de montagem",
     year: "2026",
@@ -1205,7 +1271,7 @@ export const projects: Project[] = [
   },
   {
     slug: "mugiwaras",
-    index: "12",
+    index: "14",
     title: "Bando dos Mugiwaras",
     category: "Landing page responsiva",
     year: "2026",
@@ -1265,7 +1331,7 @@ export const projects: Project[] = [
   },
   {
     slug: "apenas-um-escritor",
-    index: "13",
+    index: "15",
     title: "Apenas Um Escritor",
     category: "Site com efeito parallax",
     year: "2025",
@@ -1333,6 +1399,7 @@ export const projectPage = {
   overviewLabel: "O projeto",
   highlightsLabel: "O que ele resolve",
   galleryLabel: "Telas",
+  featuresLabel: "As ferramentas, uma por uma",
   factsLabel: "Ficha",
   nextLabel: "Próximo projeto",
 };

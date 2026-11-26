@@ -177,7 +177,53 @@ export default function ProjetoView({ slug }: { slug: string }) {
           </div>
         </section>
 
+        {/* ---------- funções (opcional) ----------
+            Uma tela por função do produto, com título e texto. Entrou em
+            26/11/2026 para a Nexus Print (adesivos, cartelas, etiquetas,
+            caixinhas, topo de bolo, Funko). Projeto sem `features` pula. */}
+        {project.features && project.features.length > 0 && (
+          <section className="border-t border-bone/10 py-24 sm:py-32">
+            <div className="shell shell-narrow">
+              <h2 className="mono-label text-center text-plasma">
+                {projectPage.featuresLabel}
+              </h2>
+              <div className="mt-14 space-y-20 sm:space-y-28">
+                {project.features.map((f, i) => (
+                  <article
+                    key={f.title}
+                    className="grid items-center gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-14"
+                  >
+                    <figure
+                      className={`overflow-hidden rounded-xl border border-bone/12 bg-ink-2 ${
+                        i % 2 === 1 ? "lg:order-2" : ""
+                      }`}
+                    >
+                      <img
+                        src={asset(f.image)}
+                        alt={f.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="block w-full"
+                      />
+                    </figure>
+                    <div>
+                      <span className="mono-label" style={{ color: project.tint }}>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="display mt-3 text-[clamp(1.6rem,3vw,2.4rem)] leading-tight">
+                        {f.title}
+                      </h3>
+                      <p className="mt-4 leading-relaxed text-bone-dim">{f.body}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* ---------- telas ---------- */}
+        {project.gallery.length > 0 && (
         <section className="border-t border-bone/10 py-24 sm:py-32">
           <div className="shell shell-narrow">
             <h2 className="mono-label text-center text-plasma">
@@ -214,6 +260,7 @@ export default function ProjetoView({ slug }: { slug: string }) {
             </FadeIn>
           </div>
         </section>
+        )}
 
         {/* ---------- próximo projeto ---------- */}
         <section className="border-t border-bone/10">

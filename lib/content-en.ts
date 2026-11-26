@@ -436,35 +436,74 @@ export const conteudoEn: Profundo<Conteudo> = {
       ],
     },
     {
-      category: "Custom print store",
+      category: "Custom products store with creation tools",
       description:
-        "An online store with more than 130 products across 6 categories, four " +
-        "pricing models per product, a full cart and order checkout straight on " +
-        "WhatsApp.",
+        "A store for stickers, Funko Pops, cake toppers and boxes where the customer creates the product in the browser: upload the image, build the sheet, design the box or the figure and close the order on WhatsApp.",
       overview: [
-        "Nexus Print is a custom visual communication store: stickers, action figures, Funko Pops, cake toppers and milk boxes. More than 130 products catalogued across six categories.",
-        "The knot of the project was pricing. A custom product has no single price: it depends on size, quantity and finishing. Each item carries four pricing models, and the cart calculates on top of the chosen combination.",
-        "The order does not end at a payment gateway: it closes on WhatsApp, with the summary assembled. That is how the sale actually happens in this market, and pushing a traditional checkout would only add a step nobody completes.",
+        "Nexus Print sells custom products: stickers, Funko Pops, busts and 3D products, cake toppers, gift boxes and school labels. In this market the customer can rarely describe what they want, and every order turned into a long exchange of messages until the artwork was right.",
+        "So the store is not just a catalogue: each product line got a tool where the customer builds the item and sees the result instantly. The sticker comes out with an outline from any image, the A4 sheet arranges itself, the box appears flat with its measurements and the Funko is assembled piece by piece.",
+        "At the end, the tool works out the quantity and the price from the catalogue table and sends the order ready to WhatsApp. The conversation starts with the artwork already solved.",
       ],
       highlights: [
-        {
-          title: "Four pricing models per product",
-          body: "The same piece changes value with size, quantity and finishing, and the cart works out the arithmetic.",
-        },
-        {
-          title: "Closing on WhatsApp",
-          body: "The order comes out ready for the conversation, the way customers in this market already buy.",
-        },
-        {
-          title: "Light and dark",
-          body: "The theme follows the visitor's preference, without reloading the page.",
-        },
+        { title: "The customer creates, the store produces", body: "Six browser tools turn the order into finished artwork before any message." },
+        { title: "Prices from the catalogue", body: "Sheets, kits and Funkos use the store's own price table, no made-up numbers on screen." },
+        { title: "Checkout on WhatsApp", body: "The order summary is ready for the chat, which is how this customer already buys." },
       ],
       facts: [
-        { label: "Role", value: "Front-end, catalogue and pricing logic" },
-        { label: "Catalogue", value: "130+ products in 6 categories" },
-        { label: "Stack", value: "HTML · CSS · JavaScript" },
+        { label: "Role", value: "Product, front-end and tools" },
+        { label: "Catalogue", value: "Stickers, 3D, Funko, toppers and boxes" },
+        { label: "Stack", value: "React · TypeScript · Vite · Canvas" },
         { label: "Status", value: "Live" },
+      ],
+      features: [
+        { title: "Sticker generator", body: "The customer uploads any image and the sticker comes out instantly with an outline and border, removing a white background if needed. Shape, size and border colour are picked on the same screen.", image: "/projetos/nexus-print/f-adesivos.webp" },
+        { title: "Sheet builder", body: "Stickers arrange themselves on an A4 sheet, with rotate, mirror, duplicate and lock. The number of sheets sets the price from the store table.", image: "/projetos/nexus-print/f-cartelas.webp" },
+        { title: "School labels", body: "Type the child's name, pick a theme and see the full label kit for lunchbox, notebook and pencils. Waterproof vinyl, ordered on WhatsApp.", image: "/projetos/nexus-print/f-etiquetas.webp" },
+        { title: "Box creator", body: "Pick the model (classic, drawer, briefcase and more), enter the product measurements and the box appears flat, with every flap measured.", image: "/projetos/nexus-print/f-caixinhas.webp" },
+        { title: "Cake toppers", body: "A showcase of cut and printed toppers by party theme, with name and age, and custom orders straight from the chat.", image: "/projetos/nexus-print/f-topo-de-bolo.webp" },
+        { title: "Funko builder", body: "The figure is built in 3D step by step: body, hair, glasses, beard, clothes and accessory, with a spinning preview and a fixed price at the end.", image: "/projetos/nexus-print/f-funko.webp" },
+      ],
+    },
+    {
+      category: "Personal productivity system",
+      description:
+        "The system that runs my whole life in one place: tasks, Notion-style notes, finances, workouts with levels and XP, home stock, studies, games and hardware.",
+      overview: [
+        "I used six different apps for tasks, notes, spending, workouts and studies, and none of them talked to each other. Arise brings everything into one system, built around my own routine.",
+        "Each area is a module: tasks by category, a block-based notes editor, finances with projections, a gym tracker with levels and XP inspired by Solo Leveling, home stock by barcode, English vocabulary, platinum games and my PC inventory.",
+        "The home screen ties it all into a daily summary. Access is locked to me only, and the database is closed to the public.",
+      ],
+      highlights: [
+        { title: "One panel for the day", body: "Tasks, calendar, finances and workouts show up together on the home screen." },
+        { title: "Workouts as a game", body: "The gym levels up with XP, a weekly schedule and exercise presets." },
+        { title: "Built for real use", body: "I use it every day, and each module came from a need no other app solved." },
+      ],
+      facts: [
+        { label: "Role", value: "Product, design and build" },
+        { label: "Context", value: "Personal project, daily use" },
+        { label: "Stack", value: "Next.js · TypeScript · Supabase" },
+        { label: "Status", value: "In use, restricted access" },
+      ],
+    },
+    {
+      category: "Roblox game",
+      description:
+        "My Roblox game: players build their own toy factory, print, collect and sell figures in the in-game marketplace.",
+      overview: [
+        "Print Your Toy is my Roblox game. Easy to explain and fun to play: you start with one printer and an empty plot and build your own toy factory.",
+        "Every printed figure goes into your inventory. You can collect them, set up your own shop and list figures for other players in the game's marketplace.",
+        "The interface, icons and artwork were created with AI and assembled in Roblox Studio.",
+      ],
+      highlights: [
+        { title: "A factory that grows", body: "Printers, land and shop evolve as the player sells." },
+        { title: "Collection and rarity", body: "Figures with rarity, an inventory and their own showcase." },
+        { title: "Player marketplace", body: "Everyone lists and sells the figures they already own." },
+      ],
+      facts: [
+        { label: "Role", value: "Game design, art and code" },
+        { label: "Context", value: "Personal project" },
+        { label: "Stack", value: "Roblox Studio · Luau" },
+        { label: "Status", value: "In development" },
       ],
     },
     {
@@ -805,6 +844,7 @@ export const conteudoEn: Profundo<Conteudo> = {
     overviewLabel: "The project",
     highlightsLabel: "What it solves",
     galleryLabel: "Screens",
+    featuresLabel: "The tools, one by one",
     factsLabel: "Details",
     nextLabel: "Next project",
   },
