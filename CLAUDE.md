@@ -141,6 +141,8 @@ nunca aplicam e o componente sai claro.
   uso). As fotos vêm de `public/sobre/` em ordem de nome: a 1ª é o retrato grande (4:5), a 2ª e a
   3ª ficam sobrepostas (4:3). **Hoje são PROVISÓRIAS** (recorte da foto do hero + duas telas do
   trabalho): trocar pelos arquivos reais mantendo os prefixos `01-`, `02-`, `03-`.
+- **Feitos: faixa horizontal presa ao scroll, igual aos Projetos** (pedido dele, 26/11/2026; era
+  carrossel automático). O `Carousel.tsx` continua em uso pelos Certificados.
 - **Feitos: vídeo dentro do site, nunca em player à parte** (pedido explícito). O card mostra a
   capa `public/feitos-capas/<slug>.webp` (quadro do meio do 1º vídeo, tirado com ffmpeg; fica
   FORA de `public/feitos/` para não virar item da galeria) e o próprio vídeo toca mudo no hover

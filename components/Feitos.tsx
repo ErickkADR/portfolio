@@ -4,11 +4,9 @@ import { useRef, useState } from "react";
 
 import { useConteudo } from "@/lib/idioma";
 import type { Feito } from "@/lib/content";
-import { asset } from "@/lib/asset";
 import type { MediaFile } from "@/lib/media";
-import RevealText from "./RevealText";
+import { gsap, useGSAP } from "@/lib/gsap";
 import MediaViewer from "./MediaViewer";
-import Carousel from "./Carousel";
 import FeitoDetalhe from "./FeitoDetalhe";
 import PreviaFeito from "./PreviaFeito";
 
@@ -49,8 +47,10 @@ type Props = {
 };
 
 export default function Feitos({ media, capas }: Props) {
-  const { feitos, ui } = useConteudo();
+  const { feitos, ui, projectsSection } = useConteudo();
   const ref = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLUListElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
   const [aberto, setAberto] = useState<{
     slug: string;
     title: string;
@@ -67,114 +67,142 @@ export default function Feitos({ media, capas }: Props) {
 
   const arquivos = aberto ? media[aberto.slug] ?? [] : [];
 
+  const total = feitos.groups.reduce((n, g) => n + g.items.length, 0);
+
+  /* FAIXA HORIZONTAL PRESA AO SCROLL (26/11/2026), o mesmo esquema dos
+     Projetos, a pedido dele: a seção fica parada e o scroll vertical vira
+     o X da pista; a próxima seção só chega depois do último feito. Era um
+     carrossel que andava sozinho. Sem movimento (reduced-motion), a pista
+     vira faixa com scroll lateral nativo. */
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const track = trackRef.current!;
+        const distancia = () =>
+          Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top top",
+            end: () => `+=${distancia()}`,
+            pin: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+          },
+        });
+        tl.to(track, { x: () => -distancia(), ease: "none" }, 0);
+        tl.fromTo(barRef.current, { scaleX: 0 }, { scaleX: 1, ease: "none" }, 0);
+      });
+      return () => mm.revert();
+    },
+    { scope: ref }
+  );
+
   return (
     <section
       ref={ref}
       id="cargo-atual"
-      className="border-t border-bone/10 py-32 sm:py-44"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden border-t border-bone/10 py-10 motion-reduce:py-32"
     >
-      <div className="shell shell-narrow">
-        <div className="section-head">
-          <span className="mono-label">{feitos.label}</span>
-
-          <RevealText
-            as="h2"
-            className="display mt-4 text-[clamp(2.4rem,6vw,4.5rem)]"
-          >
+      <div className="shell flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
+        <div className="max-w-2xl">
+          <span className="mono-label">
+            {feitos.label} · {total.toString().padStart(2, "0")}
+          </span>
+          <h2 className="display mt-3 text-[clamp(1.9rem,4vw,3.4rem)] leading-[1.02]">
             {feitos.title}
-          </RevealText>
-
-          <p className="mx-auto mt-6 max-w-xl leading-relaxed text-bone-dim">
+          </h2>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-bone-dim sm:text-base">
             {feitos.intro}
           </p>
         </div>
+        <p className="mono-label flex items-center gap-3 motion-reduce:hidden">
+          {projectsSection.scrollHint}
+          <span aria-hidden="true" className="inline-block animate-pulse">→</span>
+        </p>
+      </div>
 
-        {/* UM carrossel para tudo, na ordem em que os grupos aparecem no
-            content.ts. Antes era um por grupo, e a pessoa precisava
-            arrastar três pistas separadas para ver o conjunto. O grupo
-            não se perdeu: virou o rótulo no topo de cada card, então dá
-            para saber de onde o feito veio sem um cabeçalho por bloco. */}
-        <Carousel label="Feitos na Bannerjet" className="mt-16" auto>
-          {feitos.groups.flatMap((grupo) =>
-            grupo.items.map((item) => {
-              const files = media[item.slug] ?? [];
-              const capa = files.find((f) => f.kind === "image");
-              const video = files.find((f) => f.kind === "video");
+      <ul
+        ref={trackRef}
+        aria-label={feitos.title}
+        className="mt-8 flex w-max gap-5 px-[var(--gutter)] will-change-transform motion-reduce:w-auto motion-reduce:overflow-x-auto motion-reduce:pb-6 lg:gap-7"
+      >
+        {feitos.groups.flatMap((grupo) =>
+          grupo.items.map((item) => {
+            const files = media[item.slug] ?? [];
+            const capa = files.find((f) => f.kind === "image");
+            const video = files.find((f) => f.kind === "video");
 
-              return (
-                  <li
-                    key={item.slug}
-                    className="carousel-slide group relative flex snap-start flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-bone/25 hover:border-plasma/40"
-                  >
-                    <PreviaFeito
-                      capa={capa?.src ?? capas[item.slug] ?? null}
-                      video={video?.src ?? null}
-                      title={item.title}
-                      onOpen={() => setFicha({ item, grupo: grupo.group })}
-                    />
+            return (
+              <li
+                key={item.slug}
+                className="group relative flex w-[82vw] shrink-0 flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50 sm:w-[60vw] lg:w-[36vw] xl:w-[28rem] [@media(max-height:820px)]:lg:w-[24rem]"
+              >
+                <PreviaFeito
+                  capa={capa?.src ?? capas[item.slug] ?? null}
+                  video={video?.src ?? null}
+                  title={item.title}
+                  onOpen={() => setFicha({ item, grupo: grupo.group })}
+                />
 
-                    <div className="flex flex-1 flex-col p-7 lg:p-8">
-                      {/* O grupo virou rótulo do card quando os três
-                          carrosséis viraram um só. */}
-                      <span className="mono-label text-plasma">
-                        {grupo.group}
-                      </span>
+                <div className="flex flex-1 flex-col p-5 lg:p-6">
+                  <span className="mono-label text-plasma">{grupo.group}</span>
 
-                      <h4 className="display mt-3 text-xl leading-tight lg:text-2xl">
-                        {/* O `::after` cobre o card inteiro: é ele que
-                            recebe o clique e o foco por teclado. */}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setFicha({ item, grupo: grupo.group })
-                          }
-                          className="text-left transition-colors duration-500 after:absolute after:inset-0 after:z-10 after:content-[''] group-hover:text-plasma"
-                        >
-                          {item.title}
-                        </button>
-                      </h4>
+                  <h3 className="display mt-2 text-xl leading-tight lg:text-2xl">
+                    {/* O `::after` cobre o card inteiro: abre a ficha. */}
+                    <button
+                      type="button"
+                      onClick={() => setFicha({ item, grupo: grupo.group })}
+                      className="text-left transition-colors duration-500 after:absolute after:inset-0 after:z-10 after:content-[''] group-hover:text-plasma"
+                    >
+                      {item.title}
+                    </button>
+                  </h3>
 
-                      <p className="mt-4 line-clamp-4 text-sm leading-relaxed text-bone-dim">
-                        {item.body}
-                      </p>
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-bone-dim">
+                    {item.body}
+                  </p>
 
-                      <ul className="mt-5 flex flex-wrap gap-1.5">
-                        {item.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className="rounded-full border border-bone/15 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
-                          >
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
+                  <ul className="mt-3 flex flex-wrap gap-1.5">
+                    {item.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded-full border border-bone/15 px-2.5 py-1 text-[0.6875rem] tracking-wide text-bone-dim"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
 
-                      <div className="relative z-20 mt-auto pt-7">
-                        {files.length > 0 ? (
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setFicha({ item, grupo: grupo.group })
-                            }
-                            className="mono-label inline-flex items-center gap-3 rounded-full border border-bone/20 px-5 py-2.5 transition-colors duration-500 hover:border-plasma hover:text-plasma"
-                          >
-                            {feitos.mediaLabel}
-                            <span aria-hidden="true">
-                              {files.length} {ui.itens[files.length === 1 ? 0 : 1]}
-                            </span>
-                          </button>
-                        ) : (
-                          <span className="mono-label opacity-60">
-                            {feitos.mediaEmpty}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </li>
-              );
-            })
-          )}
-        </Carousel>
+                  <div className="relative z-20 mt-auto pt-5">
+                    {files.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => setFicha({ item, grupo: grupo.group })}
+                        className="mono-label inline-flex items-center gap-3 rounded-full border border-bone/20 px-4 py-2 transition-colors duration-500 hover:border-plasma hover:text-plasma"
+                      >
+                        {feitos.mediaLabel}
+                        <span aria-hidden="true">
+                          {files.length} {ui.itens[files.length === 1 ? 0 : 1]}
+                        </span>
+                      </button>
+                    ) : (
+                      <span className="mono-label opacity-60">{feitos.mediaEmpty}</span>
+                    )}
+                  </div>
+                </div>
+              </li>
+            );
+          })
+        )}
+      </ul>
+
+      <div className="shell mt-8 motion-reduce:hidden">
+        <div className="h-px w-full bg-bone/12">
+          <span ref={barRef} className="block h-full w-full origin-left bg-plasma" />
+        </div>
       </div>
 
       {ficha && (
