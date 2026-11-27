@@ -134,12 +134,47 @@ export const conteudoEn: Profundo<Conteudo> = {
               "with its source.",
           },
           {
+            title: "Video tutorials per machine",
+            body:
+              "Each machine has its own list of tutorials in the Central, from camera alignment to blade replacement. The technician sends the link to the right step instead of explaining in writing.",
+          },
+          {
+            title: "Manual library",
+            body:
+              "Every manual organised by equipment line, with cover, summary and download. They open like a book, page by page, right on the site.",
+          },
+          {
+            title: "Jet Notes",
+            body:
+              "A technical notes editor inside the Central, Notion style: the technician records the fix that worked, like the A3 Pro Max offset, and the note stays for the whole team.",
+          },
+          {
+            title: "Plotter helpers",
+            body:
+              "Firmware, error tables and ready-to-cut test files in one place, sorted by machine.",
+          },
+          {
+            title: "School label builder",
+            body:
+              "The customer picks a theme, types the name and builds the label kit in the browser. Out comes a ready file, and the video shows the plotter cutting the real sheet.",
+          },
+          {
             title: "Jet IA, WhatsApp support chatbot",
             body:
               "A RAG chatbot in production serving real customers: n8n orchestrating " +
               "the flows, Supabase holding the embeddings and Callbell as the " +
               "channel. A mistake here has a real cost, so every change to the " +
               "knowledge base is tested by hand before it counts.",
+          },
+          {
+            title: "Jet IA's n8n workflow",
+            body:
+              "Behind every answer: the flow that receives the message, understands the request, searches the knowledge base and decides whether to answer, send a manual, book a session or call a technician.",
+          },
+          {
+            title: "Jet IA knowledge base",
+            body:
+              "The customer's question becomes a vector and is compared against more than 2,000 passages from manuals, reports and videos in Supabase. The AI only answers with what the search found.",
           },
           {
             title: "A3 line installation portal",
@@ -152,11 +187,40 @@ export const conteudoEn: Profundo<Conteudo> = {
           {
             title: "ERP Technical Module",
             body:
-              "Built together with Victor Rocha, who created the project. I built the " +
-              "Service Panel: the overview of technical service calls, the team and " +
-              "the week's schedule. And I brought Jet IA inside the module, giving " +
-              "every employee access to the company's technical knowledge without " +
-              "having to ask someone.",
+              "Built together with Victor Rocha, who created the project. The activity " +
+              "screen shows who on the team is online and on which screen, with the " +
+              "notifications and the week's service panel. The other ERP cards show " +
+              "each module I built inside it.",
+          },
+          {
+            title: "Parts inventory in the ERP",
+            body:
+              "Every part with photo, code, price and quantity per branch, read straight from the stock system. The technician checks the part is there before promising the customer a date.",
+          },
+          {
+            title: "Remote support scheduler",
+            body:
+              "Each technician's week on one screen: time slot, customer, machine and the reported problem, with the call link and the closing note recorded on the card itself. 2,639 sessions organised here.",
+          },
+          {
+            title: "Service order, step by step",
+            body:
+              "A machine coming in for repair gets a timeline: intake invoice, transit, lab, diagnosis, quote, approval, repair and delivery. The customer sees in the app exactly where it is.",
+          },
+          {
+            title: "Equipment inspection checklist",
+            body:
+              "Every machine arriving from import goes through a photo checklist: packaging, serial number, accessories and damage. What used to be noted on paper became a record with proof.",
+          },
+          {
+            title: "Jet IA results inside the ERP",
+            body:
+              "Question volume, what the AI solved on its own, what went to a technician and what became a booking, by day, week or month. Management follows the AI's return without asking for a report.",
+          },
+          {
+            title: "Service supervision",
+            body:
+              "An attention ranking per team member: waiting time, SLA, average time and open priority, by team. It shows where customers are waiting before it turns into a complaint.",
           },
           {
             title: "Equipment screen prototypes",
@@ -192,10 +256,14 @@ export const conteudoEn: Profundo<Conteudo> = {
           {
             title: "AI service supervisor",
             body:
-              "It watches the whole queue: finds customers left without an answer and " +
-              "alerts the technician, moves stalled conversations along and tells the " +
-              "customer when the technician is away, at lunch or after hours. Nobody " +
-              "waits without knowing.",
+              "It watches the whole queue: when a customer joins the call and no " +
+              "technician shows up, the AI alerts support with top priority and moves " +
+              "the stalled conversation along. Nobody waits without knowing.",
+          },
+          {
+            title: "Lunch and return notice",
+            body:
+              "When the technician goes to lunch or the day ends, the AI tells the customer right away and says when service resumes. The conversation is never left hanging.",
           },
           {
             title: "Training and installation chatbot",
@@ -259,12 +327,27 @@ export const conteudoEn: Profundo<Conteudo> = {
               "how the machine is doing.",
           },
           {
-            title: "Callbell service flows",
+            title: "Automatic triage on Callbell",
             body:
               "The flowchart became real service: 15 flows in Callbell, one per " +
               "equipment line, with triage, registration, step-by-step installation " +
               "and hand-off to the right technician. Over 3,000 blocks running before " +
               "anyone needs to join the conversation.",
+          },
+          {
+            title: "Sheet plotter installation flow",
+            body:
+              "The customer picks the A3 line model and the flow walks them through installation step by step, with the manual and the video for each stage.",
+          },
+          {
+            title: "Laser machines flow",
+            body:
+              "Fiber, CO2 and welding: the customer picks the machine by its photo and lands in the right training and support for it.",
+          },
+          {
+            title: "Parts sales reception",
+            body:
+              "The parts and supplies channel gets the customer already registered and with the order category set, before a salesperson joins the conversation.",
           },
           {
             title: "AI that learns from the technicians",

@@ -196,6 +196,41 @@ const feitosGrupos: FeitoGrupo[] = [
         tags: ["Portal", "Chatbot", "Base de conhecimento"],
       },
       {
+        slug: "central-tutoriais",
+        title: "Tutoriais em vídeo por equipamento",
+        body:
+          "Cada máquina tem a sua lista de tutoriais na Central, do alinhamento da câmera à troca de lâmina. O técnico manda o link do passo certo em vez de explicar por escrito.",
+        tags: ["Vídeo", "Central Técnica"],
+      },
+      {
+        slug: "central-manuais",
+        title: "Biblioteca de manuais",
+        body:
+          "Todos os manuais organizados por linha de equipamento, com capa, resumo e download. Abrem como um livro, página por página, no próprio site.",
+        tags: ["Manuais", "Central Técnica"],
+      },
+      {
+        slug: "central-jet-notes",
+        title: "Jet Notes",
+        body:
+          "Editor de notas técnicas dentro da Central, no estilo do Notion: o técnico registra o ajuste que funcionou, como o offset da A3 Pro Max, e a nota fica para o time inteiro.",
+        tags: ["Notas", "Editor"],
+      },
+      {
+        slug: "central-auxilios",
+        title: "Auxílios para plotter",
+        body:
+          "Firmwares, tabela de erros e arquivos de corte prontos para teste, num lugar só e separados por equipamento.",
+        tags: ["Firmware", "Plotter"],
+      },
+      {
+        slug: "central-etiquetas",
+        title: "Montador de etiquetas escolares",
+        body:
+          "O cliente escolhe o tema, escreve o nome e monta o kit de etiquetas no navegador. Sai o arquivo pronto, e o vídeo mostra a plotter cortando a folha de verdade.",
+        tags: ["Ferramenta", "Plotter", "Canvas"],
+      },
+      {
         slug: "jet-ia-whatsapp",
         title: "Jet IA, chatbot de suporte no WhatsApp",
         destaque: true,
@@ -205,6 +240,20 @@ const feitosGrupos: FeitoGrupo[] = [
           "como canal. Erro aqui tem custo real, então cada mudança na base passa " +
           "por teste manual antes de valer.",
         tags: ["RAG", "n8n", "Supabase", "Callbell"],
+      },
+      {
+        slug: "jet-ia-workflow-n8n",
+        title: "O fluxo da Jet IA no n8n",
+        body:
+          "Por trás de cada resposta: o fluxo que recebe a mensagem, entende o pedido, consulta a base e decide se responde, manda manual, agenda ou chama um técnico.",
+        tags: ["n8n", "Automação"],
+      },
+      {
+        slug: "jet-ia-base-conhecimento",
+        title: "Base de conhecimento da Jet IA",
+        body:
+          "A pergunta do cliente vira vetor e é comparada com mais de 2 mil trechos de manuais, laudos e vídeos no Supabase. A IA só responde com o que a busca achou.",
+        tags: ["Supabase", "Embeddings", "RAG"],
       },
       {
         slug: "portal-licencas-a3",
@@ -220,12 +269,53 @@ const feitosGrupos: FeitoGrupo[] = [
         slug: "erp-modulo-tecnico",
         title: "ERP Módulo Técnico",
         body:
-          "Desenvolvido em conjunto com o Victor Rocha, criador do projeto. " +
-          "Construí o Painel de Atendimentos: a visão geral dos atendimentos " +
-          "técnicos, da equipe e da agenda da semana. E levei a Jet IA para dentro " +
-          "do módulo, dando a todo colaborador acesso ao conhecimento técnico e às " +
-          "informações da empresa sem precisar perguntar a alguém.",
+          "Desenvolvido em conjunto com o Victor Rocha, criador do projeto. A tela " +
+          "de atividade mostra quem da equipe está online e em qual tela, com as " +
+          "notificações e o painel de atendimentos da semana. Os outros cards do " +
+          "ERP mostram cada módulo que eu construí lá dentro.",
         tags: ["Dashboard", "Supabase", "Jet IA"],
+      },
+      {
+        slug: "erp-estoque",
+        title: "Estoque de peças no ERP",
+        body:
+          "Cada peça com foto, código, preço e quantidade por filial, lida direto do sistema de estoque. O técnico confere se tem a peça antes de prometer prazo ao cliente.",
+        tags: ["Estoque", "Supabase"],
+      },
+      {
+        slug: "erp-suporte-remoto",
+        title: "Agenda do suporte remoto",
+        body:
+          "A semana de cada técnico numa tela: horário, cliente, equipamento e o problema relatado, com o link da chamada e o encerramento registrado no próprio card. Foram 2.639 atendimentos organizados aqui.",
+        tags: ["Agenda", "Google Meet", "ERP"],
+      },
+      {
+        slug: "erp-assistencia-tecnica",
+        title: "Ordem de serviço etapa por etapa",
+        body:
+          "A máquina que entra na assistência ganha uma linha do tempo: nota de entrada, trânsito, laboratório, diagnóstico, orçamento, aprovação, manutenção e entrega. O cliente vê pelo app em que ponto ela está.",
+        tags: ["Assistência técnica", "App", "ERP"],
+      },
+      {
+        slug: "erp-conferencia",
+        title: "Conferência de equipamentos com checklist",
+        body:
+          "Todo equipamento que chega da importação passa por um checklist com foto: embalagem, número de série, acessórios e avarias. O que antes era anotado em papel virou registro com prova.",
+        tags: ["Importação", "Checklist", "ERP"],
+      },
+      {
+        slug: "erp-jet-ia-resultados",
+        title: "Resultados da Jet IA dentro do ERP",
+        body:
+          "O volume de perguntas, o que a IA resolveu sozinha, o que foi para um técnico e o que gerou agendamento, por dia, semana ou mês. A gestão acompanha o retorno da IA sem pedir relatório.",
+        tags: ["Jet IA", "Dashboard"],
+      },
+      {
+        slug: "erp-supervisao-atendimentos",
+        title: "Supervisão de atendimentos",
+        body:
+          "Ranking de atenção por colaborador: tempo de espera, SLA, tempo médio e prioridade em aberto, por equipe. Mostra onde o cliente está esperando antes de virar reclamação.",
+        tags: ["Supervisão", "SLA", "Dashboard"],
       },
       {
         slug: "prototipos-equipamentos",
@@ -268,11 +358,17 @@ const feitosGrupos: FeitoGrupo[] = [
         slug: "ia-supervisora",
         title: "IA supervisora de atendimentos",
         body:
-          "Vigia a fila inteira: encontra cliente sem resposta e avisa o técnico, " +
-          "transfere conversa parada e informa o cliente quando o técnico está fora, " +
-          "no horário de almoço ou no fim do expediente. Ninguém fica esperando " +
-          "sem saber.",
+          "Vigia a fila inteira: quando o cliente entra na chamada e nenhum técnico " +
+          "aparece, a IA avisa o suporte com prioridade máxima e transfere a " +
+          "conversa parada. Ninguém fica esperando sem saber.",
         tags: ["Monitoramento", "n8n"],
+      },
+      {
+        slug: "ia-aviso-ausencia",
+        title: "Aviso de almoço e de volta",
+        body:
+          "Se o técnico sai para o almoço ou o expediente acaba, a IA avisa o cliente na hora e diz quando o atendimento volta. A conversa não fica no vácuo.",
+        tags: ["WhatsApp", "n8n"],
       },
       {
         slug: "chatbot-treinamento",
@@ -354,13 +450,34 @@ const feitosGrupos: FeitoGrupo[] = [
       },
       {
         slug: "bots-callbell",
-        title: "Fluxos de atendimento na Callbell",
+        title: "Triagem automática na Callbell",
         body:
           "O fluxograma virou atendimento de verdade: 15 fluxos na Callbell, um " +
           "por linha de equipamento, com triagem, cadastro, instalação passo a " +
           "passo e transferência para o técnico certo. São mais de 3 mil blocos " +
           "rodando antes de qualquer pessoa precisar entrar na conversa.",
         tags: ["Callbell", "Bot", "Processo"],
+      },
+      {
+        slug: "callbell-cortes-em-folhas",
+        title: "Fluxo de instalação das plotters de folha",
+        body:
+          "O cliente escolhe o modelo da linha A3 e o fluxo conduz a instalação passo a passo, com o manual e os vídeos de cada etapa.",
+        tags: ["Callbell", "Instalação"],
+      },
+      {
+        slug: "callbell-lasers",
+        title: "Fluxo das máquinas a laser",
+        body:
+          "Fibra, CO2 e solda: o cliente aponta a máquina pela foto e cai no treinamento e no suporte certos para ela.",
+        tags: ["Callbell", "Laser"],
+      },
+      {
+        slug: "callbell-comercial-pecas",
+        title: "Recepção do comercial de peças",
+        body:
+          "O canal de peças e insumos já recebe o cliente cadastrado e com a categoria do pedido definida, antes de um vendedor entrar na conversa.",
+        tags: ["Callbell", "Comercial"],
       },
       {
         slug: "ia-aprende-tecnicos",

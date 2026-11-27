@@ -199,9 +199,16 @@ nunca aplicam e o componente sai claro.
   Sem PNG em `public/stack/`, aparece o nome numa pílula. Logos só de projeto (Vite, Three.js, Node.js, Remotion,
   Roblox Studio, Luau) ficam em `public/stack/` mas NÃO entram na parede (ela só mostra a lista do content.ts).
   Motion e Canvas ficaram sem logo de propósito: a do Framer e a do HTML5 seriam marcas erradas.
-- **Feitos: a capa de um feito é a 1ª IMAGEM da pasta `public/feitos/<slug>/`**, e só cai em `feitos-capas/` quando a
-  pasta não tem imagem. Nos protótipos a foto da máquina real ganhava; virou `02-...` e entrou
-  `00-prototipos-central.webp` (quadro do vídeo com a página de protótipos da Central).
+- **Feitos: UM VÍDEO POR CARD** (pedido dele: "não quero que um feito tenha vários dentro dele"). As pastas com
+  vários vídeos viraram um feito cada: ERP (7: atividade, estoque, suporte remoto, OS etapa por etapa, conferência,
+  resultados da Jet IA, supervisão), Central (6), Jet IA (3), Callbell (4), IA supervisora (2). São 39 cards. Saíram
+  do site o montador de adesivos e o de caixinhas (removidos da Central em 26/11), o vídeo de protótipos de dentro da
+  Central (já tem card) e o de manuais na Central (duplicado). Feito novo = pasta `public/feitos/<slug>/` com UM
+  arquivo + capa em `feitos-capas/<slug>.webp` + item no `content.ts` E no `content-en.ts` NA MESMA POSIÇÃO do grupo.
+- **Feitos: a capa é a 1ª IMAGEM da pasta `public/feitos/<slug>/`**, e só cai em `feitos-capas/` quando a pasta não
+  tem imagem. Hoje nenhuma pasta tem imagem: todas as capas vêm de `feitos-capas/`.
+- **Feitos: mesma margem e esfumaçado dos Projetos** (janela no `.shell` + `--fl`/`--fr`), e o rótulo do grupo
+  sem cor.
 - **Resultados: 12 números**, agora por setor (suporte remoto, agendamento pela IA, campo, laboratório, Academy,
   atualizações do ERP), com as consultas no comentário do `content.ts`. O `source` começa pelo setor.
 - **Logo do Derville: a original, não vetor.** A versão vetorizada (lobo traçado + letreiro em fonte) foi descartada por

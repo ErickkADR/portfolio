@@ -50,6 +50,7 @@ export default function Feitos({ media, capas }: Props) {
   const { feitos, ui, projectsSection } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
+  const janelaRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
   const [aberto, setAberto] = useState<{
     slug: string;
@@ -79,8 +80,17 @@ export default function Feitos({ media, capas }: Props) {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const track = trackRef.current!;
-        const distancia = () =>
-          Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
+        const janela = janelaRef.current!;
+        /* Mesma regra dos Projetos (27/11/2026): a pista corre dentro da
+           largura útil do .shell, e não da tela inteira, e esfuma só do
+           lado em que ainda há card escondido. Ver Projects.tsx. */
+        const distancia = () => Math.max(0, track.scrollWidth - janela.clientWidth);
+        const FADE = 72;
+        const esfumar = (progresso: number) => {
+          janela.style.setProperty("--fl", `${Math.min(1, progresso * 12) * FADE}px`);
+          janela.style.setProperty("--fr", `${Math.min(1, (1 - progresso) * 12) * FADE}px`);
+        };
+        esfumar(0);
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: ref.current,
@@ -90,6 +100,7 @@ export default function Feitos({ media, capas }: Props) {
             scrub: 0.6,
             invalidateOnRefresh: true,
             anticipatePin: 1,
+            onUpdate: (self) => esfumar(self.progress),
           },
         });
         tl.to(track, { x: () => -distancia(), ease: "none" }, 0);
@@ -124,10 +135,21 @@ export default function Feitos({ media, capas }: Props) {
         </p>
       </div>
 
+      <div className="shell mt-8 w-full">
+        <div
+          ref={janelaRef}
+          className="overflow-hidden motion-reduce:overflow-x-auto motion-reduce:pb-6"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent 0, #000 var(--fl, 0px), #000 calc(100% - var(--fr, 0px)), transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0, #000 var(--fl, 0px), #000 calc(100% - var(--fr, 0px)), transparent 100%)",
+          }}
+        >
       <ul
         ref={trackRef}
         aria-label={feitos.title}
-        className="mt-8 flex w-max gap-5 px-[var(--gutter)] will-change-transform motion-reduce:w-auto motion-reduce:overflow-x-auto motion-reduce:pb-6 lg:gap-7"
+        className="flex w-max gap-5 will-change-transform lg:gap-7"
       >
         {feitos.groups.flatMap((grupo) =>
           grupo.items.map((item) => {
@@ -148,7 +170,7 @@ export default function Feitos({ media, capas }: Props) {
                 />
 
                 <div className="flex flex-1 flex-col p-5 lg:p-6">
-                  <span className="mono-label text-plasma">{grupo.group}</span>
+                  <span className="mono-label">{grupo.group}</span>
 
                   <h3 className="display mt-2 text-xl leading-tight lg:text-2xl">
                     {/* O `::after` cobre o card inteiro: abre a ficha. */}
@@ -198,6 +220,8 @@ export default function Feitos({ media, capas }: Props) {
           })
         )}
       </ul>
+        </div>
+      </div>
 
       <div className="shell mt-8 motion-reduce:hidden">
         <div className="h-px w-full bg-bone/12">
