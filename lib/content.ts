@@ -29,6 +29,9 @@ export const nav = [
 
 export const hero = {
   greeting: "Olá, meu nome é",
+  /* Linha de controle no pé do hero, como a que a gráfica imprime na
+     margem da prova (tema pré-impressão). */
+  prova: "Prova de impressão 01 · do suporte técnico ao produto",
   /* Uma linha por parte do nome — elas sobem em cascata. */
   nameLines: ["Erick", "Dantas"],
   /* "Desenvolvedor Full-stack & IA" virou só "Desenvolvedor" a pedido
@@ -2088,6 +2091,10 @@ export const contact = {
    Ficam num bloco separado porque não são conteúdo (não descrevem o
    Erick nem o trabalho dele): são a mecânica da página. */
 export const ui = {
+  /* Selo dos Feitos no tema pré-impressão: cada feito é um chamado que
+     ele abriu na operação e fechou com um sistema. */
+  chamado: "Chamado",
+  resolvido: "Resolvido",
   copiarEmail: "Copiar e-mail",
   emailCopiado: "Copiado ✓",
   abrirEmail: "Abrir no e-mail →",

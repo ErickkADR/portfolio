@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
 import { asset } from "@/lib/asset";
 import { site } from "@/lib/content";
+import { LinhaCorte } from "./Prova";
 
 /* ============================================================
    PROJETOS — faixa horizontal presa ao scroll (26/11/2026).
@@ -126,11 +127,12 @@ export default function Projects() {
         aria-label={projectsSection.carouselLabel}
         className="flex w-max gap-5 will-change-transform lg:gap-7"
       >
-        {projects.map((p) => (
+        {projects.map((p, i) => (
           <li
             key={p.slug}
             className="group relative flex w-[82vw] shrink-0 flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50 sm:w-[60vw] lg:w-[36vw] xl:w-[30rem] [@media(max-height:820px)]:lg:w-[25rem]"
           >
+            <LinhaCorte gatilho="#projetos" atraso={Math.min(i, 4) * 0.15} />
             <div className="relative aspect-[16/9] overflow-hidden bg-ink-3">
               <img
                 src={asset(p.cover.src)}

@@ -9,6 +9,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import MediaViewer from "./MediaViewer";
 import FeitoDetalhe from "./FeitoDetalhe";
 import PreviaFeito from "./PreviaFeito";
+import { LinhaCorte } from "./Prova";
 
 /* ============================================================
    CARGO ATUAL — feitos na Bannerjet.
@@ -129,8 +130,11 @@ export default function Feitos({ media, capas }: Props) {
         aria-label={feitos.title}
         className="mt-8 flex w-max gap-5 px-[var(--gutter)] will-change-transform motion-reduce:w-auto motion-reduce:overflow-x-auto motion-reduce:pb-6 lg:gap-7"
       >
-        {feitos.groups.flatMap((grupo) =>
-          grupo.items.map((item) => {
+        {feitos.groups.flatMap((grupo, g) =>
+          grupo.items.map((item, i) => {
+            /* Número do chamado: posição do feito na pista inteira. */
+            const n =
+              feitos.groups.slice(0, g).reduce((t, gr) => t + gr.items.length, 0) + i + 1;
             const files = media[item.slug] ?? [];
             const capa = files.find((f) => f.kind === "image");
             const video = files.find((f) => f.kind === "video");
@@ -140,6 +144,10 @@ export default function Feitos({ media, capas }: Props) {
                 key={item.slug}
                 className="group relative flex w-[82vw] shrink-0 flex-col overflow-hidden rounded-2xl border border-bone/12 bg-ink-2 transition-colors duration-500 hover:border-plasma/50 sm:w-[60vw] lg:w-[36vw] xl:w-[28rem] [@media(max-height:820px)]:lg:w-[24rem]"
               >
+                {/* Linha de corte do plotter (tema pré-impressão): nasce
+                    quando a seção chega, um card depois do outro. */}
+                <LinhaCorte gatilho="#cargo-atual" atraso={Math.min(n - 1, 4) * 0.15} />
+
                 <PreviaFeito
                   capa={capa?.src ?? capas[item.slug] ?? null}
                   video={video?.src ?? null}
@@ -148,7 +156,17 @@ export default function Feitos({ media, capas }: Props) {
                 />
 
                 <div className="flex flex-1 flex-col p-5 lg:p-6">
-                  <span className="mono-label text-plasma">{grupo.group}</span>
+                  {/* Cada feito é um CHAMADO: algo que ele viu travar na
+                      operação e fechou com um sistema. O carimbo é a
+                      narrativa "do suporte ao produto" do tema. */}
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="mono-label">
+                      {ui.chamado} #{n.toString().padStart(4, "0")} · {grupo.group}
+                    </span>
+                    <span className="mono-label -rotate-3 rounded-sm border border-plasma/70 px-2 py-0.5 text-plasma">
+                      {ui.resolvido}
+                    </span>
+                  </div>
 
                   <h3 className="display mt-2 text-xl leading-tight lg:text-2xl">
                     {/* O `::after` cobre o card inteiro: abre a ficha. */}

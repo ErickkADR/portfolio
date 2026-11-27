@@ -203,6 +203,15 @@ nunca aplicam e o componente sai claro.
   arcos são traçados; o letreiro foi REDESENHADO com a fonte Graduate (Google Fonts, OFL) em curvas, porque o JPEG
   pequeno deixava as letras tortas. Com um original maior, refazer o lobo dá mais detalhe.
 
+## Proposta de tema "Pré-impressão" (branch `tema-pre-impressao`, 27/11/2026)
+
+Só nesta branch; o `main` segue preto e roxo até o Erick aprovar. Paleta de gráfica (preto de prensa, branco papel,
+`plasma` = magenta de processo, mais `ciano` e `amarelo`), e as peças de `components/Prova.tsx`: `Marcas` (marcas de
+corte), `Registro` (mira), `TiraCMYK` e `LinhaCorte` (contorno tracejado desenhado por máscara, 6px para dentro do card
+porque os cards têm overflow-hidden). Aplicado em: hero (marcas, retícula, linha de controle "Prova de impressão 01"),
+Feitos ("Chamado #0001 · Resolvido" + linha de corte), Projetos (linha de corte), Resultados (números em C/M/Y, tira de
+calibração, marcas) e Formação (marcas nos cartões).
+
 ## Deploy — o que derruba o site
 
 > **Produção é a Vercel** (push no `main` publica). O que segue vale para o espelho antigo do

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
+import { CMYK, Marcas, TiraCMYK } from "./Prova";
 
 /* Os números que antes ficavam soltos no fim da seção "Sobre" agora têm
    seção própria — e cada um diz de onde saiu. Número sem fonte em
@@ -66,6 +67,8 @@ export default function Metricas() {
           <p className="mx-auto mt-6 max-w-xl leading-relaxed text-bone-dim">
             {metricas.intro}
           </p>
+          {/* Tira de calibração: os números abaixo vêm nas cores dela. */}
+          <TiraCMYK className="mt-8 justify-center" />
         </div>
 
         {/* O número sozinho não convence: "628 blocos de conhecimento" é
@@ -78,8 +81,11 @@ export default function Metricas() {
             com o mesmo peso na grade. É o que mantém no ar um resultado
             real que ainda não foi medido, sem inventar cifra nem abrir um
             buraco na composição. */}
-        <dl className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2 lg:grid-cols-3">
-          {metricas.items.map((item) => (
+        <div className="relative mt-20">
+        {/* Marcas de corte: a grade é a "folha" de resultados. */}
+        <Marcas />
+        <dl className="grid gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/12 sm:grid-cols-2 lg:grid-cols-3">
+          {metricas.items.map((item, i) => (
             <div
               key={item.label}
               className="group flex flex-col bg-ink p-9 transition-colors duration-500 hover:bg-ink-2 lg:p-10"
@@ -90,7 +96,10 @@ export default function Metricas() {
                   <>
                     <span
                       data-count={item.value}
-                      className="display block text-[clamp(2.6rem,7vw,4.5rem)] leading-none text-plasma"
+                      className="display block text-[clamp(2.6rem,7vw,4.5rem)] leading-none"
+                      /* Ciano, magenta, amarelo, em rodízio (sem o K: preto
+                         no fundo preto não aparece). */
+                      style={{ color: CMYK[i % 3] }}
                     >
                       {item.value}
                     </span>
@@ -121,6 +130,7 @@ export default function Metricas() {
             </div>
           ))}
         </dl>
+        </div>
       </div>
     </section>
   );

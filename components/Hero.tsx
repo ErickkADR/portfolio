@@ -6,6 +6,7 @@ import { useConteudo } from "@/lib/idioma";
 import { getLogo } from "@/lib/logos";
 import { asset } from "@/lib/asset";
 import RippleDistortion from "./RippleDistortion";
+import { Marcas, Registro, TiraCMYK } from "./Prova";
 
 /* ============================================================
    HERO — a foto é o fundo, e o hover revela a versão androide.
@@ -125,7 +126,10 @@ export default function Hero({ photo, photoIA }: Props) {
             o alinhamento interno, que era à esquerda. `text-center` +
             `mx-auto` nos filhos: sem os dois, o texto centraliza mas as
             logos e o parágrafo ficam colados na borda. */}
-        <div className="w-full text-center lg:ml-auto lg:w-1/2 lg:max-w-xl">
+        <div className="relative w-full text-center lg:ml-auto lg:w-1/2 lg:max-w-xl lg:py-10">
+          {/* Marcas de corte em volta do bloco do nome: a "área útil" da
+              prova (tema pré-impressão). Só no desktop, onde há folga. */}
+          <Marcas afastar={0} tamanho={22} className="hidden lg:block" />
           <p className="hero-fade mono-label mb-3">{hero.greeting}</p>
 
           {/* O nome em caixa alta e apertado: é a única coisa nesta tela
@@ -224,7 +228,7 @@ export default function Hero({ photo, photoIA }: Props) {
                centralizado com faixa dos dois lados. */
             fit="contain"
             anchor={[0, 0.5]}
-            background="#07060b"
+            background="#0a0a0b"
             /* Onda LARGA e RASA. A primeira versão usava strength 0.16 e
                swirl 1.2: a imagem torcia tanto que a versão androide
                virava borrão e não se reconhecia nada dentro da mancha. O
@@ -239,10 +243,10 @@ export default function Hero({ photo, photoIA }: Props) {
             spacing={16}
             /* O roxo do site, de leve: mais que isso e a onda vira uma
                mancha lilás em vez de água pegando a luz. */
-            tint="#a855f7"
+            tint="#ff2e93"
             tintAmount={0.08}
             glint={0.12}
-            highlightColor="#cba6f7"
+            highlightColor="#ff8fc4"
             trigger="both"
             quality="medium"
           />
@@ -258,7 +262,25 @@ export default function Hero({ photo, photoIA }: Props) {
         </span>
       )}
 
+      {/* Retícula de meio-tom no lado do texto, sumindo em direção à foto:
+          a página parece impressa, não pintada (tema pré-impressão). */}
+      <div
+        aria-hidden="true"
+        className="reticula pointer-events-none absolute inset-0 z-[5] hidden opacity-70 [mask-image:radial-gradient(ellipse_60%_70%_at_78%_50%,black,transparent)] lg:block"
+      />
+
       {conteudo}
+
+      {/* Linha de controle da prova, no pé do hero: identificação do
+          trabalho à esquerda, tira de calibração e mira de registro à
+          direita. Some no celular, onde a faixa da foto já ocupa o topo. */}
+      <div className="shell pointer-events-none absolute inset-x-0 bottom-5 z-20 hidden items-center justify-between gap-6 sm:flex">
+        <span className="mono-label">{site.name} · {hero.prova}</span>
+        <span className="flex items-center gap-4 text-bone/50">
+          <TiraCMYK />
+          <Registro />
+        </span>
+      </div>
 
       {/* O aviso de que a imagem reage ao mouse. Some no primeiro hover
           em qualquer parte do hero. */}

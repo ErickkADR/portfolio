@@ -7,14 +7,23 @@
    um preto levemente arroxeado ele parece aceso.
    ============================================================ */
 
+/* TEMA PRÉ-IMPRESSÃO (proposta de 27/11/2026, branch tema-pre-impressao).
+   O preto deixa de puxar para o violeta e vira preto de prensa; o branco
+   vira papel (levemente quente); o acento roxo vira o MAGENTA de processo,
+   e entram ciano e amarelo para a tira de calibração e os números. O token
+   continua chamado `plasma` para não mexer em cada componente: no tema,
+   plasma = magenta. */
 @theme {
-  --color-ink: #07060b;
-  --color-ink-2: #0f0c17;
-  --color-ink-3: #181327;
-  --color-bone: #f2f0f7;
-  --color-bone-dim: #9c97ad;
-  --color-plasma: #a855f7;
-  --color-plasma-soft: #cba6f7;
+  --color-ink: #0a0a0b;
+  --color-ink-2: #131315;
+  --color-ink-3: #1d1d20;
+  --color-bone: #f3efe6;
+  --color-bone-dim: #a29e95;
+  --color-plasma: #ff2e93;
+  --color-plasma-soft: #ff8fc4;
+  --color-magenta: #ff2e93;
+  --color-ciano: #1cc4f2;
+  --color-amarelo: #ffe14a;
 
   --font-display: var(--font-display-face), system-ui, sans-serif;
   --font-body: var(--font-body-face), system-ui, sans-serif;
@@ -63,6 +72,14 @@ html.lenis body {
 ::selection {
   background: var(--color-plasma);
   color: var(--color-ink);
+}
+
+/* ---------- Retícula (meio-tom) ----------
+   Pontos de impressão sobre o fundo. `.reticula` é a camada: posicionar
+   absoluta por cima/atrás e dosar com opacity e mask. */
+.reticula {
+  background-image: radial-gradient(circle, color-mix(in oklab, var(--color-bone) 22%, transparent) 0.9px, transparent 1.25px);
+  background-size: 7px 7px;
 }
 
 /* ---------- Tipografia ---------- */

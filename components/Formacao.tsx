@@ -11,6 +11,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
 import RevealText from "./RevealText";
 import { asset } from "@/lib/asset";
+import { Marcas } from "./Prova";
 
 /* Ícone pequeno por tipo de formação — bolsa, curso técnico, graduação.
    `IconBook2` é o padrão para um tipo que ainda não foi mapeado, para a
@@ -81,6 +82,8 @@ export default function Formacao({ logos }: Props) {
           {background.items.map((item) => (
             <li key={item.title} className="formacao-card group">
               <div className="relative aspect-square rounded-2xl bg-white shadow-xl shadow-black/40 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5">
+                {/* Cartão branco = folha impressa: marcas de corte nos cantos. */}
+                <Marcas afastar={10} tamanho={14} />
                 {item.logo && logos[item.logo] ? (
                   <img
                     src={asset(logos[item.logo])}

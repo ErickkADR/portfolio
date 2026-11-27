@@ -43,6 +43,7 @@ export const conteudoEn: Profundo<Conteudo> = {
 
   hero: {
     greeting: "Hi, my name is",
+    prova: "Print proof 01 · from tech support to product",
     role: "Developer",
     photoAlt: "Erick Dantas",
     photoIAAlt: "The same portrait with the face replaced by an android head",
@@ -1071,6 +1072,8 @@ export const conteudoEn: Profundo<Conteudo> = {
     ],
   },
   ui: {
+    chamado: "Ticket",
+    resolvido: "Solved",
     copiarEmail: "Copy e-mail",
     emailCopiado: "Copied ✓",
     abrirEmail: "Open in mail app →",
