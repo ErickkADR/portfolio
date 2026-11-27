@@ -170,7 +170,7 @@ nunca aplicam e o componente sai claro.
 - **Formação: cartão QUADRADO BRANCO com a logo e, embaixo, período, título e texto** (pedido dele,
   26/11/2026; o baralho CardSwap saiu, o componente continua no repo sem uso). Logo em
   `public/formacao/<logo>.png`. O curso técnico foi na EMEFM Prof. Derville Allegretti (escola municipal, Santana); a logo ainda não veio: largar
-  `curso-tecnico.png` resolve. **Resolvido em 27/11/2026**: `public/formacao/curso-tecnico.svg` (a varredura aceita `.svg`).
+  `curso-tecnico.png` resolve. **Resolvido em 27/11/2026**: `public/formacao/curso-tecnico.png`, a logo ORIGINAL com o azul de fora do círculo trocado por branco (a varredura também aceita `.svg`).
 - **Projetos: Arise e Print Your Toy entraram** (26/11/2026). Telas do Arise tiradas com o login desviado
   só no dev (permissão dele) e o `proxy.ts` revertido; sem Início/Notas (finanças e notas pessoais).
   **Capa do Print Your Toy é PROVISÓRIA** (ícones do jogo + título): a oficial foi gerada no Magnific mas
@@ -204,9 +204,9 @@ nunca aplicam e o componente sai claro.
   `00-prototipos-central.webp` (quadro do vídeo com a página de protótipos da Central).
 - **Resultados: 12 números**, agora por setor (suporte remoto, agendamento pela IA, campo, laboratório, Academy,
   atualizações do ERP), com as consultas no comentário do `content.ts`. O `source` começa pelo setor.
-- **Logo do Derville vetorizada**: `scripts/derville/` (original 316px + `vet.py` com vtracer + `texto.cjs`). O lobo e os
-  arcos são traçados; o letreiro foi REDESENHADO com a fonte Graduate (Google Fonts, OFL) em curvas, porque o JPEG
-  pequeno deixava as letras tortas. Com um original maior, refazer o lobo dá mais detalhe.
+- **Logo do Derville: a original, não vetor.** A versão vetorizada (lobo traçado + letreiro em fonte) foi descartada por
+  ele: "não precisa ser svg, coloca só com o fundo branco". Ficou o JPEG original com o azul de fora do círculo virado
+  branco, ampliado 2x.
 
 ## Deploy — o que derruba o site
 
