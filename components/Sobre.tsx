@@ -41,10 +41,10 @@ import RevealText from "./RevealText";
 
 type Props = {
   /* As fotos de `public/sobre/`, em ordem de nome. A PRIMEIRA é a grande
-     (retrato, 4:5); as outras duas, menores e sobrepostas (4:3). Hoje
-     são PROVISÓRIAS (26/11/2026): um recorte da foto do hero e duas
-     telas do trabalho. Para trocar pelas fotos dele trabalhando, basta
-     substituir os arquivos mantendo a ordem dos nomes. */
+     (5:4, largura toda); as outras duas ficam lado a lado embaixo (3:4).
+     Desde 27/11/2026 são as reais: ele na mesa, o notebook na sala e a
+     fachada da sede. A legenda de cada uma é `sobre.photoAlts`, na mesma
+     ordem. */
   fotos: string[];
 };
 
@@ -172,33 +172,28 @@ export default function Sobre({ fotos }: Props) {
             pessoa e o trabalho, que é o que o crachá não mostrava. */}
         {fotos.length > 0 && (
           <div className="mt-16 lg:mt-0">
-            <div className="relative mx-auto max-w-md lg:sticky lg:top-24">
-              <div className="sobre-foto overflow-hidden rounded-2xl border border-bone/12 bg-ink-3">
-                <img
-                  src={asset(fotos[0])}
-                  alt={sobre.photoAlt}
-                  loading="lazy"
-                  decoding="async"
-                  draggable={false}
-                  className="aspect-[4/5] w-full object-cover"
-                />
-              </div>
-              {fotos.slice(1, 3).map((f, i) => (
+            {/* Mosaico em GRADE, sem sobreposição (27/11/2026). As duas
+                fotos menores ficavam por cima da grande e cobriam o rosto
+                dele; agora a grande ocupa a largura toda em 5:4 (âncora no
+                alto, para o quadro e o rosto entrarem inteiros) e as duas
+                retrato ficam lado a lado embaixo, em 3:4. */}
+            <div className="mx-auto grid max-w-md grid-cols-2 gap-3 lg:sticky lg:top-24">
+              {fotos.slice(0, 3).map((f, i) => (
                 <div
                   key={f}
-                  className={`sobre-foto absolute w-[58%] overflow-hidden rounded-xl border border-bone/20 bg-ink-3 shadow-2xl shadow-black/60 ${
-                    i === 0
-                      ? "-left-6 bottom-24 -rotate-3 sm:-left-12"
-                      : "-right-4 -bottom-10 rotate-2 sm:-right-10"
+                  className={`sobre-foto overflow-hidden border border-bone/12 bg-ink-3 ${
+                    i === 0 ? "col-span-2 rounded-2xl" : "rounded-xl"
                   }`}
                 >
                   <img
                     src={asset(f)}
-                    alt=""
+                    alt={sobre.photoAlts[i] ?? sobre.photoAlt}
                     loading="lazy"
                     decoding="async"
                     draggable={false}
-                    className="aspect-[4/3] w-full object-cover object-top"
+                    className={`w-full object-cover ${
+                      i === 0 ? "aspect-[5/4] object-top" : "aspect-[3/4] object-center"
+                    }`}
                   />
                 </div>
               ))}

@@ -52,6 +52,11 @@ export const conteudoEn: Profundo<Conteudo> = {
 
   sobre: {
     label: "About",
+    photoAlts: [
+      "Erick at his desk, with an automation flowchart open on the monitor",
+      "Laptop showing a results dashboard in a room with wide windows",
+      "Front of the Bannerjet Group headquarters",
+    ],
     title: "Who am I?",
     body: [
       "I work at the intersection of technology, artificial intelligence, " +

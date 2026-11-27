@@ -103,6 +103,12 @@ export const hero = {
 export const sobre = {
   label: "Sobre",
   photoAlt: "Erick Dantas",
+  /* Legenda de cada foto do Sobre, na ordem dos arquivos de public/sobre/. */
+  photoAlts: [
+    "Erick na mesa de trabalho, com um fluxograma de automação aberto no monitor",
+    "Notebook com um painel de resultados numa sala de janelas amplas",
+    "Fachada da sede da Bannerjet Group",
+  ],
   /* Título em primeira pessoa e como pergunta: a seção é a resposta.
      "Eu construo com IA" dizia o que ele faz, e isso já é o assunto do
      resto do site — aqui o que interessa é quem ele é. */

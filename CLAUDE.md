@@ -138,9 +138,10 @@ nunca aplicam e o componente sai claro.
 - **Hero sem descrição.** O parágrafo virou o primeiro do Sobre.
 - **Sobre: 3 parágrafos profissionais + mosaico de fotos.** A história de origem (4 anos, escola,
   APDADOS) saiu do Sobre: está na Carreira. O **crachá saiu** (o `Cracha.tsx` continua no repo sem
-  uso). As fotos vêm de `public/sobre/` em ordem de nome: a 1ª é o retrato grande (4:5), a 2ª e a
-  3ª ficam sobrepostas (4:3). **Hoje são PROVISÓRIAS** (recorte da foto do hero + duas telas do
-  trabalho): trocar pelos arquivos reais mantendo os prefixos `01-`, `02-`, `03-`.
+  uso). As fotos vêm de `public/sobre/` em ordem de nome. **Desde 27/11/2026 são as reais e o mosaico é
+  GRADE, sem sobreposição** (os cards sobrepostos cobriam o rosto dele): `01-mesa` (ele na mesa) em 5:4
+  na largura toda, ancorada no alto; `02-notebook` e `03-sede` (fachada) lado a lado embaixo, em 3:4.
+  Legendas em `sobre.photoAlts`, na mesma ordem (PT e EN).
 - **Feitos: faixa horizontal presa ao scroll, igual aos Projetos** (pedido dele, 26/11/2026; era
   carrossel automático). O `Carousel.tsx` continua em uso pelos Certificados.
 - **Feitos: vídeo dentro do site, nunca em player à parte** (pedido explícito). O card mostra a
