@@ -33,6 +33,7 @@ const KIND: Record<string, MediaKind> = {
   ".webp": "image",
   ".avif": "image",
   ".gif": "image",
+  ".svg": "image",
   ".mp4": "video",
   ".webm": "video",
   ".mov": "video",

@@ -6,6 +6,29 @@ import { useConteudo } from "@/lib/idioma";
 import RevealText from "@/components/RevealText";
 import FadeIn from "@/components/FadeIn";
 import SubpageNav from "@/components/SubpageNav";
+import StackTiles from "@/components/StackTiles";
+import { projects as projetosPT, stack, type StackItem } from "@/lib/content";
+
+/* Nome curto da ficha → nome do item na parede de Stack (é o nome que
+   vira o slug da logo em public/stack/). */
+const APELIDO: Record<string, string> = {
+  Tailwind: "Tailwind CSS",
+  Node: "Node.js",
+};
+
+/* As ferramentas do projeto saem da ficha "Stack" (em português: nome de
+   ferramenta não se traduz, e a ficha em inglês pode mudar o rótulo).
+   Cor e flag `branco` vêm do item da parede, quando ele existe lá. */
+function ferramentas(slug: string): StackItem[] {
+  const ficha = projetosPT
+    .find((p) => p.slug === slug)
+    ?.facts.find((f) => f.label === "Stack");
+  if (!ficha) return [];
+  return ficha.value.split("·").map((bruto) => {
+    const name = APELIDO[bruto.trim()] ?? bruto.trim();
+    return stack.items.find((i) => i.name === name) ?? { name };
+  });
+}
 
 /* ============================================================
    Página de um projeto: a parte que roda no cliente.
@@ -26,7 +49,13 @@ import SubpageNav from "@/components/SubpageNav";
    item funciona igual em PT e em EN.
    ============================================================ */
 
-export default function ProjetoView({ slug }: { slug: string }) {
+export default function ProjetoView({
+  slug,
+  logos,
+}: {
+  slug: string;
+  logos: Record<string, string>;
+}) {
   const { projects, projectPage, site } = useConteudo();
 
   const index = projects.findIndex((p) => p.slug === slug);
@@ -84,6 +113,16 @@ export default function ProjetoView({ slug }: { slug: string }) {
                 </a>
               )}
             </div>
+
+            {/* Mesma parede de logos da seção Stack da home (27/11/2026, pedido
+                dele): entrada em cascata e relevo no hover. Ferramenta sem
+                logo aparece pelo nome. */}
+            <StackTiles
+              items={ferramentas(slug)}
+              logos={logos}
+              semLogo="nome"
+              className="mt-12"
+            />
           </div>
         </header>
 

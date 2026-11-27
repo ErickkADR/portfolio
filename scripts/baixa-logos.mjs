@@ -75,6 +75,16 @@ const FONTES = {
   notion: { si: "notion", siCor: "ffffff" },
   miro: { si: "miro" },
   windows: { si: "windows" },
+
+  /* ---- Só nas páginas de projeto (27/11/2026) ----
+     Não entram na parede (ela só mostra o que está na lista do content.ts),
+     mas aparecem na fileira de ferramentas do topo de cada projeto. */
+  vite: { si: "vite" },
+  "three-js": { si: "threedotjs", siCor: "ffffff" },
+  "node-js": { si: "nodedotjs" },
+  remotion: { si: "remotion", siCor: "ffffff" },
+  "roblox-studio": { si: "robloxstudio" },
+  luau: { si: "luau" },
 };
 
 /* Segunda tentativa: o devicon.
@@ -88,6 +98,7 @@ const DEVICON = {
   photoshop: "photoshop/photoshop-original.svg",
   "vs-code": "vscode/vscode-original.svg",
   windows: "windows11/windows11-original.svg",
+  "three-js": "threejs/threejs-original.svg",
 };
 
 /* Terceira tentativa: URL direta. A do Codex é uma versão ANTIGA do

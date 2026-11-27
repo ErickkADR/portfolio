@@ -479,19 +479,28 @@ export const metricas: {
        select count(*) from garantias_bjcontrol;
        select count(*) from erp_produtos;
        select count(*) from laudos_gerados;
+     REVISTO EM 27/11/2026 e ampliado para os outros setores em que ele
+     atua (suporte remoto, campo, laboratório, treinamento, produto):
+       select count(*) from agenda_suporte_remoto where cancelado_em is null;
+       select count(distinct cliente) from agenda_suporte_remoto;
+       select count(*) from agenda_suporte_remoto where jetia_agendamento_id is not null;
+       select count(*), count(distinct cliente), count(distinct tecnico_id) from campo_reservas;
+       select count(*) from laboratorio_cards;  select count(*) from notion_sync_log;
+       select count(*) from quiz_questions;
+       select count(*), min(criado_em) from atualizacoes;
      Os antigos 50% / 65% / 200+ eram estimativa dele; saíram para dar
      lugar ao que dá para provar com uma consulta. */
   items: [
     {
-      value: "19.188",
+      value: "20.889",
       label: "acessos ao ERP e à Central Técnica em 6 semanas, por 36 pessoas",
       outcome:
         "Os sistemas que eu construí viraram a ferramenta de trabalho da equipe: abrem todo dia, várias vezes por dia, por técnicos, comercial e gestão.",
       source: "ERP Módulo Técnico · log de atividade",
     },
     {
-      value: "4.889",
-      label: "perguntas respondidas pela Jet IA, para 1.181 pessoas diferentes",
+      value: "5.035",
+      label: "perguntas respondidas pela Jet IA, para 1.215 pessoas diferentes",
       outcome:
         "Clientes no WhatsApp e colaboradores dentro do ERP recebem resposta técnica na hora, sem esperar um técnico ficar livre.",
       source: "Jet IA · WhatsApp + ERP",
@@ -511,18 +520,60 @@ export const metricas: {
       source: "Supabase · base da Jet IA",
     },
     {
-      value: "1.545",
+      value: "1.552",
       label: "produtos no catálogo do ERP, com fotos padronizadas por IA",
       outcome:
         "Catálogo inteiro com o mesmo padrão de foto profissional, tratado em lote, sem estúdio e sem semanas de edição manual.",
       source: "ERP Módulo Técnico · catálogo",
     },
     {
-      value: "147",
+      value: "164",
       label: "laudos técnicos gerados automaticamente a partir do atendimento",
       outcome:
         "O registro de cada atendimento deixou de depender de alguém lembrar de escrever, e cada laudo ainda ensina a IA um caso novo.",
       source: "ERP Módulo Técnico · laudos",
+    },
+    {
+      value: "2.639",
+      label: "atendimentos de suporte remoto organizados na agenda que eu criei, para 561 clientes",
+      outcome:
+        "O suporte remoto saiu da planilha e da memória de cada técnico: cada chamada tem horário, técnico, link do Meet e histórico do cliente num lugar só.",
+      source: "Suporte remoto · agenda do ERP",
+    },
+    {
+      value: "842",
+      label: "desses atendimentos foram marcados sozinhos pela Jet IA no WhatsApp",
+      outcome:
+        "O cliente explica o problema, a IA entende, acha o horário livre do técnico certo e confirma, sem ninguém da equipe parar o que está fazendo.",
+      source: "Atendimento · agendamento automático",
+    },
+    {
+      value: "990",
+      label: "visitas técnicas de campo na agenda dos 10 técnicos externos, para 746 clientes",
+      outcome:
+        "Reserva, deslocamento e pagamento de cada visita ficam registrados, e o histórico desde 2024 entrou no sistema em vez de ficar perdido.",
+      source: "Assistência em campo · agenda de campo",
+    },
+    {
+      value: "152",
+      label: "equipamentos acompanhados no laboratório, sincronizados com o Notion",
+      outcome:
+        "Entrada, diagnóstico, peças e saída de cada máquina aparecem no ERP e no Notion ao mesmo tempo: foram 4.744 sincronizações sem ninguém copiar nada à mão.",
+      source: "Laboratório · ERP + Notion",
+    },
+    {
+      value: "570",
+      label: "questões de prova nos cursos da Bannerjet Academy",
+      outcome:
+        "O treinamento dos técnicos virou trilha com prova e certificado, montada a partir dos manuais e dos casos reais de atendimento.",
+      source: "Treinamento · Bannerjet Academy",
+    },
+    {
+      value: "338",
+      label: "atualizações publicadas no ERP desde julho de 2026",
+      outcome:
+        "O sistema evolui toda semana a partir do que a equipe pede, e cada mudança é anunciada na tela inicial para quem usa.",
+      source: "Produto · atualizações do ERP",
     },
   ],
 };

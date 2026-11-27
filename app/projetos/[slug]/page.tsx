@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { projects, site } from "@/lib/content";
+import { arquivoPorSlug } from "@/lib/media";
 import ProjetoView from "./view";
 
 /* ============================================================
@@ -54,5 +55,7 @@ export default async function ProjectPage({
   const { slug } = await params;
   if (!projects.some((p) => p.slug === slug)) notFound();
 
-  return <ProjetoView slug={slug} />;
+  /* As logos da parede de Stack, para a fileira de ferramentas do topo.
+     `node:fs` só roda aqui, no servidor. */
+  return <ProjetoView slug={slug} logos={arquivoPorSlug("stack")} />;
 }

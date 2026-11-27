@@ -150,7 +150,7 @@ nunca aplicam e o componente sai claro.
   (`PreviaFeito.tsx`; no toque, quando 60% do card está na tela). A ficha (`FeitoDetalhe`) embute
   todos os vídeos com controles; o `MediaViewer` só abre imagem ampliada. Vídeo novo num feito
   sem capa: gerar a capa com ffmpeg (`-ss <metade> -frames:v 1`, 1280px, webp).
-- **Resultados: 6 números do banco**, cada um com a consulta no comentário do `content.ts`
+- **Resultados: 6 números do banco** (12 desde 27/11/2026, ver abaixo), cada um com a consulta no comentário do `content.ts`
   (atividade_usuarios, jetia_interacoes, garantias_bjcontrol, documents da Jet IA, erp_produtos,
   laudos_gerados). Os antigos 50%/65%/200+ eram estimativa e saíram. Tabelas vazias que NÃO servem
   de número: quiz_attempts, pecas, estoque_pecas, tecnicos, atendimentos. O contador do
@@ -165,7 +165,7 @@ nunca aplicam e o componente sai claro.
 - **Formação: cartão QUADRADO BRANCO com a logo e, embaixo, período, título e texto** (pedido dele,
   26/11/2026; o baralho CardSwap saiu, o componente continua no repo sem uso). Logo em
   `public/formacao/<logo>.png`. O curso técnico foi na EMEFM Prof. Derville Allegretti (escola municipal, Santana); a logo ainda não veio: largar
-  `curso-tecnico.png` resolve.
+  `curso-tecnico.png` resolve. **Resolvido em 27/11/2026**: `public/formacao/curso-tecnico.svg` (a varredura aceita `.svg`).
 - **Projetos: Arise e Print Your Toy entraram** (26/11/2026). Telas do Arise tiradas com o login desviado
   só no dev (permissão dele) e o `proxy.ts` revertido; sem Início/Notas (finanças e notas pessoais).
   **Capa do Print Your Toy é PROVISÓRIA** (ícones do jogo + título): a oficial foi gerada no Magnific mas
@@ -180,6 +180,28 @@ nunca aplicam e o componente sai claro.
   por linha, LinkedIn primeiro) e o nome em contorno como assinatura. A citação do Claude Code
   saiu. O `.display-accent` tem `text-shadow`, que é cortado num retângulo dentro de `.line-mask`:
   ali usa `[text-shadow:none]`.
+
+## Rodada de 27/11/2026
+
+- **Projetos: a pista corre dentro da margem do `.shell`** (div `janelaRef` com `overflow-hidden`), não de ponta a
+  ponta da tela, e esfuma nas bordas por `mask-image` com `--fl`/`--fr` atualizadas no `onUpdate` do ScrollTrigger:
+  só esfuma do lado em que ainda há card escondido. A distância do pin é `pista - janela`, não `pista - tela`.
+- **Projetos: card sem cor própria.** Filete e categoria eram `p.tint` e a faixa virava arco-íris; hoje é o roxo do
+  site em todos. O `tint` continua no conteúdo (página do projeto usa).
+- **Topo da página de projeto: os ladrilhos da Stack** (`components/StackTiles.tsx`, o mesmo componente da seção
+  Stack: entrada em cascata, relevo no hover, tooltip). As ferramentas saem da ficha `Stack` de cada projeto
+  (separadas por "·"); `APELIDO` no `view.tsx` traduz nome curto para o nome da parede ("Tailwind" → "Tailwind CSS").
+  Sem PNG em `public/stack/`, aparece o nome numa pílula. Logos só de projeto (Vite, Three.js, Node.js, Remotion,
+  Roblox Studio, Luau) ficam em `public/stack/` mas NÃO entram na parede (ela só mostra a lista do content.ts).
+  Motion e Canvas ficaram sem logo de propósito: a do Framer e a do HTML5 seriam marcas erradas.
+- **Feitos: a capa de um feito é a 1ª IMAGEM da pasta `public/feitos/<slug>/`**, e só cai em `feitos-capas/` quando a
+  pasta não tem imagem. Nos protótipos a foto da máquina real ganhava; virou `02-...` e entrou
+  `00-prototipos-central.webp` (quadro do vídeo com a página de protótipos da Central).
+- **Resultados: 12 números**, agora por setor (suporte remoto, agendamento pela IA, campo, laboratório, Academy,
+  atualizações do ERP), com as consultas no comentário do `content.ts`. O `source` começa pelo setor.
+- **Logo do Derville vetorizada**: `scripts/derville/` (original 316px + `vet.py` com vtracer + `texto.cjs`). O lobo e os
+  arcos são traçados; o letreiro foi REDESENHADO com a fonte Graduate (Google Fonts, OFL) em curvas, porque o JPEG
+  pequeno deixava as letras tortas. Com um original maior, refazer o lobo dá mais detalhe.
 
 ## Deploy — o que derruba o site
 

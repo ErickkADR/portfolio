@@ -33,6 +33,7 @@ export default function Projects() {
   const { projects, projectsSection } = useConteudo();
   const ref = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
+  const janelaRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
 
   useGSAP(
@@ -40,8 +41,20 @@ export default function Projects() {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const track = trackRef.current!;
-        const distancia = () =>
-          Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
+        const janela = janelaRef.current!;
+        /* A pista corre dentro da JANELA (a largura útil do .shell), não da
+           tela inteira: os cards respeitam a margem lateral do site. */
+        const distancia = () => Math.max(0, track.scrollWidth - janela.clientWidth);
+
+        /* Esfumaçado nas bordas da janela. Só aparece do lado em que ainda
+           há card escondido: no começo a borda esquerda é seca (o primeiro
+           card fica alinhado ao título), no fim é a direita. */
+        const FADE = 72;
+        const esfumar = (progresso: number) => {
+          janela.style.setProperty("--fl", `${Math.min(1, progresso * 12) * FADE}px`);
+          janela.style.setProperty("--fr", `${Math.min(1, (1 - progresso) * 12) * FADE}px`);
+        };
+        esfumar(0);
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -52,6 +65,7 @@ export default function Projects() {
             scrub: 0.6,
             invalidateOnRefresh: true,
             anticipatePin: 1,
+            onUpdate: (self) => esfumar(self.progress),
           },
         });
         tl.to(track, { x: () => -distancia(), ease: "none" }, 0);
@@ -92,10 +106,25 @@ export default function Projects() {
         </p>
       </div>
 
+      {/* A janela: mesma largura útil do título (.shell) e corta o que
+          passa dela, com o esfumaçado das variáveis --fl/--fr (ver acima).
+          Antes a pista ocupava a tela de ponta a ponta e os cards passavam
+          por cima da margem lateral. */}
+      <div className="shell mt-8 w-full">
+        <div
+          ref={janelaRef}
+          className="overflow-hidden motion-reduce:overflow-x-auto motion-reduce:pb-6"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent 0, #000 var(--fl, 0px), #000 calc(100% - var(--fr, 0px)), transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0, #000 var(--fl, 0px), #000 calc(100% - var(--fr, 0px)), transparent 100%)",
+          }}
+        >
       <ul
         ref={trackRef}
         aria-label={projectsSection.carouselLabel}
-        className="mt-8 flex w-max gap-5 px-[var(--gutter)] will-change-transform motion-reduce:w-auto motion-reduce:overflow-x-auto motion-reduce:pb-6 lg:gap-7"
+        className="flex w-max gap-5 will-change-transform lg:gap-7"
       >
         {projects.map((p) => (
           <li
@@ -116,15 +145,18 @@ export default function Projects() {
               <span className="mono-label absolute left-4 top-4 rounded-full bg-ink/75 px-3 py-1 backdrop-blur-md">
                 {p.index}
               </span>
+              {/* Filete no roxo do site, igual em todos (27/11/2026): cada
+                  card tinha a cor do próprio projeto e a faixa virava um
+                  arco-íris. O `tint` continua no conteúdo para a página do
+                  projeto. */}
               <span
                 aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-1"
-                style={{ background: p.tint }}
+                className="absolute inset-x-0 bottom-0 h-px bg-plasma/60"
               />
             </div>
 
             <div className="flex flex-1 flex-col p-5 lg:p-6">
-              <span className="mono-label" style={{ color: p.tint }}>
+              <span className="mono-label">
                 {p.category} · {p.year}
               </span>
               <h3 className="display mt-2 text-2xl leading-tight">
@@ -187,6 +219,8 @@ export default function Projects() {
           </a>
         </li>
       </ul>
+        </div>
+      </div>
 
       <div className="shell mt-8 motion-reduce:hidden">
         <div className="h-px w-full bg-bone/12">

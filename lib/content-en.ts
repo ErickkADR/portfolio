@@ -328,7 +328,7 @@ export const conteudoEn: Profundo<Conteudo> = {
         source: "ERP technical module · activity log",
       },
       {
-        label: "questions answered by Jet IA, for 1,181 different people",
+        label: "questions answered by Jet IA, for 1,215 different people",
         outcome:
           "Customers on WhatsApp and employees inside the ERP get a technical answer right away, without waiting for a free technician.",
         source: "Jet IA · WhatsApp + ERP",
@@ -356,6 +356,42 @@ export const conteudoEn: Profundo<Conteudo> = {
         outcome:
           "Recording each case no longer depends on someone remembering to write it, and every report teaches the AI a new case.",
         source: "ERP technical module · reports",
+      },
+      {
+        label: "remote support sessions organised in the scheduler I built, for 561 customers",
+        outcome:
+          "Remote support left spreadsheets and each technician's memory: every call has a time slot, a technician, a Meet link and the customer's history in one place.",
+        source: "Remote support · ERP scheduler",
+      },
+      {
+        label: "of those sessions were booked on their own by Jet IA on WhatsApp",
+        outcome:
+          "The customer explains the problem, the AI understands it, finds the right technician's free slot and confirms, without anyone on the team stopping what they are doing.",
+        source: "Customer service · automatic booking",
+      },
+      {
+        label: "field visits in the schedule of 10 field technicians, for 746 customers",
+        outcome:
+          "Booking, travel and payment for each visit are on record, and the history since 2024 moved into the system instead of getting lost.",
+        source: "Field service · field schedule",
+      },
+      {
+        label: "machines tracked in the repair lab, synced with Notion",
+        outcome:
+          "Intake, diagnosis, parts and release of each machine show up in the ERP and in Notion at the same time: 4,744 syncs with nobody copying anything by hand.",
+        source: "Repair lab · ERP + Notion",
+      },
+      {
+        label: "exam questions across the Bannerjet Academy courses",
+        outcome:
+          "Technician training became a track with exams and a certificate, built from the manuals and from real support cases.",
+        source: "Training · Bannerjet Academy",
+      },
+      {
+        label: "updates shipped to the ERP since July 2026",
+        outcome:
+          "The system evolves every week from what the team asks for, and each change is announced on the home screen to the people who use it.",
+        source: "Product · ERP updates",
       },
     ],
   },
