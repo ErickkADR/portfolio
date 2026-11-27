@@ -82,7 +82,9 @@ export default function Metricas() {
           {metricas.items.map((item) => (
             <div
               key={item.label}
-              className="group flex flex-col bg-ink p-9 transition-colors duration-500 hover:bg-ink-2 lg:p-10"
+              className={`group flex flex-col bg-ink p-9 transition-colors duration-500 hover:bg-ink-2 lg:p-10 ${
+                item.destaque ? "sm:col-span-2 lg:col-span-3" : ""
+              }`}
             >
               <dt className="sr-only">{item.label}</dt>
               <dd className="flex flex-1 flex-col">

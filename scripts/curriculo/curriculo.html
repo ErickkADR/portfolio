@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Erick Dantas · Currículo</title>
+<!-- Fonte do currículo em PDF do portfólio. Gerar com:
+     node scripts/curriculo/gera-pdf.mjs
+     Os dados são os mesmos do lib/content.ts (carreira, formação, resultados). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, Helvetica, Arial, sans-serif; color: #111; font-size: 9pt; line-height: 1.42; }
+  .folha { width: 210mm; min-height: 297mm; padding: 13mm 15mm 10mm; }
+  h1 { font-family: "Space Grotesk", Inter, sans-serif; font-size: 27pt; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+  .cargo { margin-top: 5px; font-size: 11pt; font-weight: 500; color: #333; }
+  .contato { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 8.6pt; color: #333; }
+  .contato a { color: #111; text-decoration: none; }
+  hr { border: 0; border-top: 1px solid #111; margin: 11px 0 0; }
+  h2 { font-family: "Space Grotesk", Inter, sans-serif; font-size: 8.4pt; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin: 11px 0 5px; }
+  p + p { margin-top: 4px; }
+  .grade { display: grid; grid-template-columns: 1fr 58mm; gap: 0 9mm; }
+  .item { margin-bottom: 8px; break-inside: avoid; }
+  .item .topo { display: flex; justify-content: space-between; gap: 8px; }
+  .item b { font-weight: 600; }
+  .item .quando { color: #555; white-space: nowrap; font-size: 8.4pt; }
+  .item .onde { color: #444; }
+  ul { padding-left: 13px; margin-top: 3px; }
+  li { margin-top: 1.5px; }
+  .numeros { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 10px; }
+  .numeros div { border-top: 1px solid #ccc; padding-top: 4px; }
+  .numeros strong { display: block; font-family: "Space Grotesk", Inter, sans-serif; font-size: 13pt; font-weight: 600; line-height: 1.1; }
+  .numeros span { font-size: 7.8pt; color: #444; line-height: 1.3; display: block; }
+  .lista { color: #222; }
+  .lateral .item { margin-bottom: 7px; }
+</style>
+</head>
+<body>
+<div class="folha">
+  <h1>Erick Dantas</h1>
+  <p class="cargo">Criador de Produto Técnico · Desenvolvedor com foco em IA e automação</p>
+  <div class="contato">
+    <span>São Paulo, Brasil</span>
+    <a href="mailto:erick.dantas.work@gmail.com">erick.dantas.work@gmail.com</a>
+    <a href="https://www.linkedin.com/in/erickkadr/">linkedin.com/in/erickkadr</a>
+    <a href="https://github.com/ErickkADR">github.com/ErickkADR</a>
+    <a href="https://erickdantas-portfolio.vercel.app">erickdantas-portfolio.vercel.app</a>
+  </div>
+  <hr>
+
+  <div class="grade">
+    <div>
+      <h2>Resumo</h2>
+      <p>Atuo na interseção entre tecnologia, inteligência artificial, automação e design. Na Bannerjet Group desenho e coloco em produção os sistemas que sustentam o suporte técnico da empresa: o chatbot com RAG que atende clientes no WhatsApp, o portal que reúne todo o conhecimento técnico, os módulos do ERP e as automações em n8n que rodam sozinhas todos os dias.</p>
+      <p>Entrego o ciclo inteiro: entender o problema na operação, mapear o processo, construir a solução, integrar com o que a empresa já usa e medir o resultado. Uso IA como ferramenta de engenharia, com Claude Code, Codex e Cursor, para colocar sistemas completos no ar em semanas.</p>
+
+      <h2>Experiência</h2>
+      <div class="item">
+        <div class="topo"><b>Criador de Produto Técnico</b><span class="quando">atual</span></div>
+        <div class="onde">Bannerjet Group · São Paulo</div>
+        <ul>
+          <li>Central Técnica: portal com 97 equipamentos e 574 materiais (330 vídeos, 95 manuais, 149 auxílios).</li>
+          <li>Jet IA: chatbot com RAG no WhatsApp (n8n, Supabase, Callbell); 5.035 perguntas respondidas para 1.215 pessoas e 842 atendimentos agendados sozinha.</li>
+          <li>ERP Módulo Técnico, com Victor Rocha: agenda do suporte remoto (2.639 atendimentos), assistência técnica, estoque, conferência de importação e supervisão.</li>
+          <li>Bannerjet Academy: cursos com 570 questões de prova e certificado; Agente de Manuais: manual do fabricante em PDF da marca com IA.</li>
+          <li>Fluxos da Callbell, IA supervisora de atendimentos, laudos automáticos e tutoriais narrados por IA.</li>
+        </ul>
+      </div>
+      <div class="item">
+        <div class="topo"><b>Técnico IGP</b><span class="quando">abr 2025 · atual</span></div>
+        <div class="onde">Bannerjet Group</div>
+        <ul><li>Suporte remoto a plotters, lasers e impressoras: CorelDRAW, SignMaster, CameraCut e redes. Foi daqui que nasceram as ferramentas acima.</li></ul>
+      </div>
+      <div class="item">
+        <div class="topo"><b>Coordenador do Comitê StarTech</b><span class="quando">jun 2025 · atual</span></div>
+        <div class="onde">APDADOS · freelance, remoto (assistente de mai 2024 a jul 2025)</div>
+        <ul><li>Coordenação de cursos de treinamento, mentoria e documentação de processos.</li></ul>
+      </div>
+      <div class="item">
+        <div class="topo"><b>Web Designer e Tráfego Pago</b><span class="quando">2024</span></div>
+        <div class="onde">Achei Montador</div>
+        <ul><li>Interface e imagens do site; campanhas no Google Ads e Meta Business, com Google Analytics.</li></ul>
+      </div>
+
+      <h2>Projetos pessoais</h2>
+      <p class="lista">Nexus Print (loja com ferramentas de criação no navegador, React e TypeScript) · Arise (sistema pessoal, Next.js e Supabase) · Otaku Mind (agentes de IA que produzem vídeos curtos, Remotion) · Atomai (SaaS de chatbot com IA) · HortiFácil · Copos Laser e Latinha 3D (visualizadores 3D) · Print Your Toy (jogo no Roblox).</p>
+    </div>
+
+    <div class="lateral">
+      <h2>Resultados</h2>
+      <div class="numeros">
+        <div><strong>20.889</strong><span>acessos ao ERP e à Central em 6 semanas</span></div>
+        <div><strong>5.035</strong><span>perguntas respondidas pela Jet IA</span></div>
+        <div><strong>2.639</strong><span>atendimentos remotos organizados</span></div>
+        <div><strong>574</strong><span>materiais técnicos publicados</span></div>
+        <div><strong>3.169</strong><span>garantias migradas para o ERP</span></div>
+        <div><strong>1.552</strong><span>fotos de catálogo padronizadas por IA</span></div>
+      </div>
+
+      <h2>Formação</h2>
+      <div class="item"><b>Análise e Desenvolvimento de Sistemas</b><div class="onde">UNIP · 2024 a 2025 · bolsa de 100% pelo Enem</div></div>
+      <div class="item"><b>Curso técnico de Informática</b><div class="onde">EMEFM Prof. Derville Allegretti · 2021 a 2023</div></div>
+      <div class="item"><b>Ensino fundamental com bolsa</b><div class="onde">Colégio Monte Sinai · 2017 a 2020 · Aluno Destaque</div></div>
+
+      <h2>Ferramentas</h2>
+      <p class="lista">Claude Code, Codex, Cursor, n8n, Gemini API, ElevenLabs · HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS, GSAP · Python, Supabase, PowerShell · Figma, Photoshop, CorelDRAW, Blender, Fusion 360 · Git, GitHub, Notion, Miro</p>
+
+      <h2>Idiomas</h2>
+      <p>Português nativo · Inglês</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

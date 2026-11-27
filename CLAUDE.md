@@ -215,6 +215,27 @@ nunca aplicam e o componente sai claro.
   ele: "não precisa ser svg, coloca só com o fundo branco". Ficou o JPEG original com o azul de fora do círculo virado
   branco, ampliado 2x.
 
+## Rodada de 27/11/2026 (tarde)
+
+- **Projetos: Bannerjet de volta, do MAIOR para o MENOR** (pedido dele: "todos os projetos que eu criei na
+  bannerjet precisam estar aqui"; isso desfaz o "só pessoais" de 26/11). Ordem: Central Técnica, Jet IA, ERP Módulo
+  Técnico, Nexus Print, Arise, Agente de Manuais, Bannerjet Academy, Otaku Mind, Atomai, HortiFácil, Achei Montador,
+  Copos Laser, Latinha 3D, Campro A3 Pro, Print Your Toy, Lummier, Apenas Um Escritor, Mugiwaras. **Saíram Granafy,
+  Hardware Showcase e Meus Jogos 100%** (imagens apagadas também). Central e Campro voltaram do histórico (commit
+  anterior a 4b268ea); Jet IA, ERP, Academy e Agente de Manuais têm capa/telas copiadas de `feitos-capas/`. Repo
+  privado não ganha botão "Código" (Central, Academy, Agente). `href` virou opcional: sem endereço público (Jet IA,
+  Agente) não aparece "Ver ao vivo". O ERP é do Victor: a ficha diz "com o Victor Rocha".
+- **Resultados: 13 números.** O 1º é o dos materiais da Central (574 = 330 vídeos + 95 manuais + 149 auxílios, 97
+  equipamentos), com `destaque: true` para ocupar a linha inteira e a grade continuar fechada. A conta é a mesma do
+  banner da tela inicial da Central (`central-tecnica/banner-stats.ts`), refeita lendo os arquivos; abrir a Central no
+  navegador para ler o banner é bloqueado (tem login).
+- **Contato: colunas alinhadas.** "Canais" na mesma altura do "Contato" (o `span` virou `block`; antes 8px de
+  diferença) e a lista estica com `flex-1` até o fim da coluna da esquerda. Conferido medindo: topo 145/145, fim 995/995.
+- **Currículo em PDF = 5º canal.** `public/curriculo/erick-dantas-curriculo.pdf`, gerado de
+  `scripts/curriculo/curriculo.html` por `node scripts/curriculo/gera-pdf.mjs` (Chrome instalado + o Playwright do
+  copos-laser). Uma página A4, preto e branco, só em português. Mudou cargo, número ou formação: editar o HTML e gerar
+  de novo.
+
 ## Deploy — o que derruba o site
 
 > **Produção é a Vercel** (push no `main` publica). O que segue vale para o espelho antigo do

@@ -574,6 +574,8 @@ export type MetricaItem = {
   label: string;
   outcome: string;
   source: string;
+  /* Ocupa a linha inteira da grade (o primeiro, o número maior da página). */
+  destaque?: boolean;
 };
 
 export const metricas: {
@@ -608,6 +610,17 @@ export const metricas: {
      Os antigos 50% / 65% / 200+ eram estimativa dele; saíram para dar
      lugar ao que dá para provar com uma consulta. */
   items: [
+    {
+      /* Mesma conta do banner da tela inicial da Central (banner-stats.ts):
+         vídeos únicos + manuais únicos + auxílios, lidos das páginas do site.
+         27/11/2026: 330 vídeos, 95 manuais e 149 auxílios, 97 equipamentos. */
+      value: "574",
+      label: "materiais técnicos prontos na Central Técnica: 330 vídeos, 95 manuais e 149 auxílios, para 97 equipamentos",
+      outcome:
+        "Antes cada técnico guardava o seu arquivo e o cliente esperava alguém achar. Hoje o material de cada máquina está publicado, organizado por equipamento e a um link de distância.",
+      source: "Conteúdo técnico · Central Técnica",
+      destaque: true,
+    },
     {
       value: "20.889",
       label: "acessos ao ERP e à Central Técnica em 6 semanas, por 36 pessoas",
@@ -881,7 +894,9 @@ export type Project = {
   year: string;
   /* Resumo curto — é o que aparece no card da home. */
   description: string;
-  href: string;
+  /* Opcional: projeto sem endereço público (Jet IA no WhatsApp, Agente de
+     Manuais) não mostra o botão "ver ao vivo". */
+  href?: string;
   repo?: string;
   tags: string[];
   /* Cor usada no hover do item e no fundo da moldura. */
@@ -913,88 +928,335 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "copos-laser",
+    slug: "central-tecnica",
     index: "01",
-    title: "Gravura · Copos Laser",
-    category: "Visualizador 3D de gravação a laser",
+    title: "Central Técnica",
+    /* As categorias são escritas como o termo que alguém digitaria numa
+       busca — "plataforma de treinamento técnico", e não "portal
+       interno". O nome da marca já está no título; a categoria serve
+       para dizer que tipo de produto é. */
+    category: "Plataforma de treinamento técnico",
     year: "2026",
     description:
-      "Copo térmico em 3D com a gravação a fibra laser simulada no navegador: a arte vira máscara de inox escovado sobre pintura fosca, dá a volta de 360° e sai como PNG pronto para o laser.",
-    href: "https://copos-laser.vercel.app",
-    repo: "https://github.com/ErickkADR/copos-laser",
-    tags: ["Three.js", "model-viewer", "Fibra laser"],
-    tint: "#9ca3af",
+      "Hub técnico que reúne catálogo de equipamentos, manuais, peças, firmwares e cursos com progressão por módulos, mais um chatbot de IA que responde dúvidas técnicas direto no site.",
+    href: "https://central-tecnica-bannerjet.vercel.app/",
+    tags: ["97 equipamentos", "574 materiais", "Jet IA"],
+    tint: "#a855f7",
     cover: {
-      src: "/projetos/copos-laser/cover.webp",
-      alt: "Copo térmico preto em 3D com uma arte gravada a laser, ao lado da grade de artes",
+      src: "/projetos/central-tecnica/cover.webp",
+      alt: "Página inicial da Central Técnica, com os atalhos para equipamentos, manuais e parâmetros",
     },
-    video: "/projetos/copos-laser/demo.mp4",
     overview: [
-      "Quem compra um copo gravado a laser quer ver o resultado antes de a máquina ligar. A gravação a fibra tira a tinta e deixa o inox aparecer, e isso é difícil de imaginar olhando só para a arte em preto e branco.",
-      "O site resolve isso em 3D: a arte vira uma máscara que decide, ponto a ponto, onde fica a pintura fosca e onde aparece o aço escovado, com brilho e rugosidade diferentes. A gravação dá a volta inteira no copo, e dá para girar com o dedo ou o mouse.",
-      "O visitante também pode mandar a própria arte, escrever um texto e baixar o arquivo do laser em PNG a 400 dpi, já na medida real do copo.",
+      "A Central Técnica nasceu de uma conta simples: o tempo que o time de suporte gastava procurando um manual antigo, um parâmetro de corte ou a versão certa de um firmware era maior que o tempo de resolver o problema em si. O material existia, espalhado por pastas, e-mails e conversas de WhatsApp.",
+      "O portal reúne tudo num lugar só: catálogo de equipamentos com página própria por máquina, manuais, peças, firmwares, perfis de cor e parâmetros. Cada equipamento tem a sua ficha, e o que antes era \"pergunta pro fulano\" virou link.",
+      "Por cima disso roda um chatbot de IA que responde dúvidas técnicas usando a mesma base do portal. Quem não sabe onde procurar pergunta em português e recebe a resposta com a fonte.",
     ],
     highlights: [
-      { title: "Inox e tinta de verdade", body: "Três mapas gerados num canvas (cor, metal e rugosidade, relevo) fazem o laser parecer laser, sem foto pronta." },
-      { title: "Volta de 360°", body: "A arte é medida em milímetros na volta real do copo e gira junto com o modelo." },
-      { title: "Arquivo pronto para a máquina", body: "O download sai em preto e branco, a 400 dpi e no tamanho físico da área gravada." },
+      {
+        title: "Uma página por equipamento",
+        body: "Plotters, laminadoras, impressoras UV, laser e guilhotinas: cada máquina tem ficha, parâmetros e os arquivos que pertencem a ela.",
+      },
+      {
+        title: "Chatbot sobre a base do portal",
+        body: "As respostas saem do mesmo material publicado no site, então documentação e chatbot nunca divergem.",
+      },
+      {
+        title: "Área restrita",
+        body: "O conteúdo é interno da Bannerjet: o acesso passa por login, e o portal público mostra apenas a tela de entrada.",
+      },
     ],
     facts: [
-      { label: "Papel", value: "Produto, 3D e implementação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
-      { label: "Estado", value: "No ar" },
+      { label: "Papel", value: "Projeto, conteúdo e implementação" },
+      { label: "Contexto", value: "Ferramenta interna, em uso no dia a dia" },
+      { label: "Stack", value: "HTML · CSS · TypeScript · Supabase" },
+      { label: "Estado", value: "No ar, em evolução" },
     ],
     gallery: [
-      { src: "/projetos/copos-laser/shot-1.webp", alt: "Troca de arte: a nova gravação aparece no copo 3D" },
-      { src: "/projetos/copos-laser/shot-2.webp", alt: "O segundo modelo, o copo quencher, com a mesma arte" },
-      { src: "/projetos/copos-laser/shot-3.webp", alt: "Estúdio com a arte enviada pelo visitante e o texto gravado" },
-      { src: "/projetos/copos-laser/shot-4.webp", alt: "Copo girando com a arte nova, antes do download para o laser" },
+      {
+        src: "/projetos/central-tecnica/shot-1.webp",
+        alt: "Seção de categorias da Central Técnica, com os grupos de equipamentos",
+      },
+      {
+        src: "/projetos/central-tecnica/shot-2.webp",
+        alt: "Página de manuais técnicos, com os documentos organizados por equipamento",
+      },
+      {
+        src: "/projetos/central-tecnica/shot-3.webp",
+        alt: "Ficha de um equipamento, com especificações e arquivos correspondentes",
+      },
+      {
+        src: "/projetos/central-tecnica/shot-4.webp",
+        alt: "Página de parâmetros, com os valores de corte e impressão por material",
+      },
     ],
   },
   {
-    slug: "latinhas-3d",
+    slug: "jet-ia",
     index: "02",
-    title: "Latinha 3D",
-    category: "Visualizador 3D de rótulos de lata",
+    title: "Jet IA",
+    category: "Chatbot de suporte técnico com RAG",
     year: "2026",
     description:
-      "Lata de alumínio em 3D com rótulos panorâmicos que dão a volta inteira, gotas de condensação e um estúdio para aplicar o próprio rótulo e baixar o arquivo de impressão.",
-    href: "https://latinhas-3d.vercel.app",
-    repo: "https://github.com/ErickkADR/latinhas-3d",
-    tags: ["Three.js", "Canvas", "Rótulos"],
-    tint: "#f97316",
+      "A assistente técnica da Bannerjet no WhatsApp: responde com a base da empresa, manda o manual ou o vídeo certo, agenda o técnico e avisa o suporte quando precisa de gente.",
+    tags: ["n8n", "Supabase", "WhatsApp"],
+    tint: "#ffffff",
     cover: {
-      src: "/projetos/latinhas-3d/cover.webp",
-      alt: "Lata 3D com um rótulo ilustrado e a grade de temas ao lado",
+      src: "/projetos/jet-ia/cover.webp",
+      alt: "Conversa da Jet IA no WhatsApp enviando o manual de um equipamento",
     },
-    video: "/projetos/latinhas-3d/demo.mp4",
     overview: [
-      "Um rótulo de lata é uma imagem panorâmica: ele só faz sentido quando dá a volta. Ver o arquivo plano não mostra onde a arte quebra, onde o texto some na curva nem como a lata fica na prateleira.",
-      "A Latinha 3D monta a lata na hora, com o rótulo gerado num canvas, metal nas bordas e gotas de condensação por cima. Cada tema é um rótulo de volta inteira, e a lata gira para mostrar o lado de trás.",
-      "No estúdio, quem visita aplica o próprio rótulo, ajusta na lata e baixa o PNG da volta inteira para imprimir.",
+      "O suporte técnico da Bannerjet respondia as mesmas perguntas o dia inteiro: como alinhar a câmera, qual parâmetro usar, onde está o manual. Cada resposta dependia de um técnico livre.",
+      "A Jet IA atende no WhatsApp com a base de conhecimento da própria empresa: mais de 2 mil trechos de manuais, laudos e vídeos no Supabase. Ela só responde com o que a busca encontrou, manda o material certo e, quando o caso pede um técnico, marca o horário sozinha.",
+      "Por trás, um fluxo no n8n decide o caminho de cada mensagem e uma IA supervisora vigia a fila: cliente sem resposta, técnico que não entrou na chamada, horário de almoço. Hoje são mais de 5 mil perguntas respondidas para mais de 1.200 pessoas.",
     ],
     highlights: [
-      { title: "Rótulo de volta inteira", body: "Cada tema é um panorama 2:1 aplicado em 360°, como o rótulo de verdade." },
-      { title: "Acabamento de lata gelada", body: "Alumínio nas bordas e gotas de condensação deixam a lata com cara de produto." },
-      { title: "Do 3D para a gráfica", body: "O estúdio devolve o rótulo em PNG na medida da lata, pronto para imprimir." },
+      { title: "Resposta com fonte", body: "A pergunta vira vetor e é comparada com a base da empresa; o que não está lá a IA não inventa." },
+      { title: "Agenda sozinha", body: "842 atendimentos de suporte remoto foram marcados pela própria IA, com o técnico certo e o link da chamada." },
+      { title: "Supervisão da fila", body: "Uma segunda IA vigia as conversas e chama o suporte com prioridade quando o cliente fica esperando." },
     ],
     facts: [
-      { label: "Papel", value: "Produto, 3D e implementação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "Vite · JavaScript · model-viewer" },
+      { label: "Papel", value: "Projeto, fluxos, base e prompts" },
+      { label: "Contexto", value: "Em produção, atendendo clientes" },
+      { label: "Stack", value: "n8n · Supabase · OpenAI · Callbell" },
+      { label: "Estado", value: "No ar, evoluindo toda semana" },
+    ],
+    gallery: [
+      { src: "/projetos/jet-ia/shot-1.webp", alt: "O fluxo da Jet IA no n8n" },
+      { src: "/projetos/jet-ia/shot-2.webp", alt: "Busca vetorial na base de conhecimento da Jet IA" },
+      { src: "/projetos/jet-ia/shot-3.webp", alt: "Painel de resultados da Jet IA dentro do ERP" },
+      { src: "/projetos/jet-ia/shot-4.webp", alt: "Aviso da IA supervisora quando nenhum técnico entrou na chamada" },
+    ],
+  },
+  {
+    slug: "erp-modulo-tecnico",
+    index: "03",
+    title: "ERP Módulo Técnico",
+    category: "Sistema de gestão da área técnica",
+    year: "2026",
+    description:
+      "O sistema do dia a dia da área técnica, criado com o Victor Rocha: agenda do suporte remoto, assistência técnica, estoque de peças, conferência de importação e supervisão de atendimentos.",
+    href: "https://technical-erp-module-main.vercel.app/",
+    tags: ["Supabase", "Dashboard", "Jet IA"],
+    tint: "#ffffff",
+    cover: {
+      src: "/projetos/erp-modulo-tecnico/cover.webp",
+      alt: "Tela de atividade do ERP com a equipe online e a tela em que cada pessoa está",
+    },
+    overview: [
+      "O ERP Módulo Técnico foi criado pelo Victor Rocha, e eu construí boa parte dos módulos que a área técnica usa todos os dias. A ideia é uma só: tirar o trabalho do técnico de planilhas, papéis e conversas soltas.",
+      "A agenda do suporte remoto organiza a semana de cada técnico, a assistência técnica acompanha a ordem de serviço etapa por etapa, o estoque mostra a peça antes de prometer prazo e a conferência registra com foto cada equipamento que chega da importação.",
+      "Por cima disso, a Jet IA está dentro do sistema e a gestão acompanha supervisão, SLA e resultados da IA sem pedir relatório. São mais de 20 mil acessos de 36 pessoas em seis semanas.",
+    ],
+    highlights: [
+      { title: "Agenda do suporte", body: "2.639 atendimentos remotos organizados, com técnico, cliente, equipamento e link da chamada." },
+      { title: "Assistência e laboratório", body: "A ordem de serviço tem linha do tempo, e o laboratório sincroniza com o Notion sozinho." },
+      { title: "Supervisão", body: "Ranking de atenção por colaborador, com tempo de espera e SLA, para agir antes da reclamação." },
+    ],
+    facts: [
+      { label: "Papel", value: "Módulos, banco e integrações (com o Victor Rocha)" },
+      { label: "Contexto", value: "Sistema interno da Bannerjet" },
+      { label: "Stack", value: "HTML · CSS · JavaScript · Supabase" },
+      { label: "Estado", value: "Em uso diário" },
+    ],
+    gallery: [
+      { src: "/projetos/erp-modulo-tecnico/shot-1.webp", alt: "Agenda do suporte remoto por técnico" },
+      { src: "/projetos/erp-modulo-tecnico/shot-2.webp", alt: "Quadro da assistência técnica por etapa" },
+      { src: "/projetos/erp-modulo-tecnico/shot-3.webp", alt: "Supervisão de atendimentos com ranking de atenção" },
+      { src: "/projetos/erp-modulo-tecnico/shot-4.webp", alt: "Estoque de peças com foto e quantidade por filial" },
+    ],
+  },
+  {
+    slug: "nexus-print",
+    index: "04",
+    title: "Nexus Print",
+    category: "Loja de personalizados com ferramentas de criação",
+    year: "2026",
+    description:
+      "Loja de adesivos, Funko Pop, topos de bolo e caixinhas em que o próprio cliente cria o produto no navegador: sobe a imagem, monta a cartela, desenha a caixinha ou o boneco e fecha o pedido no WhatsApp.",
+    href: "https://nexusprint.vercel.app",
+    tags: ["React", "TypeScript", "Canvas"],
+    tint: "#f97316",
+    cover: {
+      src: "/projetos/nexus-print/cover.webp",
+      alt: "Topo da loja Nexus Print, com o mascote e a chamada \"Sua loja de Personalizados\"",
+    },
+    overview: [
+      "A Nexus Print vende produto personalizado: adesivos, Funko Pop, bustos e produtos 3D, topos de bolo, caixas milk e etiquetas escolares. Nesse mercado o cliente quase nunca sabe descrever o que quer, e cada pedido virava uma troca longa de mensagens até a arte ficar certa.",
+      "Por isso a loja não é só catálogo: cada linha de produto ganhou uma ferramenta em que o próprio cliente monta o item e vê o resultado na hora. O adesivo sai com contorno e borda a partir de qualquer imagem, a cartela A4 se organiza sozinha, a caixinha aparece planificada com as medidas e o Funko é montado peça por peça.",
+      "No fim, a ferramenta calcula a quantidade e o preço pela tabela do catálogo e manda o pedido pronto para o WhatsApp. A conversa começa com a arte resolvida, em vez de começar do zero.",
+    ],
+    highlights: [
+      { title: "O cliente cria, a loja produz", body: "Seis ferramentas no navegador transformam o pedido em arte pronta antes de qualquer mensagem." },
+      { title: "Preço que vem do catálogo", body: "Cartelas, kits e Funkos usam a mesma tabela de preço da loja, sem valor inventado na tela." },
+      { title: "Fechamento no WhatsApp", body: "O resumo do pedido sai montado para a conversa, que é como esse cliente já compra." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, front-end e ferramentas" },
+      { label: "Catálogo", value: "Adesivos, 3D, Funko, topos e caixinhas" },
+      { label: "Stack", value: "React · TypeScript · Vite · Canvas" },
       { label: "Estado", value: "No ar" },
     ],
     gallery: [
-      { src: "/projetos/latinhas-3d/shot-1.webp", alt: "Troca de tema: o rótulo novo aparece na lata 3D" },
-      { src: "/projetos/latinhas-3d/shot-2.webp", alt: "Outro tema, com a lata girada" },
-      { src: "/projetos/latinhas-3d/shot-3.webp", alt: "Estúdio com o rótulo enviado pelo visitante" },
-      { src: "/projetos/latinhas-3d/shot-4.webp", alt: "A lata com o rótulo novo, antes do download para impressão" },
+      { src: "/projetos/nexus-print/shot-1.webp", alt: "Categorias da loja na página inicial" },
+      { src: "/projetos/nexus-print/shot-2.webp", alt: "Vitrine de produtos com os banners das ferramentas" },
+      { src: "/projetos/nexus-print/shot-3.webp", alt: "Carrossel de produtos por tema" },
+      { src: "/projetos/nexus-print/shot-4.webp", alt: "Trecho final da loja, com contato e rodapé" },
+    ],
+    /* As ferramentas, uma tela cada (capturadas do site publicado em
+       26/11/2026). */
+    features: [
+      { title: "Gerador de adesivos", body: "O cliente envia qualquer imagem e o adesivo sai na hora com contorno e borda, com fundo branco removido se precisar. Formato, tamanho e cor da borda se escolhem na mesma tela.", image: "/projetos/nexus-print/f-adesivos.webp" },
+      { title: "Montador de cartelas", body: "Os adesivos se organizam sozinhos numa cartela A4, com girar, espelhar, duplicar e travar. A quantidade de cartelas define o preço pela tabela da loja.", image: "/projetos/nexus-print/f-cartelas.webp" },
+      { title: "Etiquetas escolares", body: "Digita o nome da criança, escolhe o tema e vê o kit de etiquetas de material pronto: lancheira, caderno, lápis. Vinil à prova d'água, pedido pelo WhatsApp.", image: "/projetos/nexus-print/f-etiquetas.webp" },
+      { title: "Criador de caixinhas", body: "Escolhe o modelo (clássica, gaveta, maleta e outros), coloca as medidas do produto e a caixinha aparece planificada, com cada aba medida.", image: "/projetos/nexus-print/f-caixinhas.webp" },
+      { title: "Topo de bolo", body: "Vitrine de topos recortados e impressos por tema da festa, com nome e idade, e pedido do modelo personalizado direto pela conversa.", image: "/projetos/nexus-print/f-topo-de-bolo.webp" },
+      { title: "Montador de Funko", body: "O boneco é montado em 3D, etapa por etapa: corpo, cabelo, óculos, barba, roupa e acessório, com a prévia girando na tela e o preço fixo no fim.", image: "/projetos/nexus-print/f-funko.webp" },
+    ],
+  },
+  {
+    slug: "arise",
+    index: "05",
+    title: "Arise",
+    category: "Sistema pessoal de produtividade",
+    year: "2026",
+    description:
+      "O sistema que organiza a minha vida inteira num lugar só: tarefas, notas no estilo Notion, finanças, treino com nível e XP, estoque de casa, estudos, jogos e hardware.",
+    href: "https://sistema-liard-two.vercel.app",
+    tags: ["Next.js", "Supabase", "TypeScript"],
+    tint: "#e5e7eb",
+    cover: {
+      src: "/projetos/arise/cover.webp",
+      alt: "Tela de Academia do Arise, com o nível, a agenda da semana e os presets de treino",
+    },
+    overview: [
+      "Eu usava seis aplicativos diferentes para tarefas, notas, gastos, treino e estudos, e nenhum conversava com o outro. O Arise junta tudo num sistema só, feito sob medida para a minha rotina.",
+      "Cada área é um módulo: tarefas por categoria, editor de notas em blocos, finanças com projeção, academia com nível e XP inspirada em Solo Leveling, estoque da casa por código de barras, vocabulário de inglês, jogos platinados e o inventário do PC.",
+      "A tela inicial cruza tudo num resumo do dia. O acesso é trancado só para mim, e o banco fica fechado para o público.",
+    ],
+    highlights: [
+      { title: "Um painel para o dia", body: "Tarefas, agenda, finanças e treino aparecem juntos na tela inicial." },
+      { title: "Treino que vira jogo", body: "A academia sobe de nível com XP, com agenda semanal e presets de exercício." },
+      { title: "Feito para uso real", body: "Uso todo dia, e cada módulo nasceu de uma necessidade que outro app não resolvia." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, design e implementação" },
+      { label: "Contexto", value: "Projeto pessoal, uso diário" },
+      { label: "Stack", value: "Next.js · TypeScript · Supabase" },
+      { label: "Estado", value: "Em uso, acesso restrito" },
+    ],
+    gallery: [
+      { src: "/projetos/arise/shot-1.webp", alt: "Jogos platinados, com filtros e busca" },
+      { src: "/projetos/arise/shot-2.webp", alt: "Hardware do PC e o teste de requisitos de jogos" },
+      { src: "/projetos/arise/shot-3.webp", alt: "Estudos de inglês com vocabulário e frases de exemplo" },
+      { src: "/projetos/arise/shot-4.webp", alt: "Tarefas por categoria com o nível do perfil" },
+    ],
+  },
+  {
+    slug: "agente-de-manuais",
+    index: "06",
+    title: "Agente de Manuais",
+    category: "Pipeline de manuais técnicos com IA",
+    year: "2026",
+    description:
+      "Recebe o manual do fabricante em chinês ou inglês e devolve o manual da Bannerjet em PDF: traduzido, organizado no padrão da marca e pronto para a Central e para a Jet IA.",
+    tags: ["IA", "PDF", "Documentação"],
+    tint: "#ffffff",
+    cover: {
+      src: "/projetos/agente-de-manuais/cover.webp",
+      alt: "O prompt do Agente de Manuais com as etapas de leitura, tradução e organização",
+    },
+    overview: [
+      "Os manuais que chegam dos fabricantes vêm em chinês ou num inglês difícil, cada um num formato. Diagramar um manual da Bannerjet a partir disso levava dias por equipamento.",
+      "O agente lê o manual inteiro, traduz para o português, organiza nas seções do padrão (especificações, segurança, instalação, operação, manutenção, problemas e garantia) e devolve só o conteúdo, em JSON. Um modelo fixo transforma isso no PDF com a cara da marca.",
+      "O mesmo texto vai para a Central Técnica, onde o manual abre como livro, e para a base da Jet IA, que passa a responder sobre aquele equipamento.",
+    ],
+    highlights: [
+      { title: "Conteúdo separado do visual", body: "O agente não diagrama: devolve o conteúdo, e o modelo garante que todo manual sai igual." },
+      { title: "Do fabricante ao PDF", body: "Tradução, organização e imagens do manual original, sem montar página por página." },
+      { title: "Alimenta a Jet IA", body: "Cada manual novo vira conhecimento que a IA usa para responder clientes." },
+    ],
+    facts: [
+      { label: "Papel", value: "Prompts, modelo e pipeline" },
+      { label: "Contexto", value: "Documentação técnica da Bannerjet" },
+      { label: "Stack", value: "Claude Code · Python · HTML · CSS" },
+      { label: "Estado", value: "Em uso no dia a dia" },
+    ],
+    gallery: [],
+  },
+  {
+    slug: "bannerjet-academy",
+    index: "07",
+    title: "Bannerjet Academy",
+    category: "Plataforma de cursos com prova e certificado",
+    year: "2026",
+    description:
+      "Os cursos da Bannerjet por linha de equipamento: módulos em vídeo, prova no fim de cada módulo e certificado no fim do curso, com o mesmo login do ERP e da Central.",
+    href: "https://bj-academy-bannerjet.vercel.app/",
+    tags: ["Cursos", "Provas", "Supabase"],
+    tint: "#ffffff",
+    cover: {
+      src: "/projetos/bannerjet-academy/cover.webp",
+      alt: "Tela de um curso da Bannerjet Academy",
+    },
+    overview: [
+      "O treinamento dos técnicos e dos clientes acontecia de boca em boca, e cada um aprendia de um jeito. A Academy transformou isso em trilha: módulos em vídeo por equipamento, prova e certificado.",
+      "As 570 questões das provas saíram da base de conhecimento da Jet IA e passaram por revisão antes de ir ao ar. O mesmo conhecimento que responde cliente no WhatsApp agora treina gente.",
+      "A plataforma usa o mesmo banco e o mesmo login do ERP e da Central Técnica, então quem já trabalha nos sistemas entra nos cursos sem cadastro novo.",
+    ],
+    highlights: [
+      { title: "Prova em cada módulo", body: "570 questões, corrigidas no servidor para ninguém ver o gabarito no navegador." },
+      { title: "Certificado no fim", body: "O curso concluído gera o certificado do aluno." },
+      { title: "Um login para tudo", body: "ERP, Central Técnica e Academy dividem o mesmo banco e a mesma conta." },
+    ],
+    facts: [
+      { label: "Papel", value: "Projeto, conteúdo e implementação" },
+      { label: "Contexto", value: "Treinamento da Bannerjet" },
+      { label: "Stack", value: "HTML · CSS · JavaScript · Supabase" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/bannerjet-academy/shot-1.webp", alt: "Chatbot de treinamento entregando um módulo no WhatsApp" },
+      { src: "/projetos/bannerjet-academy/shot-2.webp", alt: "Tutoriais em vídeo por equipamento" },
+    ],
+  },
+  {
+    slug: "otaku-mind",
+    index: "08",
+    title: "Otaku Mind",
+    category: "Agentes de IA para produção de vídeos curtos",
+    year: "2026",
+    description:
+      "Time de cinco agentes do Claude Code que leva um tema de anime até o Short pronto: tendência, roteiro, revisão, título e edição em Remotion.",
+    href: "https://www.youtube.com/@OtakuMindBR",
+    tags: ["Claude Code", "Remotion", "Agentes de IA"],
+    tint: "#8b5cf6",
+    cover: {
+      src: "/projetos/otaku-mind/cover.webp",
+      alt: "Canal Otaku Mind com os Shorts de anime produzidos pelo time de agentes",
+    },
+    overview: [
+      "Manter um canal de Shorts exige o mesmo ciclo toda semana: achar o tema, escrever, revisar, nomear e editar. Feito à mão, o gargalo vira a edição.",
+      "O projeto divide o ciclo entre cinco agentes. O trend-scout acha o tema em alta, o script-writer escreve e o script-reviewer revisa, o viral-titles gera título, descrição e tags, e o video-editor monta o vídeo no Remotion. Dois comandos, /generate-short e /edit-short, amarram as etapas.",
+      "A voz continua sendo minha: eu gravo o áudio, e o editor cuida do resto, com um registro dos erros que não podem se repetir.",
+    ],
+    highlights: [
+      { title: "Um agente por etapa", body: "Pesquisa, roteiro, revisão, título e edição ficam separados, cada um com suas regras." },
+      { title: "Edição em código", body: "O vídeo é montado em Remotion a partir do áudio gravado, com render e conferência." },
+      { title: "Memória do que deu errado", body: "Receitas aprovadas e uma lista de erros para nunca repetir guiam cada lote novo." },
+    ],
+    facts: [
+      { label: "Papel", value: "Desenho do fluxo, agentes e edição" },
+      { label: "Contexto", value: "Projeto pessoal, canal no YouTube" },
+      { label: "Stack", value: "Claude Code · Remotion · React · Node" },
+      { label: "Estado", value: "Em produção, evoluindo" },
+    ],
+    gallery: [
+      { src: "/projetos/otaku-mind/shot-1.webp", alt: "Página de Shorts do canal Otaku Mind, com os vídeos produzidos pelos agentes" },
     ],
   },
   {
     slug: "atomai",
-    index: "03",
+    index: "09",
     title: "Atomai",
     category: "Plataforma SaaS de chatbot com IA",
     year: "2026",
@@ -1053,131 +1315,8 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "nexus-print",
-    index: "04",
-    title: "Nexus Print",
-    category: "Loja de personalizados com ferramentas de criação",
-    year: "2026",
-    description:
-      "Loja de adesivos, Funko Pop, topos de bolo e caixinhas em que o próprio cliente cria o produto no navegador: sobe a imagem, monta a cartela, desenha a caixinha ou o boneco e fecha o pedido no WhatsApp.",
-    href: "https://nexusprint.vercel.app",
-    tags: ["React", "TypeScript", "Canvas"],
-    tint: "#f97316",
-    cover: {
-      src: "/projetos/nexus-print/cover.webp",
-      alt: "Topo da loja Nexus Print, com o mascote e a chamada \"Sua loja de Personalizados\"",
-    },
-    overview: [
-      "A Nexus Print vende produto personalizado: adesivos, Funko Pop, bustos e produtos 3D, topos de bolo, caixas milk e etiquetas escolares. Nesse mercado o cliente quase nunca sabe descrever o que quer, e cada pedido virava uma troca longa de mensagens até a arte ficar certa.",
-      "Por isso a loja não é só catálogo: cada linha de produto ganhou uma ferramenta em que o próprio cliente monta o item e vê o resultado na hora. O adesivo sai com contorno e borda a partir de qualquer imagem, a cartela A4 se organiza sozinha, a caixinha aparece planificada com as medidas e o Funko é montado peça por peça.",
-      "No fim, a ferramenta calcula a quantidade e o preço pela tabela do catálogo e manda o pedido pronto para o WhatsApp. A conversa começa com a arte resolvida, em vez de começar do zero.",
-    ],
-    highlights: [
-      { title: "O cliente cria, a loja produz", body: "Seis ferramentas no navegador transformam o pedido em arte pronta antes de qualquer mensagem." },
-      { title: "Preço que vem do catálogo", body: "Cartelas, kits e Funkos usam a mesma tabela de preço da loja, sem valor inventado na tela." },
-      { title: "Fechamento no WhatsApp", body: "O resumo do pedido sai montado para a conversa, que é como esse cliente já compra." },
-    ],
-    facts: [
-      { label: "Papel", value: "Produto, front-end e ferramentas" },
-      { label: "Catálogo", value: "Adesivos, 3D, Funko, topos e caixinhas" },
-      { label: "Stack", value: "React · TypeScript · Vite · Canvas" },
-      { label: "Estado", value: "No ar" },
-    ],
-    gallery: [
-      { src: "/projetos/nexus-print/shot-1.webp", alt: "Categorias da loja na página inicial" },
-      { src: "/projetos/nexus-print/shot-2.webp", alt: "Vitrine de produtos com os banners das ferramentas" },
-      { src: "/projetos/nexus-print/shot-3.webp", alt: "Carrossel de produtos por tema" },
-      { src: "/projetos/nexus-print/shot-4.webp", alt: "Trecho final da loja, com contato e rodapé" },
-    ],
-    /* As ferramentas, uma tela cada (capturadas do site publicado em
-       26/11/2026). */
-    features: [
-      { title: "Gerador de adesivos", body: "O cliente envia qualquer imagem e o adesivo sai na hora com contorno e borda, com fundo branco removido se precisar. Formato, tamanho e cor da borda se escolhem na mesma tela.", image: "/projetos/nexus-print/f-adesivos.webp" },
-      { title: "Montador de cartelas", body: "Os adesivos se organizam sozinhos numa cartela A4, com girar, espelhar, duplicar e travar. A quantidade de cartelas define o preço pela tabela da loja.", image: "/projetos/nexus-print/f-cartelas.webp" },
-      { title: "Etiquetas escolares", body: "Digita o nome da criança, escolhe o tema e vê o kit de etiquetas de material pronto: lancheira, caderno, lápis. Vinil à prova d'água, pedido pelo WhatsApp.", image: "/projetos/nexus-print/f-etiquetas.webp" },
-      { title: "Criador de caixinhas", body: "Escolhe o modelo (clássica, gaveta, maleta e outros), coloca as medidas do produto e a caixinha aparece planificada, com cada aba medida.", image: "/projetos/nexus-print/f-caixinhas.webp" },
-      { title: "Topo de bolo", body: "Vitrine de topos recortados e impressos por tema da festa, com nome e idade, e pedido do modelo personalizado direto pela conversa.", image: "/projetos/nexus-print/f-topo-de-bolo.webp" },
-      { title: "Montador de Funko", body: "O boneco é montado em 3D, etapa por etapa: corpo, cabelo, óculos, barba, roupa e acessório, com a prévia girando na tela e o preço fixo no fim.", image: "/projetos/nexus-print/f-funko.webp" },
-    ],
-  },
-
-  {
-    slug: "arise",
-    index: "05",
-    title: "Arise",
-    category: "Sistema pessoal de produtividade",
-    year: "2026",
-    description:
-      "O sistema que organiza a minha vida inteira num lugar só: tarefas, notas no estilo Notion, finanças, treino com nível e XP, estoque de casa, estudos, jogos e hardware.",
-    href: "https://sistema-liard-two.vercel.app",
-    tags: ["Next.js", "Supabase", "TypeScript"],
-    tint: "#e5e7eb",
-    cover: {
-      src: "/projetos/arise/cover.webp",
-      alt: "Tela de Academia do Arise, com o nível, a agenda da semana e os presets de treino",
-    },
-    overview: [
-      "Eu usava seis aplicativos diferentes para tarefas, notas, gastos, treino e estudos, e nenhum conversava com o outro. O Arise junta tudo num sistema só, feito sob medida para a minha rotina.",
-      "Cada área é um módulo: tarefas por categoria, editor de notas em blocos, finanças com projeção, academia com nível e XP inspirada em Solo Leveling, estoque da casa por código de barras, vocabulário de inglês, jogos platinados e o inventário do PC.",
-      "A tela inicial cruza tudo num resumo do dia. O acesso é trancado só para mim, e o banco fica fechado para o público.",
-    ],
-    highlights: [
-      { title: "Um painel para o dia", body: "Tarefas, agenda, finanças e treino aparecem juntos na tela inicial." },
-      { title: "Treino que vira jogo", body: "A academia sobe de nível com XP, com agenda semanal e presets de exercício." },
-      { title: "Feito para uso real", body: "Uso todo dia, e cada módulo nasceu de uma necessidade que outro app não resolvia." },
-    ],
-    facts: [
-      { label: "Papel", value: "Produto, design e implementação" },
-      { label: "Contexto", value: "Projeto pessoal, uso diário" },
-      { label: "Stack", value: "Next.js · TypeScript · Supabase" },
-      { label: "Estado", value: "Em uso, acesso restrito" },
-    ],
-    gallery: [
-      { src: "/projetos/arise/shot-1.webp", alt: "Jogos platinados, com filtros e busca" },
-      { src: "/projetos/arise/shot-2.webp", alt: "Hardware do PC e o teste de requisitos de jogos" },
-      { src: "/projetos/arise/shot-3.webp", alt: "Estudos de inglês com vocabulário e frases de exemplo" },
-      { src: "/projetos/arise/shot-4.webp", alt: "Tarefas por categoria com o nível do perfil" },
-    ],
-  },
-  {
-    slug: "print-your-toy",
-    index: "06",
-    title: "Print Your Toy",
-    category: "Jogo no Roblox",
-    year: "2026",
-    description:
-      "Meu jogo no Roblox: o jogador monta a própria fábrica de bonecos, imprime, coleciona e vende no marketplace do jogo.",
-    href: "https://www.roblox.com/discover/?Keyword=Print%20Your%20Toy",
-    tags: ["Roblox Studio", "Luau", "Game design"],
-    tint: "#38bdf8",
-    cover: {
-      src: "/projetos/print-your-toy/cover.webp",
-      alt: "Capa do jogo Print Your Toy",
-    },
-    /* A capa é PROVISÓRIA: o Erick gerou a capa oficial no Magnific e ela
-       não estava nesta conta. Trocar `public/projetos/print-your-toy/cover.webp`
-       e colocar o link do jogo em `href` quando ele mandar. */
-    overview: [
-      "Print Your Toy é o meu jogo no Roblox. A ideia é simples de explicar e divertida de jogar: você começa com uma impressora e um terreno vazio e constrói a sua própria fábrica de bonecos.",
-      "Cada boneco impresso entra no inventário. Dá para colecionar, montar a sua loja e anunciar os bonecos para outros jogadores no marketplace do jogo.",
-      "A interface, os ícones e a arte foram criados com IA e montados no Roblox Studio.",
-    ],
-    highlights: [
-      { title: "Fábrica que cresce", body: "Impressoras, terreno e loja evoluem conforme o jogador vende." },
-      { title: "Coleção e raridade", body: "Bonecos com raridade, inventário e vitrine própria." },
-      { title: "Marketplace entre jogadores", body: "Cada um anuncia e vende os bonecos que já tem." },
-    ],
-    facts: [
-      { label: "Papel", value: "Game design, arte e programação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "Roblox Studio · Luau" },
-      { label: "Estado", value: "Em desenvolvimento" },
-    ],
-    gallery: [],
-  },
-  {
     slug: "hortifacil",
-    index: "07",
+    index: "10",
     title: "HortiFácil",
     category: "E-commerce de hortifruti",
     year: "2026",
@@ -1215,198 +1354,8 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "granafy",
-    index: "08",
-    title: "Granafy",
-    category: "Finanças pessoais para a família",
-    year: "2026",
-    description:
-      "Controle financeiro para a família, com contas, parcelamentos, orçamentos por categoria, metas e relatórios anuais, cada pessoa vendo só os próprios dados.",
-    href: "https://granafy.vercel.app",
-    tags: ["Next.js", "Supabase", "Recharts"],
-    tint: "#10b981",
-    cover: {
-      src: "/projetos/granafy/cover.webp",
-      alt: "Dashboard do Granafy com saldo, gráfico dos últimos meses e gastos por categoria",
-    },
-    overview: [
-      "Planilha de gastos funciona até a segunda semana. Para a família usar de verdade, o controle precisa ser rápido de lançar e deixar claro para onde o dinheiro vai.",
-      "O Granafy reúne dashboard, transações com parcelamento e transferência entre contas, contas fixas, orçamentos com alerta, metas com aporte mensal calculado e relatórios do ano. Cada pessoa tem a própria conta, e o banco isola os dados de cada uma.",
-      "O cadastro é limitado aos e-mails liberados, então o app fica restrito à família.",
-    ],
-    highlights: [
-      { title: "Dados isolados por pessoa", body: "Autenticação e regras no banco garantem que cada usuário veja só o que é dele." },
-      { title: "Do lançamento ao relatório", body: "Parcelamento, contas fixas e transferências alimentam o dashboard e o relatório anual." },
-      { title: "Alertas de orçamento", body: "O limite mensal por categoria mostra se está no controle, em atenção ou estourado." },
-    ],
-    facts: [
-      { label: "Papel", value: "Produto e implementação" },
-      { label: "Contexto", value: "Projeto pessoal, uso da família" },
-      { label: "Stack", value: "Next.js · TypeScript · Tailwind · Supabase · Recharts" },
-      { label: "Estado", value: "Em uso, acesso restrito" },
-    ],
-    gallery: [
-      { src: "/projetos/granafy/shot-1.webp", alt: "Dashboard com saldo e gráfico dos últimos seis meses" },
-      { src: "/projetos/granafy/shot-2.webp", alt: "Lista de transações com filtros e um lançamento parcelado" },
-      { src: "/projetos/granafy/shot-3.webp", alt: "Orçamentos por categoria com os alertas" },
-      { src: "/projetos/granafy/shot-4.webp", alt: "Relatório anual com receitas e despesas por mês" },
-    ],
-  },
-  {
-    slug: "otaku-mind",
-    index: "09",
-    title: "Otaku Mind",
-    category: "Agentes de IA para produção de vídeos curtos",
-    year: "2026",
-    description:
-      "Time de cinco agentes do Claude Code que leva um tema de anime até o Short pronto: tendência, roteiro, revisão, título e edição em Remotion.",
-    href: "https://www.youtube.com/@OtakuMindBR",
-    tags: ["Claude Code", "Remotion", "Agentes de IA"],
-    tint: "#8b5cf6",
-    cover: {
-      src: "/projetos/otaku-mind/cover.webp",
-      alt: "Canal Otaku Mind com os Shorts de anime produzidos pelo time de agentes",
-    },
-    overview: [
-      "Manter um canal de Shorts exige o mesmo ciclo toda semana: achar o tema, escrever, revisar, nomear e editar. Feito à mão, o gargalo vira a edição.",
-      "O projeto divide o ciclo entre cinco agentes. O trend-scout acha o tema em alta, o script-writer escreve e o script-reviewer revisa, o viral-titles gera título, descrição e tags, e o video-editor monta o vídeo no Remotion. Dois comandos, /generate-short e /edit-short, amarram as etapas.",
-      "A voz continua sendo minha: eu gravo o áudio, e o editor cuida do resto, com um registro dos erros que não podem se repetir.",
-    ],
-    highlights: [
-      { title: "Um agente por etapa", body: "Pesquisa, roteiro, revisão, título e edição ficam separados, cada um com suas regras." },
-      { title: "Edição em código", body: "O vídeo é montado em Remotion a partir do áudio gravado, com render e conferência." },
-      { title: "Memória do que deu errado", body: "Receitas aprovadas e uma lista de erros para nunca repetir guiam cada lote novo." },
-    ],
-    facts: [
-      { label: "Papel", value: "Desenho do fluxo, agentes e edição" },
-      { label: "Contexto", value: "Projeto pessoal, canal no YouTube" },
-      { label: "Stack", value: "Claude Code · Remotion · React · Node" },
-      { label: "Estado", value: "Em produção, evoluindo" },
-    ],
-    gallery: [
-      { src: "/projetos/otaku-mind/shot-1.webp", alt: "Página de Shorts do canal Otaku Mind, com os vídeos produzidos pelos agentes" },
-    ],
-  },
-  {
-    slug: "hardware-showcase",
-    index: "10",
-    title: "Hardware Showcase",
-    category: "Inventário de hardware interativo",
-    year: "2026",
-    description:
-      "Página que apresenta o meu PC com dados lidos da própria máquina, um diagnóstico de upgrade e um teste que diz se um jogo roda nesse hardware.",
-    href: "https://hardware-showcase-delta.vercel.app",
-    repo: "https://github.com/ErickkADR/hardware-showcase",
-    tags: ["React", "TypeScript", "Vite"],
-    tint: "#ef4444",
-    cover: {
-      src: "/projetos/hardware-showcase/cover.webp",
-      alt: "Página do inventário de hardware com os componentes do PC e suas especificações",
-    },
-    overview: [
-      "Lista de especificações copiada de memória costuma errar: o WMI reporta só \"RTX 3050\" e o monitor aparece só com o nome do painel. Quem pergunta se o PC aguenta um jogo merece dado medido, não palpite.",
-      "A página usa dados lidos da máquina por WMI e nvidia-smi e cruza fontes para achar o que um comando sozinho não dá, como o fabricante real da placa de vídeo e o tamanho físico do monitor. Cada componente tem foto, especificações e um diagnóstico do que limita a máquina.",
-      "Na seção \"Este PC roda?\", o visitante digita o nome de um jogo e o site compara os requisitos oficiais da Steam com o hardware medido.",
-    ],
-    highlights: [
-      { title: "Dado medido, não digitado", body: "Um script coleta o inventário da máquina e os valores só entram na página depois de conferidos." },
-      { title: "Diagnóstico de upgrade", body: "Cada componente aponta o que limita o conjunto e onde vale investir." },
-      { title: "Este PC roda?", body: "Um parser lê os requisitos da Steam e compara processador, vídeo, memória e disco com o hardware real." },
-    ],
-    facts: [
-      { label: "Papel", value: "Coleta de dados, produto e implementação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "React · TypeScript · Vite · PowerShell" },
-      { label: "Estado", value: "No ar" },
-    ],
-    gallery: [
-      { src: "/projetos/hardware-showcase/shot-1.webp", alt: "Topo da página com o primeiro componente" },
-      { src: "/projetos/hardware-showcase/shot-2.webp", alt: "Card da placa de vídeo com foto e especificações" },
-      { src: "/projetos/hardware-showcase/shot-3.webp", alt: "Diagnóstico de upgrade com o que limita a máquina" },
-      { src: "/projetos/hardware-showcase/shot-4.webp", alt: "Teste Este PC roda? com o resultado de um jogo" },
-    ],
-  },
-  {
-    slug: "meus-jogos-100",
-    index: "11",
-    title: "Meus Jogos 100%",
-    category: "Vitrine de jogos platinados",
-    year: "2026",
-    description:
-      "Vitrine da biblioteca de jogos e outras mídias concluídas, com o visual da Steam, cards dourados para os 100% e filtros por progresso.",
-    href: "https://meus-jogos-100.vercel.app",
-    repo: "https://github.com/ErickkADR/meus-jogos-100",
-    tags: ["React", "TypeScript", "CSS"],
-    tint: "#1a9fff",
-    cover: {
-      src: "/projetos/meus-jogos-100/cover.webp",
-      alt: "Grade de jogos com cards dourados para os platinados, no estilo da Steam",
-    },
-    overview: [
-      "Terminar um jogo com todas as conquistas dá trabalho e quase ninguém vê. Uma lista em planilha não passa a sensação de conquista que o jogo deu.",
-      "A vitrine usa o design system da Steam: paleta, tipografia e a barra azul de conquistas. Os platinados ganham borda e brilho dourado, com o emblema de jogo perfeito refeito em SVG. Tudo é CSS puro, sem biblioteca de animação.",
-      "Dá para filtrar por platinados, em progresso ou todos, buscar pelo nome e navegar pelas outras mídias, como animes, séries, filmes e livros.",
-    ],
-    highlights: [
-      { title: "Cara de Steam", body: "Paleta, tipografia e barra de conquistas fiéis ao design system da plataforma." },
-      { title: "Dourado que significa algo", body: "O brilho dourado marca 100% das conquistas em jogos e item concluído nas outras mídias." },
-      { title: "Leve e acessível", body: "Animações em CSS, sem dependência além do React, e respeito a prefers-reduced-motion." },
-    ],
-    facts: [
-      { label: "Papel", value: "Design e implementação" },
-      { label: "Contexto", value: "Projeto pessoal" },
-      { label: "Stack", value: "React · TypeScript · Vite" },
-      { label: "Estado", value: "No ar" },
-    ],
-    gallery: [
-      { src: "/projetos/meus-jogos-100/shot-1.webp", alt: "Aba de jogos filtrada por platinados" },
-      { src: "/projetos/meus-jogos-100/shot-2.webp", alt: "Jogos em progresso com barras de conquistas" },
-      { src: "/projetos/meus-jogos-100/shot-3.webp", alt: "Busca por título na grade" },
-      { src: "/projetos/meus-jogos-100/shot-4.webp", alt: "Outra aba de mídia, com animes concluídos" },
-    ],
-  },
-  {
-    slug: "lummier-studio",
-    index: "12",
-    title: "Lummier Studio",
-    category: "Site para studio de beleza",
-    year: "2026",
-    description:
-      "Site de um studio de beleza com página própria para cada profissional, resultados em destaque e agendamento direto pelo WhatsApp.",
-    href: "https://erickkadr.github.io/flavia-longnails/",
-    repo: "https://github.com/ErickkADR/flavia-longnails",
-    tags: ["React", "TypeScript", "Landing page"],
-    tint: "#d98aa7",
-    cover: {
-      src: "/projetos/lummier-studio/cover.webp",
-      alt: "Home do Lummier Studio com o destaque dos resultados e o botão de agendar",
-    },
-    overview: [
-      "Para um negócio local de beleza, o site precisa vender o serviço pela imagem e tirar o atrito do agendamento. Formulário longo faz o cliente desistir.",
-      "O site mostra os resultados do studio, a equipe com uma página para cada profissional (bio, serviços e preços), avaliações em esteira e o ranking dos serviços mais contratados. O botão de WhatsApp fica fixo na tela, e o cliente marca o horário em um toque.",
-      "Nasceu como portfólio de uma nail designer e evoluiu para representar o studio inteiro.",
-    ],
-    highlights: [
-      { title: "Agendamento sem formulário", body: "O botão fixo de WhatsApp leva direto à conversa, de qualquer ponto da página." },
-      { title: "Uma página por profissional", body: "Cada especialista tem bio, serviços, preços e galeria próprios." },
-      { title: "Prova social em movimento", body: "Avaliações e galerias rolam sozinhas, com pausa quando o visitante passa o mouse." },
-    ],
-    facts: [
-      { label: "Papel", value: "Design, conteúdo e implementação" },
-      { label: "Contexto", value: "Site para cliente, negócio local" },
-      { label: "Stack", value: "React · TypeScript · Vite · CSS" },
-      { label: "Estado", value: "No ar" },
-    ],
-    gallery: [
-      { src: "/projetos/lummier-studio/shot-1.webp", alt: "Topo da home com as estatísticas do studio" },
-      { src: "/projetos/lummier-studio/shot-2.webp", alt: "Seção da equipe com um card por profissional" },
-      { src: "/projetos/lummier-studio/shot-3.webp", alt: "Avaliações em esteira e ranking de serviços" },
-      { src: "/projetos/lummier-studio/shot-4.webp", alt: "Página de uma profissional com bio, serviços e preços" },
-    ],
-  },
-  {
     slug: "achei-montador",
-    index: "13",
+    index: "11",
     title: "Achei Montador",
     category: "Site institucional de serviço de montagem",
     year: "2026",
@@ -1444,68 +1393,223 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "mugiwaras",
-    index: "14",
-    title: "Bando dos Mugiwaras",
-    category: "Landing page responsiva",
+    slug: "copos-laser",
+    index: "12",
+    title: "Gravura · Copos Laser",
+    category: "Visualizador 3D de gravação a laser",
     year: "2026",
     description:
-      "Landing page de One Piece com os 10 integrantes do Bando do Chapéu de Palha, biografia e barras de atributos, feita só com HTML e CSS.",
-    href: "https://erickkadr.github.io/Mugiwaras-Project/home.html",
-    repo: "https://github.com/ErickkADR/Mugiwaras-Project",
-    tags: ["HTML", "CSS", "Sem JavaScript"],
-    tint: "#c026d3",
+      "Copo térmico em 3D com a gravação a fibra laser simulada no navegador: a arte vira máscara de inox escovado sobre pintura fosca, dá a volta de 360° e sai como PNG pronto para o laser.",
+    href: "https://copos-laser.vercel.app",
+    repo: "https://github.com/ErickkADR/copos-laser",
+    tags: ["Three.js", "model-viewer", "Fibra laser"],
+    tint: "#9ca3af",
     cover: {
-      src: "/projetos/mugiwaras/cover.webp",
-      alt: "Abertura da landing page do Bando dos Mugiwaras, com a floresta ao fundo e o título sobreposto",
+      src: "/projetos/copos-laser/cover.webp",
+      alt: "Copo térmico preto em 3D com uma arte gravada a laser, ao lado da grade de artes",
+    },
+    video: "/projetos/copos-laser/demo.mp4",
+    overview: [
+      "Quem compra um copo gravado a laser quer ver o resultado antes de a máquina ligar. A gravação a fibra tira a tinta e deixa o inox aparecer, e isso é difícil de imaginar olhando só para a arte em preto e branco.",
+      "O site resolve isso em 3D: a arte vira uma máscara que decide, ponto a ponto, onde fica a pintura fosca e onde aparece o aço escovado, com brilho e rugosidade diferentes. A gravação dá a volta inteira no copo, e dá para girar com o dedo ou o mouse.",
+      "O visitante também pode mandar a própria arte, escrever um texto e baixar o arquivo do laser em PNG a 400 dpi, já na medida real do copo.",
+    ],
+    highlights: [
+      { title: "Inox e tinta de verdade", body: "Três mapas gerados num canvas (cor, metal e rugosidade, relevo) fazem o laser parecer laser, sem foto pronta." },
+      { title: "Volta de 360°", body: "A arte é medida em milímetros na volta real do copo e gira junto com o modelo." },
+      { title: "Arquivo pronto para a máquina", body: "O download sai em preto e branco, a 400 dpi e no tamanho físico da área gravada." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, 3D e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/copos-laser/shot-1.webp", alt: "Troca de arte: a nova gravação aparece no copo 3D" },
+      { src: "/projetos/copos-laser/shot-2.webp", alt: "O segundo modelo, o copo quencher, com a mesma arte" },
+      { src: "/projetos/copos-laser/shot-3.webp", alt: "Estúdio com a arte enviada pelo visitante e o texto gravado" },
+      { src: "/projetos/copos-laser/shot-4.webp", alt: "Copo girando com a arte nova, antes do download para o laser" },
+    ],
+  },
+  {
+    slug: "latinhas-3d",
+    index: "13",
+    title: "Latinha 3D",
+    category: "Visualizador 3D de rótulos de lata",
+    year: "2026",
+    description:
+      "Lata de alumínio em 3D com rótulos panorâmicos que dão a volta inteira, gotas de condensação e um estúdio para aplicar o próprio rótulo e baixar o arquivo de impressão.",
+    href: "https://latinhas-3d.vercel.app",
+    repo: "https://github.com/ErickkADR/latinhas-3d",
+    tags: ["Three.js", "Canvas", "Rótulos"],
+    tint: "#f97316",
+    cover: {
+      src: "/projetos/latinhas-3d/cover.webp",
+      alt: "Lata 3D com um rótulo ilustrado e a grade de temas ao lado",
+    },
+    video: "/projetos/latinhas-3d/demo.mp4",
+    overview: [
+      "Um rótulo de lata é uma imagem panorâmica: ele só faz sentido quando dá a volta. Ver o arquivo plano não mostra onde a arte quebra, onde o texto some na curva nem como a lata fica na prateleira.",
+      "A Latinha 3D monta a lata na hora, com o rótulo gerado num canvas, metal nas bordas e gotas de condensação por cima. Cada tema é um rótulo de volta inteira, e a lata gira para mostrar o lado de trás.",
+      "No estúdio, quem visita aplica o próprio rótulo, ajusta na lata e baixa o PNG da volta inteira para imprimir.",
+    ],
+    highlights: [
+      { title: "Rótulo de volta inteira", body: "Cada tema é um panorama 2:1 aplicado em 360°, como o rótulo de verdade." },
+      { title: "Acabamento de lata gelada", body: "Alumínio nas bordas e gotas de condensação deixam a lata com cara de produto." },
+      { title: "Do 3D para a gráfica", body: "O estúdio devolve o rótulo em PNG na medida da lata, pronto para imprimir." },
+    ],
+    facts: [
+      { label: "Papel", value: "Produto, 3D e implementação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Vite · JavaScript · model-viewer" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/latinhas-3d/shot-1.webp", alt: "Troca de tema: o rótulo novo aparece na lata 3D" },
+      { src: "/projetos/latinhas-3d/shot-2.webp", alt: "Outro tema, com a lata girada" },
+      { src: "/projetos/latinhas-3d/shot-3.webp", alt: "Estúdio com o rótulo enviado pelo visitante" },
+      { src: "/projetos/latinhas-3d/shot-4.webp", alt: "A lata com o rótulo novo, antes do download para impressão" },
+    ],
+  },
+  {
+    slug: "campro-a3-pro",
+    index: "14",
+    title: "Campro A3 Pro",
+    category: "Portal de pós-venda e licenciamento",
+    year: "2026",
+    description:
+      "Cada equipamento vendido ganha um link permanente pela sua licença, com instalador, manuais e vídeo. Substituiu o envio manual de arquivos a cada venda.",
+    href: "https://erickkadr.github.io/campro-a3-pro/",
+    repo: "https://github.com/ErickkADR/campro-a3-pro",
+    tags: ["React 18", "TypeScript", "Roteamento por licença"],
+    tint: "#8b5cf6",
+    cover: {
+      src: "/projetos/campro-a3-pro/cover.webp",
+      alt: "Portal da Campro A3 Pro Híbrida mostrando a licença 1981 e os acessos a software e manuais",
     },
     overview: [
-      "Um fã-projeto para exercitar o que HTML e CSS dão conta sozinhos: dez integrantes do Bando do Chapéu de Palha, cada um com apresentação, biografia e barras de atributos.",
-      "Não há uma linha de JavaScript. Tudo que se move sai de CSS: as transições, os estados de hover e o ritmo da página conforme se desce.",
-      "É uma página longa de propósito: a leitura acompanha a tripulação inteira, um personagem por vez, como um álbum.",
+      "Toda venda de equipamento terminava do mesmo jeito: alguém do suporte juntava instalador, manuais e vídeo e mandava por e-mail ou WhatsApp. Um por um, sempre igual, e sempre sujeito a mandar a versão errada.",
+      "O portal troca esse ritual por um link permanente. A licença do equipamento vira a rota: quem abre o link cai direto na página da própria máquina, com o software, a documentação e o vídeo correspondentes.",
+      "Como o endereço é fixo, ele continua valendo depois da venda: quando o cliente formatar o computador daqui a um ano, o material ainda está lá, atualizado.",
     ],
     highlights: [
       {
-        title: "Zero JavaScript",
-        body: "Layout, movimento e interação resolvidos só com CSS.",
+        title: "A licença é a rota",
+        body: "Cada equipamento tem seu endereço, e o conteúdo vem da licença que abriu a página.",
       },
       {
-        title: "Dez perfis completos",
-        body: "Cada integrante com apresentação, história e atributos em barras.",
+        title: "Um link no lugar do envio manual",
+        body: "Instalador, manuais e vídeo no mesmo lugar, sempre na versão corrente.",
       },
       {
-        title: "Leitura em rolagem longa",
-        body: "A página é construída para ser percorrida do começo ao fim, sem menu de atalho.",
+        title: "Vale depois da venda",
+        body: "O link é permanente: serve para a instalação e para toda reinstalação que vier depois.",
       },
     ],
     facts: [
-      { label: "Papel", value: "Design e implementação" },
-      { label: "Contexto", value: "Fã-projeto, estudo de CSS" },
-      { label: "Stack", value: "HTML · CSS" },
-      { label: "Estado", value: "Concluído" },
+      { label: "Papel", value: "Projeto e implementação" },
+      { label: "Contexto", value: "Pós-venda da Bannerjet" },
+      { label: "Stack", value: "React 18 · TypeScript" },
+      { label: "Estado", value: "Concluído, no ar" },
     ],
     gallery: [
       {
-        src: "/projetos/mugiwaras/shot-1.webp",
-        alt: "Perfil de um integrante do bando, com retrato e biografia",
+        src: "/projetos/campro-a3-pro/shot-1.webp",
+        alt: "Cartões de download do software, manuais e vídeo do equipamento",
       },
       {
-        src: "/projetos/mugiwaras/shot-2.webp",
-        alt: "Barras de atributos de um dos personagens",
+        src: "/projetos/campro-a3-pro/shot-2.webp",
+        alt: "Seção de documentação da Campro A3 Pro",
       },
       {
-        src: "/projetos/mugiwaras/shot-3.webp",
-        alt: "Outro perfil da tripulação, com o mesmo tratamento visual",
+        src: "/projetos/campro-a3-pro/shot-3.webp",
+        alt: "Instruções de instalação no portal da licença",
       },
       {
-        src: "/projetos/mugiwaras/shot-4.webp",
-        alt: "Trecho final da página, encerrando a apresentação do bando",
+        src: "/projetos/campro-a3-pro/shot-4.webp",
+        alt: "Rodapé do portal, com o contato do suporte técnico",
       },
     ],
   },
   {
-    slug: "apenas-um-escritor",
+    slug: "print-your-toy",
     index: "15",
+    title: "Print Your Toy",
+    category: "Jogo no Roblox",
+    year: "2026",
+    description:
+      "Meu jogo no Roblox: o jogador monta a própria fábrica de bonecos, imprime, coleciona e vende no marketplace do jogo.",
+    href: "https://www.roblox.com/discover/?Keyword=Print%20Your%20Toy",
+    tags: ["Roblox Studio", "Luau", "Game design"],
+    tint: "#38bdf8",
+    cover: {
+      src: "/projetos/print-your-toy/cover.webp",
+      alt: "Capa do jogo Print Your Toy",
+    },
+    /* A capa é PROVISÓRIA: o Erick gerou a capa oficial no Magnific e ela
+       não estava nesta conta. Trocar `public/projetos/print-your-toy/cover.webp`
+       e colocar o link do jogo em `href` quando ele mandar. */
+    overview: [
+      "Print Your Toy é o meu jogo no Roblox. A ideia é simples de explicar e divertida de jogar: você começa com uma impressora e um terreno vazio e constrói a sua própria fábrica de bonecos.",
+      "Cada boneco impresso entra no inventário. Dá para colecionar, montar a sua loja e anunciar os bonecos para outros jogadores no marketplace do jogo.",
+      "A interface, os ícones e a arte foram criados com IA e montados no Roblox Studio.",
+    ],
+    highlights: [
+      { title: "Fábrica que cresce", body: "Impressoras, terreno e loja evoluem conforme o jogador vende." },
+      { title: "Coleção e raridade", body: "Bonecos com raridade, inventário e vitrine própria." },
+      { title: "Marketplace entre jogadores", body: "Cada um anuncia e vende os bonecos que já tem." },
+    ],
+    facts: [
+      { label: "Papel", value: "Game design, arte e programação" },
+      { label: "Contexto", value: "Projeto pessoal" },
+      { label: "Stack", value: "Roblox Studio · Luau" },
+      { label: "Estado", value: "Em desenvolvimento" },
+    ],
+    gallery: [],
+  },
+  {
+    slug: "lummier-studio",
+    index: "16",
+    title: "Lummier Studio",
+    category: "Site para studio de beleza",
+    year: "2026",
+    description:
+      "Site de um studio de beleza com página própria para cada profissional, resultados em destaque e agendamento direto pelo WhatsApp.",
+    href: "https://erickkadr.github.io/flavia-longnails/",
+    repo: "https://github.com/ErickkADR/flavia-longnails",
+    tags: ["React", "TypeScript", "Landing page"],
+    tint: "#d98aa7",
+    cover: {
+      src: "/projetos/lummier-studio/cover.webp",
+      alt: "Home do Lummier Studio com o destaque dos resultados e o botão de agendar",
+    },
+    overview: [
+      "Para um negócio local de beleza, o site precisa vender o serviço pela imagem e tirar o atrito do agendamento. Formulário longo faz o cliente desistir.",
+      "O site mostra os resultados do studio, a equipe com uma página para cada profissional (bio, serviços e preços), avaliações em esteira e o ranking dos serviços mais contratados. O botão de WhatsApp fica fixo na tela, e o cliente marca o horário em um toque.",
+      "Nasceu como portfólio de uma nail designer e evoluiu para representar o studio inteiro.",
+    ],
+    highlights: [
+      { title: "Agendamento sem formulário", body: "O botão fixo de WhatsApp leva direto à conversa, de qualquer ponto da página." },
+      { title: "Uma página por profissional", body: "Cada especialista tem bio, serviços, preços e galeria próprios." },
+      { title: "Prova social em movimento", body: "Avaliações e galerias rolam sozinhas, com pausa quando o visitante passa o mouse." },
+    ],
+    facts: [
+      { label: "Papel", value: "Design, conteúdo e implementação" },
+      { label: "Contexto", value: "Site para cliente, negócio local" },
+      { label: "Stack", value: "React · TypeScript · Vite · CSS" },
+      { label: "Estado", value: "No ar" },
+    ],
+    gallery: [
+      { src: "/projetos/lummier-studio/shot-1.webp", alt: "Topo da home com as estatísticas do studio" },
+      { src: "/projetos/lummier-studio/shot-2.webp", alt: "Seção da equipe com um card por profissional" },
+      { src: "/projetos/lummier-studio/shot-3.webp", alt: "Avaliações em esteira e ranking de serviços" },
+      { src: "/projetos/lummier-studio/shot-4.webp", alt: "Página de uma profissional com bio, serviços e preços" },
+    ],
+  },
+  {
+    slug: "apenas-um-escritor",
+    index: "17",
     title: "Apenas Um Escritor",
     category: "Site com efeito parallax",
     year: "2025",
@@ -1560,6 +1664,66 @@ export const projects: Project[] = [
       {
         src: "/projetos/apenas-um-escritor/shot-4.webp",
         alt: "Encerramento do texto, na última camada da página",
+      },
+    ],
+  },
+  {
+    slug: "mugiwaras",
+    index: "18",
+    title: "Bando dos Mugiwaras",
+    category: "Landing page responsiva",
+    year: "2026",
+    description:
+      "Landing page de One Piece com os 10 integrantes do Bando do Chapéu de Palha, biografia e barras de atributos, feita só com HTML e CSS.",
+    href: "https://erickkadr.github.io/Mugiwaras-Project/home.html",
+    repo: "https://github.com/ErickkADR/Mugiwaras-Project",
+    tags: ["HTML", "CSS", "Sem JavaScript"],
+    tint: "#c026d3",
+    cover: {
+      src: "/projetos/mugiwaras/cover.webp",
+      alt: "Abertura da landing page do Bando dos Mugiwaras, com a floresta ao fundo e o título sobreposto",
+    },
+    overview: [
+      "Um fã-projeto para exercitar o que HTML e CSS dão conta sozinhos: dez integrantes do Bando do Chapéu de Palha, cada um com apresentação, biografia e barras de atributos.",
+      "Não há uma linha de JavaScript. Tudo que se move sai de CSS: as transições, os estados de hover e o ritmo da página conforme se desce.",
+      "É uma página longa de propósito: a leitura acompanha a tripulação inteira, um personagem por vez, como um álbum.",
+    ],
+    highlights: [
+      {
+        title: "Zero JavaScript",
+        body: "Layout, movimento e interação resolvidos só com CSS.",
+      },
+      {
+        title: "Dez perfis completos",
+        body: "Cada integrante com apresentação, história e atributos em barras.",
+      },
+      {
+        title: "Leitura em rolagem longa",
+        body: "A página é construída para ser percorrida do começo ao fim, sem menu de atalho.",
+      },
+    ],
+    facts: [
+      { label: "Papel", value: "Design e implementação" },
+      { label: "Contexto", value: "Fã-projeto, estudo de CSS" },
+      { label: "Stack", value: "HTML · CSS" },
+      { label: "Estado", value: "Concluído" },
+    ],
+    gallery: [
+      {
+        src: "/projetos/mugiwaras/shot-1.webp",
+        alt: "Perfil de um integrante do bando, com retrato e biografia",
+      },
+      {
+        src: "/projetos/mugiwaras/shot-2.webp",
+        alt: "Barras de atributos de um dos personagens",
+      },
+      {
+        src: "/projetos/mugiwaras/shot-3.webp",
+        alt: "Outro perfil da tripulação, com o mesmo tratamento visual",
+      },
+      {
+        src: "/projetos/mugiwaras/shot-4.webp",
+        alt: "Trecho final da página, encerrando a apresentação do bando",
       },
     ],
   },
@@ -2193,6 +2357,13 @@ export const contact = {
       handle: "@erickk1392",
       href: "https://www.youtube.com/@erickk1392",
     },
+    /* PDF gerado de scripts/curriculo/curriculo.html (node scripts/curriculo/gera-pdf.mjs).
+       Caminho local: o componente passa por asset() por causa do basePath. */
+    {
+      label: "Currículo",
+      handle: "PDF · 1 página",
+      href: "/curriculo/erick-dantas-curriculo.pdf",
+    },
   ],
 };
 
@@ -2235,8 +2406,8 @@ export const projectsSection = {
   carouselLabel: "Projetos",
   /* Linha sob o título e dica de rolagem da faixa horizontal. */
   intro:
-    "Projetos pessoais, do 3D no navegador a sistemas completos com banco de " +
-    "dados. O que fiz na Bannerjet está em Feitos na Bannerjet.",
+    "Do maior para o menor: os sistemas que eu criei na Bannerjet e os meus " +
+    "projetos pessoais, do 3D no navegador a sistemas completos com banco de dados.",
   scrollHint: "Role para ver todos",
   cta: "Ver projeto",
   codeLabel: "Código",

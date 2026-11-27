@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useConteudo } from "@/lib/idioma";
+import { asset } from "@/lib/asset";
 
 /* ============================================================
    CONTATO
@@ -156,7 +157,7 @@ export default function Contact() {
             lugar onde a conversa começa. */}
         <div className="grid gap-16 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
           <div>
-            <span className="mono-label">{contact.label}</span>
+            <span className="mono-label block">{contact.label}</span>
 
             {/* "automatizado?" usa `.display-accent` (serifada itálica) e a
                 última linha ganha `.line-mask-accent`, porque a descida das
@@ -219,16 +220,21 @@ export default function Contact() {
           </div>
 
           {/* ---------- canais ---------- */}
-          <div className="contact-fade lg:pt-14">
-            <p className="mono-label text-plasma">{contact.channelsLabel}</p>
-            <ul className="mt-6 border-t border-bone/12">
+          {/* ALINHADA COM A ESQUERDA (27/11/2026, pedido dele): o rótulo
+              "Canais" fica na mesma altura do "Contato" (era recuado com
+              pt-14) e a lista estica até o fim da coluna da esquerda, com
+              as linhas dividindo a altura, para as duas colunas terminarem
+              juntas. */}
+          <div className="contact-fade flex flex-col">
+            <p className="mono-label">{contact.channelsLabel}</p>
+            <ul className="mt-6 flex flex-1 flex-col border-t border-bone/12">
               {contact.socials.map((s, i) => (
-                <li key={s.label} className="border-b border-bone/12">
+                <li key={s.label} className="flex flex-1 border-b border-bone/12">
                   <a
-                    href={s.href}
+                    href={s.href.startsWith("/") ? asset(s.href) : s.href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="group relative flex items-center gap-5 overflow-hidden py-6 pr-2 transition-colors duration-500"
+                    className="group relative flex w-full items-center gap-5 overflow-hidden py-6 pr-2 transition-colors duration-500"
                   >
                     {/* Preenchimento que sobe no hover. */}
                     <span

@@ -100,6 +100,9 @@ export const conteudoEn: Profundo<Conteudo> = {
     channelsLabel: "Channels",
     backToTop: "Back to top",
     socialsLabel: "On the web",
+    /* Só o 5º canal tem tradução: os outros quatro são nomes próprios. A mescla
+       é por índice, então os quatro primeiros vão vazios e caem no português. */
+    socials: [{}, {}, {}, {}, { label: "Résumé", handle: "PDF · 1 page, in Portuguese" }],
   },
   /* ---------- Cargo atual / feitos ----------
      A ordem dos grupos e dos itens é a MESMA do content.ts (Produtos com
@@ -405,6 +408,12 @@ export const conteudoEn: Profundo<Conteudo> = {
       "database of systems in production that the team uses every day.",
     items: [
       {
+        label: "ready technical materials in Central Técnica: 330 videos, 95 manuals and 149 helpers, for 97 machines",
+        outcome:
+          "Each technician used to keep their own files and the customer waited for someone to find them. Now every machine's material is published, organised by equipment and one link away.",
+        source: "Technical content · Central Técnica",
+      },
+      {
         label: "visits to the ERP and Central Técnica in 6 weeks, by 36 people",
         outcome:
           "The systems I built became the team's daily tool: opened every day, several times a day, by technicians, sales and management.",
@@ -485,78 +494,77 @@ export const conteudoEn: Profundo<Conteudo> = {
      por print, e não couberam nesta rodada. */
   projects: [
     {
-      category: "3D laser engraving viewer",
+      category: "Technical training platform",
       description:
-        "A 3D thermal tumbler with fiber laser engraving simulated in the browser: the artwork becomes a " +
-        "brushed-steel mask over matte paint, wraps 360° around the cup and exports a laser-ready PNG.",
+        "Technical hub gathering an equipment catalogue, manuals, parts, firmware " +
+        "and courses with module progression, plus an AI chatbot that answers " +
+        "technical questions right on the site.",
       overview: [
-        "Anyone buying a laser-engraved tumbler wants to see the result before the machine starts. Fiber engraving removes the paint and reveals the steel, and that is hard to picture from black-and-white artwork alone.",
-        "The site solves it in 3D: the artwork becomes a mask that decides, point by point, where the matte paint stays and where brushed steel shows, each with its own shine and roughness. The engraving wraps all the way around the cup, which you can spin with a finger or the mouse.",
-        "Visitors can also upload their own artwork, add a line of text and download the laser file as a 400 dpi PNG, already at the cup's real size.",
+        "Central Técnica started from simple arithmetic: the time the support team spent looking for an old manual, a cutting parameter or the right firmware version was longer than solving the problem itself. The material existed, scattered across folders, e-mails and WhatsApp threads.",
+        "The portal brings it all into one place: an equipment catalogue with its own page per machine, manuals, parts, firmware, colour profiles and parameters. Every machine has its own record, and what used to be \"go ask so-and-so\" became a link.",
+        "On top of it runs an AI chatbot that answers technical questions from the same knowledge base as the portal. Whoever does not know where to look asks in plain language and gets the answer with its source.",
       ],
       highlights: [
-        { title: "Real steel and paint", body: "Three canvas-generated maps (color, metal/roughness, relief) make the engraving read as laser, with no stock photo." },
-        { title: "Full 360° wrap", body: "The artwork is measured in millimetres around the real cup and spins with the model." },
-        { title: "Machine-ready file", body: "The download comes out black and white, at 400 dpi and at the physical size of the engraved area." },
+        {
+          title: "One page per machine",
+          body: "Plotters, laminators, UV printers, lasers and guillotines: each machine has its record, its parameters and the files that belong to it.",
+        },
+        {
+          title: "Chatbot on the portal's own base",
+          body: "The answers come from the same material published on the site, so documentation and chatbot never drift apart.",
+        },
+        {
+          title: "Restricted area",
+          body: "The content is internal to Bannerjet: access goes through login, and the public portal only shows the entry screen.",
+        },
       ],
       facts: [
-        { label: "Role", value: "Product, 3D and build" },
-        { label: "Context", value: "Personal project" },
-        { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
-        { label: "Status", value: "Live" },
+        { label: "Role", value: "Design, content and implementation" },
+        { label: "Context", value: "Internal tool, in daily use" },
+        { label: "Stack", value: "HTML · CSS · JavaScript" },
+        { label: "Status", value: "Live, evolving" },
       ],
     },
     {
-      category: "3D can label viewer",
+      category: "RAG technical support chatbot",
       description:
-        "A 3D aluminium can with panoramic labels that wrap all the way around, condensation drops and a " +
-        "studio to apply your own label and download the print file.",
+        "Bannerjet's technical assistant on WhatsApp: it answers from the company's own knowledge base, sends the right manual or video, books the technician and calls support when a person is needed.",
       overview: [
-        "A can label is a panoramic image: it only makes sense once it wraps. The flat file does not show where the artwork breaks, where text disappears into the curve or how the can looks on a shelf.",
-        "Latinha 3D builds the can on the fly, with the label generated in a canvas, metal rims and condensation drops on top. Each theme is a full-wrap label, and the can spins to show the back.",
-        "In the studio, visitors apply their own label, adjust it on the can and download the full-wrap PNG for printing.",
+        "Bannerjet's technical support answered the same questions all day: how to align the camera, which parameter to use, where the manual is. Every answer depended on a free technician.",
+        "Jet IA answers on WhatsApp from the company's own knowledge base: more than 2,000 passages from manuals, reports and videos in Supabase. It only answers with what the search found, sends the right material and, when the case needs a technician, books the slot on its own.",
+        "Behind it, an n8n flow decides the path of every message and a supervisor AI watches the queue: customers left without an answer, a technician who never joined the call, lunch hours. More than 5,000 questions answered for over 1,200 people so far.",
       ],
       highlights: [
-        { title: "Full-wrap labels", body: "Each theme is a 2:1 panorama applied over 360°, like the real label." },
-        { title: "Cold-can finish", body: "Aluminium rims and condensation drops make it look like a product." },
-        { title: "From 3D to print", body: "The studio returns the label as a PNG at the can's size, ready to print." },
+        { title: "Answers with a source", body: "The question becomes a vector and is compared with the company's base; what is not there, the AI does not make up." },
+        { title: "Books on its own", body: "842 remote support sessions were booked by the AI itself, with the right technician and the call link." },
+        { title: "Queue supervision", body: "A second AI watches the conversations and calls support with priority when a customer is left waiting." },
       ],
       facts: [
-        { label: "Role", value: "Product, 3D and build" },
-        { label: "Context", value: "Personal project" },
-        { label: "Stack", value: "Vite · JavaScript · model-viewer" },
-        { label: "Status", value: "Live" },
+        { label: "Role", value: "Design, flows, knowledge base and prompts" },
+        { label: "Context", value: "In production, serving customers" },
+        { label: "Stack", value: "n8n · Supabase · OpenAI · Callbell" },
+        { label: "Status", value: "Live, evolving every week" },
       ],
     },
     {
-      category: "Support SaaS with AI",
+      category: "Technical department management system",
       description:
-        "A SaaS platform of specialised AI chatbots: Gemini API integration, an admin " +
-        "dashboard and a dark interface built for long sessions.",
+        "The technical team's day-to-day system, built with Victor Rocha: remote support scheduling, repair service, parts inventory, import inspection and service supervision.",
       overview: [
-        "AtomAI is a support platform where each bot specialises in a niche, instead of one generic assistant trying to answer everything. Whoever arrives picks the type of problem, be it hardware, software or peripherals, and lands on the agent trained for it.",
-        "Beyond the conversation, the product has the inside: a dashboard with real-time ticket volume, performance per agent, bot team management, plans and checkout. It is the full slice of a SaaS, from login to billing.",
-        "The interface is dark by decision of use: it is a work tool, open all day, and high contrast tires you out over a long shift.",
+        "The ERP Technical Module was created by Victor Rocha, and I built a large part of the modules the technical team uses every day. The idea is one: take the technician's work out of spreadsheets, paper and loose conversations.",
+        "The remote support scheduler organises each technician's week, repair service follows the service order step by step, inventory shows the part before promising a date, and inspection records every machine arriving from import with photos.",
+        "On top of that, Jet IA lives inside the system and management follows supervision, SLA and AI results without asking for a report. More than 20,000 visits by 36 people in six weeks.",
       ],
       highlights: [
-        {
-          title: "Agents by speciality",
-          body: "Each bot covers one domain and has its own status. Triage happens before the conversation, not in the middle of it.",
-        },
-        {
-          title: "Dashboard with the support numbers",
-          body: "Total tickets, active agents, average response time and resolved today, with the curve for the last seven days.",
-        },
-        {
-          title: "Gemini API behind it",
-          body: "The answers come from Gemini, with the specialisation defined per agent.",
-        },
+        { title: "Support scheduler", body: "2,639 remote sessions organised, with technician, customer, machine and call link." },
+        { title: "Repair and lab", body: "The service order has a timeline, and the lab syncs with Notion on its own." },
+        { title: "Supervision", body: "An attention ranking per team member, with waiting time and SLA, to act before the complaint." },
       ],
       facts: [
-        { label: "Role", value: "Product, interface and integration" },
-        { label: "Context", value: "Final degree project" },
-        { label: "Stack", value: "HTML · CSS · JavaScript · Gemini API" },
-        { label: "Status", value: "In development" },
+        { label: "Role", value: "Modules, database and integrations (with Victor Rocha)" },
+        { label: "Context", value: "Bannerjet internal system" },
+        { label: "Stack", value: "HTML · CSS · JavaScript · Supabase" },
+        { label: "Status", value: "In daily use" },
       ],
     },
     {
@@ -610,23 +618,103 @@ export const conteudoEn: Profundo<Conteudo> = {
       ],
     },
     {
-      category: "Roblox game",
+      category: "AI pipeline for technical manuals",
       description:
-        "My Roblox game: players build their own toy factory, print, collect and sell figures in the in-game marketplace.",
+        "Takes the manufacturer's manual in Chinese or English and returns Bannerjet's manual as a PDF: translated, organised in the brand standard and ready for the Central and for Jet IA.",
       overview: [
-        "Print Your Toy is my Roblox game. Easy to explain and fun to play: you start with one printer and an empty plot and build your own toy factory.",
-        "Every printed figure goes into your inventory. You can collect them, set up your own shop and list figures for other players in the game's marketplace.",
-        "The interface, icons and artwork were created with AI and assembled in Roblox Studio.",
+        "Manufacturer manuals arrive in Chinese or in hard English, each in its own format. Laying out a Bannerjet manual from that used to take days per machine.",
+        "The agent reads the whole manual, translates it into Portuguese, organises it into the standard sections (specs, safety, installation, operation, maintenance, troubleshooting and warranty) and returns only the content, as JSON. A fixed template turns it into the branded PDF.",
+        "The same text goes to Central Técnica, where the manual opens like a book, and to Jet IA's knowledge base, which starts answering about that machine.",
       ],
       highlights: [
-        { title: "A factory that grows", body: "Printers, land and shop evolve as the player sells." },
-        { title: "Collection and rarity", body: "Figures with rarity, an inventory and their own showcase." },
-        { title: "Player marketplace", body: "Everyone lists and sells the figures they already own." },
+        { title: "Content apart from layout", body: "The agent does not lay out pages: it returns the content, and the template makes every manual come out the same." },
+        { title: "From manufacturer to PDF", body: "Translation, structure and the original manual's images, without building page by page." },
+        { title: "Feeds Jet IA", body: "Every new manual becomes knowledge the AI uses to answer customers." },
       ],
       facts: [
-        { label: "Role", value: "Game design, art and code" },
-        { label: "Context", value: "Personal project" },
-        { label: "Stack", value: "Roblox Studio · Luau" },
+        { label: "Role", value: "Prompts, template and pipeline" },
+        { label: "Context", value: "Bannerjet technical documentation" },
+        { label: "Stack", value: "Claude Code · Python · HTML · CSS" },
+        { label: "Status", value: "In daily use" },
+      ],
+    },
+    {
+      category: "Course platform with exams and certificates",
+      description:
+        "Bannerjet's courses by equipment line: video modules, an exam at the end of each module and a certificate at the end of the course, with the same login as the ERP and the Central.",
+      overview: [
+        "Training for technicians and customers happened by word of mouth, and everyone learned a different way. The Academy turned it into a track: video modules per machine, exams and a certificate.",
+        "The 570 exam questions came from Jet IA's knowledge base and were reviewed before going live. The same knowledge that answers customers on WhatsApp now trains people.",
+        "The platform shares the database and the login with the ERP and Central Técnica, so anyone already working in the systems joins the courses with no new sign-up.",
+      ],
+      highlights: [
+        { title: "An exam per module", body: "570 questions, graded on the server so nobody sees the answers in the browser." },
+        { title: "Certificate at the end", body: "A finished course issues the student's certificate." },
+        { title: "One login for everything", body: "ERP, Central Técnica and Academy share the same database and account." },
+      ],
+      facts: [
+        { label: "Role", value: "Design, content and build" },
+        { label: "Context", value: "Bannerjet training" },
+        { label: "Stack", value: "HTML · CSS · JavaScript · Supabase" },
+        { label: "Status", value: "Live" },
+      ],
+    },
+    {
+      category: "AI agents for short-form video production",
+      description:
+        "A team of five Claude Code agents that takes an anime topic to a finished Short: trend, script, review, title and Remotion editing.",
+      overview: [
+        "Running a Shorts channel means the same cycle every week: find the topic, write, review, name and edit. Done by hand, editing becomes the bottleneck.",
+        "The project splits the cycle across five agents. trend-scout finds the trending topic, script-writer writes and script-reviewer reviews, viral-titles produces title, description and tags, and video-editor assembles the video in Remotion. Two commands, /generate-short and /edit-short, tie the steps together.",
+        "The voice remains mine: I record the audio, and the editor handles the rest, with a log of mistakes that must never repeat.",
+      ],
+      highlights: [
+        { title: "One agent per step", body: "Research, script, review, title and editing are separate, each with its own rules." },
+        { title: "Editing as code", body: "The video is assembled in Remotion from the recorded audio, with render and checks." },
+        { title: "Memory of what went wrong", body: "Approved recipes and a list of mistakes to never repeat guide every new batch." },
+      ],
+      facts: [
+        { label: "Role", value: "Workflow design, agents and editing" },
+        { label: "Context", value: "Personal project, YouTube channel" },
+        { label: "Stack", value: "Claude Code · Remotion · React · Node" },
+        { label: "Status", value: "In production, evolving" },
+      ],
+      cover: { alt: "Otaku Mind channel with the Shorts produced by the agent team" },
+      gallery: [
+        { alt: "Shorts page of the Otaku Mind channel" },
+        { alt: "Terminal with the generate-short command producing script and title" },
+        { alt: "Remotion studio with a Short being edited" },
+        { alt: "Folder with the five agents and the channel strategy" },
+      ],
+    },
+    {
+      category: "Support SaaS with AI",
+      description:
+        "A SaaS platform of specialised AI chatbots: Gemini API integration, an admin " +
+        "dashboard and a dark interface built for long sessions.",
+      overview: [
+        "AtomAI is a support platform where each bot specialises in a niche, instead of one generic assistant trying to answer everything. Whoever arrives picks the type of problem, be it hardware, software or peripherals, and lands on the agent trained for it.",
+        "Beyond the conversation, the product has the inside: a dashboard with real-time ticket volume, performance per agent, bot team management, plans and checkout. It is the full slice of a SaaS, from login to billing.",
+        "The interface is dark by decision of use: it is a work tool, open all day, and high contrast tires you out over a long shift.",
+      ],
+      highlights: [
+        {
+          title: "Agents by speciality",
+          body: "Each bot covers one domain and has its own status. Triage happens before the conversation, not in the middle of it.",
+        },
+        {
+          title: "Dashboard with the support numbers",
+          body: "Total tickets, active agents, average response time and resolved today, with the curve for the last seven days.",
+        },
+        {
+          title: "Gemini API behind it",
+          body: "The answers come from Gemini, with the specialisation defined per agent.",
+        },
+      ],
+      facts: [
+        { label: "Role", value: "Product, interface and integration" },
+        { label: "Context", value: "Final degree project" },
+        { label: "Stack", value: "HTML · CSS · JavaScript · Gemini API" },
         { label: "Status", value: "In development" },
       ],
     },
@@ -659,115 +747,128 @@ export const conteudoEn: Profundo<Conteudo> = {
       ],
     },
     {
-      category: "Family personal finance",
+      category: "Assembly service institutional site",
       description:
-        "Finance control for the family, with accounts, instalments, category budgets, goals and annual reports, each person seeing only their own data.",
+        "An institutional site for a network of furniture assemblers, with two pages, one for people who bought furniture and one for retailers, both converting on WhatsApp.",
       overview: [
-        "A spending spreadsheet works until the second week. For a family to really use it, tracking has to be quick to enter and make clear where the money goes.",
-        "Granafy brings together a dashboard, transactions with instalments and transfers between accounts, fixed bills, budgets with alerts, goals with a calculated monthly contribution and yearly reports. Each person has their own account, and the database isolates each one's data.",
-        "Sign-up is limited to approved e-mails, so the app stays restricted to the family.",
+        "The company talks to two audiences who want different things: the customer who just bought furniture and the store that wants the network assembling for it. One page confuses both.",
+        "The site separates the conversations. The home is for consumers, with an animated banner, services and a step-by-step. The partnerships page is for retail, with the challenge, the solution, the technology and the QR code on the packaging. A button in the header switches between them.",
+        "Both end at the same point: direct contact through WhatsApp.",
       ],
       highlights: [
-        { title: "Data isolated per person", body: "Authentication and database rules make sure each user sees only their own data." },
-        { title: "From entry to report", body: "Instalments, fixed bills and transfers feed the dashboard and the annual report." },
-        { title: "Budget alerts", body: "The monthly limit per category shows whether it is under control, near the limit or over." },
-      ],
-      facts: [
-        { label: "Role", value: "Product and implementation" },
-        { label: "Context", value: "Personal project, family use" },
-        { label: "Stack", value: "Next.js · TypeScript · Tailwind · Supabase · Recharts" },
-        { label: "Status", value: "In use, restricted access" },
-      ],
-      cover: { alt: "Granafy dashboard with balance, monthly chart and spending by category" },
-      gallery: [
-        { alt: "Dashboard with balance and a six-month chart" },
-        { alt: "Transactions list with filters and an instalment entry" },
-        { alt: "Budgets by category with alerts" },
-        { alt: "Annual report with income and expenses by month" },
-      ],
-    },
-    {
-      category: "AI agents for short-form video production",
-      description:
-        "A team of five Claude Code agents that takes an anime topic to a finished Short: trend, script, review, title and Remotion editing.",
-      overview: [
-        "Running a Shorts channel means the same cycle every week: find the topic, write, review, name and edit. Done by hand, editing becomes the bottleneck.",
-        "The project splits the cycle across five agents. trend-scout finds the trending topic, script-writer writes and script-reviewer reviews, viral-titles produces title, description and tags, and video-editor assembles the video in Remotion. Two commands, /generate-short and /edit-short, tie the steps together.",
-        "The voice remains mine: I record the audio, and the editor handles the rest, with a log of mistakes that must never repeat.",
-      ],
-      highlights: [
-        { title: "One agent per step", body: "Research, script, review, title and editing are separate, each with its own rules." },
-        { title: "Editing as code", body: "The video is assembled in Remotion from the recorded audio, with render and checks." },
-        { title: "Memory of what went wrong", body: "Approved recipes and a list of mistakes to never repeat guide every new batch." },
-      ],
-      facts: [
-        { label: "Role", value: "Workflow design, agents and editing" },
-        { label: "Context", value: "Personal project, YouTube channel" },
-        { label: "Stack", value: "Claude Code · Remotion · React · Node" },
-        { label: "Status", value: "In production, evolving" },
-      ],
-      cover: { alt: "Otaku Mind channel with the Shorts produced by the agent team" },
-      gallery: [
-        { alt: "Shorts page of the Otaku Mind channel" },
-        { alt: "Terminal with the generate-short command producing script and title" },
-        { alt: "Remotion studio with a Short being edited" },
-        { alt: "Folder with the five agents and the channel strategy" },
-      ],
-    },
-    {
-      category: "Interactive hardware inventory",
-      description:
-        "A page that presents my PC with data read from the machine itself, an upgrade diagnosis and a test that tells whether a game runs on that hardware.",
-      overview: [
-        "A spec list typed from memory tends to be wrong: WMI reports just \"RTX 3050\" and the monitor shows up only as a panel name. Anyone asking whether a PC can run a game deserves measured data, not a guess.",
-        "The page uses data read from the machine through WMI and nvidia-smi and cross-checks sources to find what a single command cannot give, such as the real graphics card manufacturer and the monitor's physical size. Each component has a photo, specs and a diagnosis of what limits the machine.",
-        "In the \"Does this PC run it?\" section, the visitor types a game name and the site compares the official Steam requirements with the measured hardware.",
-      ],
-      highlights: [
-        { title: "Measured, not typed", body: "A script collects the machine inventory, and values only reach the page after being checked." },
-        { title: "Upgrade diagnosis", body: "Each component points out what limits the whole and where an upgrade pays off." },
-        { title: "Does this PC run it?", body: "A parser reads Steam requirements and compares CPU, GPU, memory and disk with the real hardware." },
-      ],
-      facts: [
-        { label: "Role", value: "Data collection, product and implementation" },
-        { label: "Context", value: "Personal project" },
-        { label: "Stack", value: "React · TypeScript · Vite · PowerShell" },
-        { label: "Status", value: "Live" },
-      ],
-      cover: { alt: "Hardware inventory page with the PC components and their specifications" },
-      gallery: [
-        { alt: "Top of the page with the first component" },
-        { alt: "Graphics card with photo and specifications" },
-        { alt: "Upgrade diagnosis showing what limits the machine" },
-        { alt: "Does this PC run it? test showing a game result" },
-      ],
-    },
-    {
-      category: "Platinum games showcase",
-      description:
-        "A showcase of completed games and other media, with a Steam look, gold cards for 100% completions and progress filters.",
-      overview: [
-        "Finishing a game with every achievement takes work and almost nobody sees it. A spreadsheet list does not carry the feeling the game gave.",
-        "The showcase uses Steam's design system: palette, typography and the blue achievement bar. Platinum titles get a gold border and glow, with the perfect-game badge redrawn in SVG. It is all plain CSS, with no animation library.",
-        "Visitors can filter by platinum, in progress or all, search by name and browse other media such as anime, series, films and books.",
-      ],
-      highlights: [
-        { title: "Looks like Steam", body: "Palette, typography and achievement bar faithful to the platform's design system." },
-        { title: "Gold that means something", body: "The gold glow marks 100% achievements in games and a completed item in other media." },
-        { title: "Light and accessible", body: "CSS animations, no dependency beyond React, and prefers-reduced-motion respected." },
+        { title: "Two audiences, two pages", body: "Consumers and retail get different messages without sharing the same screen." },
+        { title: "Conversion on WhatsApp", body: "Every call to action leads to the same support channel." },
+        { title: "Static and fast", body: "Next.js exported as a static site, with all copy in a single content file." },
       ],
       facts: [
         { label: "Role", value: "Design and implementation" },
+        { label: "Context", value: "Institutional site, version for approval" },
+        { label: "Stack", value: "Next.js · React · TypeScript · Tailwind · Motion" },
+        { label: "Status", value: "Live, in approval" },
+      ],
+      cover: { alt: "Achei Montador home with the animated banner and the WhatsApp button" },
+      gallery: [
+        { alt: "Top of the home with the animated banner" },
+        { alt: "Services section of the consumer page" },
+        { alt: "Top of the retail partnerships page" },
+        { alt: "QR code on the packaging section" },
+      ],
+    },
+    {
+      category: "3D laser engraving viewer",
+      description:
+        "A 3D thermal tumbler with fiber laser engraving simulated in the browser: the artwork becomes a " +
+        "brushed-steel mask over matte paint, wraps 360° around the cup and exports a laser-ready PNG.",
+      overview: [
+        "Anyone buying a laser-engraved tumbler wants to see the result before the machine starts. Fiber engraving removes the paint and reveals the steel, and that is hard to picture from black-and-white artwork alone.",
+        "The site solves it in 3D: the artwork becomes a mask that decides, point by point, where the matte paint stays and where brushed steel shows, each with its own shine and roughness. The engraving wraps all the way around the cup, which you can spin with a finger or the mouse.",
+        "Visitors can also upload their own artwork, add a line of text and download the laser file as a 400 dpi PNG, already at the cup's real size.",
+      ],
+      highlights: [
+        { title: "Real steel and paint", body: "Three canvas-generated maps (color, metal/roughness, relief) make the engraving read as laser, with no stock photo." },
+        { title: "Full 360° wrap", body: "The artwork is measured in millimetres around the real cup and spins with the model." },
+        { title: "Machine-ready file", body: "The download comes out black and white, at 400 dpi and at the physical size of the engraved area." },
+      ],
+      facts: [
+        { label: "Role", value: "Product, 3D and build" },
         { label: "Context", value: "Personal project" },
-        { label: "Stack", value: "React · TypeScript · Vite" },
+        { label: "Stack", value: "Vite · JavaScript · model-viewer · GSAP" },
         { label: "Status", value: "Live" },
       ],
-      cover: { alt: "Game grid with gold cards for platinum titles, in a Steam style" },
-      gallery: [
-        { alt: "Games tab filtered by platinum" },
-        { alt: "Games in progress with achievement bars" },
-        { alt: "Searching a title in the grid" },
-        { alt: "Another media tab, with completed anime" },
+    },
+    {
+      category: "3D can label viewer",
+      description:
+        "A 3D aluminium can with panoramic labels that wrap all the way around, condensation drops and a " +
+        "studio to apply your own label and download the print file.",
+      overview: [
+        "A can label is a panoramic image: it only makes sense once it wraps. The flat file does not show where the artwork breaks, where text disappears into the curve or how the can looks on a shelf.",
+        "Latinha 3D builds the can on the fly, with the label generated in a canvas, metal rims and condensation drops on top. Each theme is a full-wrap label, and the can spins to show the back.",
+        "In the studio, visitors apply their own label, adjust it on the can and download the full-wrap PNG for printing.",
+      ],
+      highlights: [
+        { title: "Full-wrap labels", body: "Each theme is a 2:1 panorama applied over 360°, like the real label." },
+        { title: "Cold-can finish", body: "Aluminium rims and condensation drops make it look like a product." },
+        { title: "From 3D to print", body: "The studio returns the label as a PNG at the can's size, ready to print." },
+      ],
+      facts: [
+        { label: "Role", value: "Product, 3D and build" },
+        { label: "Context", value: "Personal project" },
+        { label: "Stack", value: "Vite · JavaScript · model-viewer" },
+        { label: "Status", value: "Live" },
+      ],
+    },
+    {
+      category: "Software download page",
+      description:
+        "Every machine sold gets a permanent link through its licence, with the " +
+        "installer, manuals and video. It replaced sending files by hand on every " +
+        "sale.",
+      overview: [
+        "Every equipment sale ended the same way: someone from support gathered the installer, manuals and video and sent them by e-mail or WhatsApp. One by one, always the same, and always at risk of sending the wrong version.",
+        "The portal swaps that ritual for a permanent link. The equipment licence becomes the route: whoever opens the link lands straight on their own machine's page, with the software, the documentation and the matching video.",
+        "Because the address is fixed, it still works after the sale: when the customer reinstalls their computer a year from now, the material is still there, up to date.",
+      ],
+      highlights: [
+        {
+          title: "The licence is the route",
+          body: "Each machine has its own address, and the content comes from the licence that opened the page.",
+        },
+        {
+          title: "One link instead of sending by hand",
+          body: "Installer, manuals and video in the same place, always on the current version.",
+        },
+        {
+          title: "It still works after the sale",
+          body: "The link is permanent: it serves the installation and every reinstall that comes after.",
+        },
+      ],
+      facts: [
+        { label: "Role", value: "Design and implementation" },
+        { label: "Context", value: "Bannerjet after-sales" },
+        { label: "Stack", value: "React 18 · TypeScript" },
+        { label: "Status", value: "Finished, live" },
+      ],
+    },
+    {
+      category: "Roblox game",
+      description:
+        "My Roblox game: players build their own toy factory, print, collect and sell figures in the in-game marketplace.",
+      overview: [
+        "Print Your Toy is my Roblox game. Easy to explain and fun to play: you start with one printer and an empty plot and build your own toy factory.",
+        "Every printed figure goes into your inventory. You can collect them, set up your own shop and list figures for other players in the game's marketplace.",
+        "The interface, icons and artwork were created with AI and assembled in Roblox Studio.",
+      ],
+      highlights: [
+        { title: "A factory that grows", body: "Printers, land and shop evolve as the player sells." },
+        { title: "Collection and rarity", body: "Figures with rarity, an inventory and their own showcase." },
+        { title: "Player marketplace", body: "Everyone lists and sells the figures they already own." },
+      ],
+      facts: [
+        { label: "Role", value: "Game design, art and code" },
+        { label: "Context", value: "Personal project" },
+        { label: "Stack", value: "Roblox Studio · Luau" },
+        { label: "Status", value: "In development" },
       ],
     },
     {
@@ -799,31 +900,34 @@ export const conteudoEn: Profundo<Conteudo> = {
       ],
     },
     {
-      category: "Assembly service institutional site",
+      category: "Parallax website",
       description:
-        "An institutional site for a network of furniture assemblers, with two pages, one for people who bought furniture and one for retailers, both converting on WhatsApp.",
+        "A study of the parallax effect and the optical illusion it creates. It was " +
+        "the project where the urge to work with motion began.",
       overview: [
-        "The company talks to two audiences who want different things: the customer who just bought furniture and the store that wants the network assembling for it. One page confuses both.",
-        "The site separates the conversations. The home is for consumers, with an animated banner, services and a step-by-step. The partnerships page is for retail, with the challenge, the solution, the technology and the QR code on the packaging. A button in the header switches between them.",
-        "Both end at the same point: direct contact through WhatsApp.",
+        "One text and one effect. Parallax lets layers run at different speeds and the eye reads that as depth: the page has two dimensions, but does not look like it.",
+        "It was the experiment where it became clear that an interface could be more than layout. Everything that came after started here: the scroll reveals, the hero video and the 3D scene in this portfolio.",
+        "The project is from 2025 and is still live exactly as it was made. It did not age well by accident: it is the record of where this began.",
       ],
       highlights: [
-        { title: "Two audiences, two pages", body: "Consumers and retail get different messages without sharing the same screen." },
-        { title: "Conversion on WhatsApp", body: "Every call to action leads to the same support channel." },
-        { title: "Static and fast", body: "Next.js exported as a static site, with all copy in a single content file." },
+        {
+          title: "Depth without 3D",
+          body: "Layers at different speeds are enough for the eye to read distance.",
+        },
+        {
+          title: "The text leads",
+          body: "The effect serves the reading, setting the rhythm of each passage.",
+        },
+        {
+          title: "The starting point",
+          body: "The first project where motion became part of the content, not decoration.",
+        },
       ],
       facts: [
         { label: "Role", value: "Design and implementation" },
-        { label: "Context", value: "Institutional site, version for approval" },
-        { label: "Stack", value: "Next.js · React · TypeScript · Tailwind · Motion" },
-        { label: "Status", value: "Live, in approval" },
-      ],
-      cover: { alt: "Achei Montador home with the animated banner and the WhatsApp button" },
-      gallery: [
-        { alt: "Top of the home with the animated banner" },
-        { alt: "Services section of the consumer page" },
-        { alt: "Top of the retail partnerships page" },
-        { alt: "QR code on the packaging section" },
+        { label: "Context", value: "Personal study" },
+        { label: "Stack", value: "HTML · CSS" },
+        { label: "Status", value: "Finished, live" },
       ],
     },
     {
@@ -855,37 +959,6 @@ export const conteudoEn: Profundo<Conteudo> = {
         { label: "Context", value: "Fan project, CSS study" },
         { label: "Stack", value: "HTML · CSS" },
         { label: "Status", value: "Finished" },
-      ],
-    },
-    {
-      category: "Parallax website",
-      description:
-        "A study of the parallax effect and the optical illusion it creates. It was " +
-        "the project where the urge to work with motion began.",
-      overview: [
-        "One text and one effect. Parallax lets layers run at different speeds and the eye reads that as depth: the page has two dimensions, but does not look like it.",
-        "It was the experiment where it became clear that an interface could be more than layout. Everything that came after started here: the scroll reveals, the hero video and the 3D scene in this portfolio.",
-        "The project is from 2025 and is still live exactly as it was made. It did not age well by accident: it is the record of where this began.",
-      ],
-      highlights: [
-        {
-          title: "Depth without 3D",
-          body: "Layers at different speeds are enough for the eye to read distance.",
-        },
-        {
-          title: "The text leads",
-          body: "The effect serves the reading, setting the rhythm of each passage.",
-        },
-        {
-          title: "The starting point",
-          body: "The first project where motion became part of the content, not decoration.",
-        },
-      ],
-      facts: [
-        { label: "Role", value: "Design and implementation" },
-        { label: "Context", value: "Personal study" },
-        { label: "Stack", value: "HTML · CSS" },
-        { label: "Status", value: "Finished, live" },
       ],
     },
   ],
@@ -1173,8 +1246,8 @@ export const conteudoEn: Profundo<Conteudo> = {
     title: "The main projects I have built",
     carouselLabel: "Projects",
     intro:
-      "Personal projects, from 3D in the browser to complete systems with a " +
-      "database. My work at Bannerjet is under Built at Bannerjet.",
+      "From largest to smallest: the systems I built at Bannerjet and my " +
+      "personal projects, from 3D in the browser to complete systems with a database.",
     scrollHint: "Scroll to see them all",
     cta: "See project",
     codeLabel: "Code",

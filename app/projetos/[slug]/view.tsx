@@ -93,15 +93,17 @@ export default function ProjetoView({
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="btn"
-              >
-                {projectPage.liveLabel}
-                <span aria-hidden="true">↗</span>
-              </a>
+              {project.href && (
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="btn"
+                >
+                  {projectPage.liveLabel}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
               {project.repo && (
                 <a
                   href={project.repo}
