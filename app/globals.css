@@ -2,19 +2,20 @@
 
 /* ============================================================
    NOCTURNE LAB — sistema de design
-   Preto e roxo. Os pretos puxam para o violeta em vez de serem
-   neutros: sobre um cinza neutro o acento roxo parece sujo, sobre
-   um preto levemente arroxeado ele parece aceso.
+   PRETO E BRANCO desde 27/11/2026, a pedido dele ("sem ser preto e
+   roxo"). Era preto arroxeado com acento #a855f7. O token do acento
+   continua chamado `plasma` para não mexer em cada componente: hoje
+   plasma = branco, e os pretos são neutros, sem puxar para cor nenhuma.
    ============================================================ */
 
 @theme {
-  --color-ink: #07060b;
-  --color-ink-2: #0f0c17;
-  --color-ink-3: #181327;
-  --color-bone: #f2f0f7;
-  --color-bone-dim: #9c97ad;
-  --color-plasma: #a855f7;
-  --color-plasma-soft: #cba6f7;
+  --color-ink: #0a0a0a;
+  --color-ink-2: #131313;
+  --color-ink-3: #1c1c1c;
+  --color-bone: #f5f5f5;
+  --color-bone-dim: #a3a3a3;
+  --color-plasma: #ffffff;
+  --color-plasma-soft: #d4d4d4;
 
   --font-display: var(--font-display-face), system-ui, sans-serif;
   --font-body: var(--font-body-face), system-ui, sans-serif;
@@ -103,7 +104,7 @@ html.lenis body {
   font-size: 1.18em;
   letter-spacing: 0;
   color: var(--color-plasma);
-  text-shadow: 0 0 0.45em rgba(168, 85, 247, 0.45);
+  text-shadow: 0 0 0.45em rgba(255, 255, 255, 0.18);
 }
 
 /* A linha que contém o `.display-accent` precisa de mais fundo que as

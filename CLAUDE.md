@@ -39,9 +39,14 @@ scripts/        deploy.mjs
 
 ## Design
 
-Paleta **preto e roxo**. Acento `--color-plasma: #a855f7`, pretos puxando para o violeta.
-O token se chamava `magma` quando o site era laranja — o Erick pediu para abandonar o laranja
-em 04/08/2026. Fontes (desde 26/11/2026, eram Bricolage + Archivo): **Space Grotesk** (display),
+Paleta **preto e branco** desde 27/11/2026 (pedido dele: "deixa preto e branco as cores por
+enquanto, sem ser preto e roxo"). Pretos neutros (`ink` #0a0a0a), texto `bone` #f5f5f5 e o acento
+`--color-plasma` = **branco**: o nome do token ficou para não mexer em cada componente. A página de
+projeto também deixou de usar o `tint` de cada projeto. Antes era preto arroxeado com acento
+#a855f7, e antes disso laranja (o token se chamava `magma`; ele abandonou o laranja em 04/08/2026).
+**Tema "pré-impressão" (CMYK, marcas de corte, linha de plotter) foi testado na branch
+`tema-pre-impressao` e REPROVADO por ele ("ficou um lixo"): não reaproveitar.** O verde do
+"Disponível" no Contato ficou: é status, não decoração. Fontes (desde 26/11/2026, eram Bricolage + Archivo): **Space Grotesk** (display),
 **Geist** (texto), **Geist Mono** (`mono-label`), Instrument Serif (itálico de acento). O
 `line-height` do `.display` subiu para 0.96 porque a Space Grotesk cortava no `.line-mask`.
 

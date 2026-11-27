@@ -130,7 +130,8 @@ export default function ProjetoView({
         <div className="shell">
           <figure
             className="relative mx-auto max-w-[80rem] overflow-hidden rounded-2xl border border-bone/12"
-            style={{ background: `${project.tint}14` }}
+            /* Sem a cor do projeto: o site é preto e branco (27/11/2026). */
+            style={{ background: "var(--color-ink-2)" }}
           >
             <img
               src={asset(project.cover.src)}
@@ -204,7 +205,7 @@ export default function ProjetoView({
                   <span
                     aria-hidden="true"
                     className="absolute inset-x-8 top-0 h-px origin-left scale-x-0 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
-                    style={{ background: project.tint }}
+                    style={{ background: "var(--color-plasma)" }}
                   />
                   <h3 className="display text-xl leading-tight">{h.title}</h3>
                   <p className="mt-4 text-sm leading-relaxed text-bone-dim">
@@ -246,7 +247,7 @@ export default function ProjetoView({
                       />
                     </figure>
                     <div>
-                      <span className="mono-label" style={{ color: project.tint }}>
+                      <span className="mono-label">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <h3 className="display mt-3 text-[clamp(1.6rem,3vw,2.4rem)] leading-tight">

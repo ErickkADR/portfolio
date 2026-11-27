@@ -224,7 +224,7 @@ export default function Hero({ photo, photoIA }: Props) {
                centralizado com faixa dos dois lados. */
             fit="contain"
             anchor={[0, 0.5]}
-            background="#07060b"
+            background="#0a0a0a"
             /* Onda LARGA e RASA. A primeira versão usava strength 0.16 e
                swirl 1.2: a imagem torcia tanto que a versão androide
                virava borrão e não se reconhecia nada dentro da mancha. O
@@ -237,12 +237,12 @@ export default function Hero({ photo, photoIA }: Props) {
             spread={3}
             fade={2.4}
             spacing={16}
-            /* O roxo do site, de leve: mais que isso e a onda vira uma
+            /* Branco, de leve (o site é preto e branco desde 27/11/2026): mais que isso e a onda vira uma
                mancha lilás em vez de água pegando a luz. */
-            tint="#a855f7"
+            tint="#ffffff"
             tintAmount={0.08}
             glint={0.12}
-            highlightColor="#cba6f7"
+            highlightColor="#e5e5e5"
             trigger="both"
             quality="medium"
           />
